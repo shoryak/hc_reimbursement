@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
-from .models import User
+from .models import User, Form
 from django.contrib.auth import logout, login, authenticate
+from .forms import PostForm
 from .utils import (
     MAKE_PASSWORD,
     CHECK_PASSWORD,
@@ -15,7 +16,8 @@ def login(request):
     return render(request, "login.html")
     # return HttpResponse("Hello, world.")
 
-
+def form(request):
+    return render(request,'form.html')
 def loginUser(request):
     if request.method == "POST":
         user = IsLoggedIn(request)
@@ -48,3 +50,24 @@ def logout(request):
             return render(request, "login.html")
         else:
             return render(request, "login.html")
+
+def submitForm(request):
+    if request.method=="POST":
+        # user = IsLoggedIn(request)
+        # if IsLoggedIn(user) is not None:
+            form= Form()
+            form.userid=request.POST.get("name")
+            # form.userid=user.username
+            form.name=request.POST.get("name")
+            form.department=request.POST.get("department")
+            form.designation=request.POST.get("designation")
+            # if form.is_valid():
+            #     form_application=form.save(commit=False)
+            form.save()
+            return HttpResponse(
+                "form submitted"+str(form))
+                # return redirect('form_detail', pk=form.pk)
+        # else:
+        #     return HttpResponse(
+        #         "Please login to submit a form"
+        #     )  
