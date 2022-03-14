@@ -1,2 +1,5 @@
 .vscode
-
+src/src/__pycache__
+src/user/__pycache__
+src/user/migrations/__pycache__
+src/db.sqlite3
