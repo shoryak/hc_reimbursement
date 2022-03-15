@@ -39,11 +39,19 @@
 		<div class="container container-modi">
 			<div class="row row-style">
 				<div class="col-xs-offset-2 col-xs-8 col-md-offset-3 col-md-6">
-					<div class="panel panel-primary">
+                    {% if messages %}
+                    <div class="panel panel-danger">
 						<div class="panel-heading">
-							<h4><strong>LOGIN</strong></h4>
-						</div>
-
+                            {% for message in messages %}
+							<strong><h5{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h5></strong>
+						</div>   
+                            {% endfor %}
+                    {% else %}
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h4><strong>LOGIN</strong></h4>
+                        </div>
+                    {% endif %}
                                             
 						<div class="panel-body panel-body-style">
 							<p class="text-warning">
@@ -73,8 +81,14 @@
 		</div>
 		
 
-		<?php                
-            include 'includes/footer.php';
-        ?>
+		<footer class = "navbar navbar-fixed-bottom">
+            <div class="container"> 
+                <center> 
+                    <p>
+                        Copyright &copy; HC Reimbursement Portal All Rights Reserved | Contact Team-6.
+                    </p> 
+                </center> 
+            </div> 
+        </footer>
 	</body>
 </html>

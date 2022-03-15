@@ -41,7 +41,17 @@
 			<div class="row row-style">
 				<div class="col-xs-offset-2 col-xs-8 col-md-offset-3 col-md-6">
                     <form method="post" action="/user/register">
-					<center><h2><strong>SIGN UP</strong></h2></center>
+                        {% if messages %}
+                        <div class="panel panel-danger">
+                            <div class="panel-heading">
+                                {% for message in messages %}
+                                <strong><h5{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h5></strong>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% else %}
+					    <center><h2><strong>SIGN UP</strong></h2></center>
+                        {% endif %}
                     {% csrf_token %}
 					<div class="form-group">                     
                         <input type="text" name="name" placeholder="Name" class="form-control" required="True">
