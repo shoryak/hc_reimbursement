@@ -22,63 +22,51 @@ def loginUser(request):
         if user is None:  # user is not already login
             username = request.POST.get("username")
             password = request.POST.get("password")
-            user = User.objects.get(username=username)
-            if user is not None:
+            if User.objects.filter(username=username).exists():
+                user = User.objects.get(username=username)
                 if CHECK_PASSWORD(password, user.password):
                     request.session["username"] = username
                     request.session.modified = True
                     # based on roles render pages
-                    if user.roles=="patient":
-                        return HttpResponse(
-                        "current login:: Welcome patient,"
-                        )
-                    elif user.roles=="hcadmin":
-                        return HttpResponse(
-                        "current login:: Welcome hcadmin,"
-                        )
-                    elif user.roles=="doctor":
-                        return HttpResponse(
-                        "current login:: Welcome doctor,"
-                        )
-                    elif user.roles=="accounts":
-                        return HttpResponse(
-                        "current login:: Welcome accounts office,"
-                        )
+                    if user.roles == "patient":
+                        return HttpResponse("current login:: Welcome patient,")
+                    elif user.roles == "hcadmin":
+                        return HttpResponse("current login:: Welcome hcadmin,")
+                    elif user.roles == "doctor":
+                        return HttpResponse("current login:: Welcome doctor,")
+                    elif user.roles == "accounts":
+                        return HttpResponse("current login:: Welcome accounts office,")
                     else:
-                        return HttpResponse(
-                        "current login:: Welcome none,"
-                        )               
-                    return HttpResponse(
-                        "current login:: Welcome," + user.username + user.roll
-                    )
+                        return HttpResponse("current login:: Welcome none,")
                 else:
-                    return render(request, "login.html")  # redirect to login
+                    print("wrong_pwd")
+                    return render(
+                        request,
+                        "login.html",
+                        context={
+                            "wrong_pwd": 99,
+                        },
+                    )  # redirect to login(wrong_password)
             else:
-                return render(request, "login.html")  # not in database
+                print("not_in_db")
+                return render(
+                    request,
+                    "login.html",
+                    context={
+                        "not_in_db": 99,
+                    },
+                )  # not in database
         else:
-            """ return HttpResponse(
-                "already logged in:: Welcome," + user.username + user.roll
-            )  # already logged in """
-            if user.roles=="patient":
-                return HttpResponse(
-                        "current loggedin:: Welcome patient,"
-                )
-            elif user.roles=="hcadmin":
-                return HttpResponse(
-                        "already loggedin:: Welcome hcadmin,"
-                )
-            elif user.roles=="doctor":
-                return HttpResponse(
-                        "already loggedin:: Welcome doctor,"
-                )
-            elif user.roles=="accounts":
-                return HttpResponse(
-                        "already loggedin:: Welcome accounts office,"
-                )
+            if user.roles == "patient":
+                return HttpResponse("current loggedin:: Welcome patient,")
+            elif user.roles == "hcadmin":
+                return HttpResponse("already loggedin:: Welcome hcadmin,")
+            elif user.roles == "doctor":
+                return HttpResponse("already loggedin:: Welcome doctor,")
+            elif user.roles == "accounts":
+                return HttpResponse("already loggedin:: Welcome accounts office,")
             else:
-                return HttpResponse(
-                        "current login:: Welcome none,"
-                )  
+                return HttpResponse("current login:: Welcome none,")
 
 
 def logout(request):
