@@ -1,5 +1,6 @@
-from django.shortcuts import render, redirect
-from .models import User, Form
+from django.forms import PasswordInput
+from django.shortcuts import render, redirect, HttpResponseRedirect
+from .models import Transaction, User, Form
 from django.contrib.auth import logout, login, authenticate
 from .utils import (
     MAKE_PASSWORD,
@@ -12,8 +13,35 @@ from django.http import HttpResponse
 
 
 def login(request):
-    return render(request, "login.html")
+    return render(request, "signin.html")
     # return HttpResponse("Hello, world.")
+
+def patientsignup(request):
+    return render(request, "signup.html")
+
+def registerPatient(request):
+    if request.method == "POST":
+        user = IsLoggedIn(request)
+        if user is None:
+            name = request.POST.get("name")
+            username = request.POST.get("username")
+            roll = request.POST.get("roll")
+            email = request.POST.get("email")
+            password = MAKE_PASSWORD(request.POST.get("password"))
+            if User.objects.filter(username=username).exists():
+                return render(request, "signup.html")
+            else:
+                user = User(roles = "patient")
+                user.name = name
+                user.username = username
+                user.roll = roll
+                user.email = email
+                user.password = password
+                user.save()
+                return render(request, "signin.html")
+        else:
+            return HttpResponse("current login:: Welcome patient,")
+
 
 
 def loginUser(request):
@@ -83,10 +111,10 @@ def form(request):
     
 def submitForm(request):
     if request.method=="POST":
-        # user = IsLoggedIn(request)
-        # if IsLoggedIn(user) is not None:
+        user = IsLoggedIn(request)
+        if IsLoggedIn(request) is not None:
             form= Form()
-            form.userid=request.POST.get("name")
+            form.user = user
             # form.userid=user.username
             form.name=request.POST.get("name")
             form.department=request.POST.get("department")
@@ -94,10 +122,13 @@ def submitForm(request):
             # if form.is_valid():
             #     form_application=form.save(commit=False)
             form.save()
+            transaction = Transaction(status = "Form submitted", form = form, user = user, feedback = "")
+            # user feedback
+            transaction.save()
             return HttpResponse(
                 "form submitted"+str(form))
                 # return redirect('form_detail', pk=form.pk)
-        # else:
-        #     return HttpResponse(
-        #         "Please login to submit a form"
-        #     )
+        else:
+            return HttpResponse(
+                "Please login to submit a form"
+                )

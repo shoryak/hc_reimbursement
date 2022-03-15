@@ -4,6 +4,7 @@ from django.utils import timezone
 # Create your models here.
 # Database initilization
 class User(models.Model):
+    user_id = models.AutoField(primary_key = True)
     name = models.CharField(max_length=120)
     username = models.CharField(max_length=40, unique=True)
     roll = models.CharField(max_length=10, unique=True)
@@ -12,10 +13,11 @@ class User(models.Model):
     roles = models.CharField(max_length=10)  # patient doctor hcadmin accounts
 
     def __str__(self):
-        return self.name
+        return str(self.user_id)
 
 class Form(models.Model):
-    userid=models.CharField(max_length=120)
+    form_id = models.AutoField(primary_key = True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null = True)
     name = models.CharField(max_length=120)
     designation = models.CharField(max_length=120)
     department = models.CharField(max_length=120)
@@ -31,4 +33,18 @@ class Form(models.Model):
         self.save()
 
     def __str__(self):
-        return self.userid 
+        return str(self.form_id)
+
+
+class Transaction(models.Model):
+    transaction_id = models.AutoField(primary_key=True)
+    form = models.ForeignKey(Form, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    status = models.CharField(max_length=50)
+    # Form submitted, Waiting Doctor approval, Waiting HC Admin approval, Sent to Accounts,  Approved by Accounts
+    feedback = models.CharField(max_length=400)
+
+    def __str__(self):
+        return str(self.transaction_id)
+
+    
