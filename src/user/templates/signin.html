@@ -22,15 +22,12 @@
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar"> 
                         <span class="icon-bar"></span> 
                         <span class="icon-bar"></span> 
-                        <span class="icon-bar"></span> 
-                    </button> <a class="navbar-brand" href="#">Dashboard</a> 
+                    </button> <a class="navbar-brand" href="/user">HC Reimbursement Portal</a> 
                 </div> 
                 <div class="collapse navbar-collapse" id="myNavbar"> 
                     <ul class="nav navbar-nav navbar-right"> 
-                            <li><a href = "#"><span class = "glyphicon glyphicon-user"></span> Settings</a></li> 
-                            <li><a href = "#"><span class = "glyphicon glyphicon-log-in"></span> Logout</a></li> 
-                            <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li> 
-                            <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li> 
+                            <li><a href="/user/signup"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li> 
+                            <li><a href="/user/"><span class="glyphicon glyphicon-log-in"></span> Login</a></li> 
                     </ul> 
                 </div> 
             </div> 
@@ -40,12 +37,19 @@
 			<div class="row row-style">
 				<div class="col-xs-offset-2 col-xs-8 col-md-offset-3 col-md-6">
                     {% if messages %}
+                    {% for message in messages %}
+                    {% if message.tags %}
+                    {% if message.tags == "error" %}
                     <div class="panel panel-danger">
+                    {% endif %} 
+                    {% if message.tags == "success" %}
+                    <div class="panel panel-success">
+                    {% endif %} 
 						<div class="panel-heading">
-                            {% for message in messages %}
-							<strong><h5{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h5></strong>
+							<strong><h5 class="{{ message.tags }}">{{ message }}</h5></strong>
 						</div>   
-                            {% endfor %}
+                    {% endif %} 
+                    {% endfor %}
                     {% else %}
                     <div class="panel panel-primary">
                         <div class="panel-heading">

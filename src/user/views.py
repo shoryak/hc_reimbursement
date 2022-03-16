@@ -38,6 +38,8 @@ def registerPatient(request):
             username = request.POST.get("username")
             roll = request.POST.get("roll")
             email = request.POST.get("email")
+            designation = request.POST.get("designation")
+            department = request.POST.get("department")
             password = MAKE_PASSWORD(request.POST.get("password"))
             if User.objects.filter(username=username).exists():
                 messages.error(request, 'Username already in use!')
@@ -49,6 +51,8 @@ def registerPatient(request):
                 user.roll = roll
                 user.email = email
                 user.password = password
+                user.designation = designation
+                user.department = department
                 user.save()
                 messages.success(request, 'User account created successfully!')
                 return HttpResponseRedirect("/user")

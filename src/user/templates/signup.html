@@ -24,14 +24,12 @@
                         <span class="icon-bar"></span> 
                         <span class="icon-bar"></span> 
                         <span class="icon-bar"></span> 
-                    </button> <a class="navbar-brand" href="#">Dashboard</a> 
+                    </button> <a class="navbar-brand" href="/user">HC Reimbursement Portal</a> 
                 </div> 
                 <div class="collapse navbar-collapse" id="myNavbar"> 
                     <ul class="nav navbar-nav navbar-right"> 
-                            <li><a href = "#"><span class = "glyphicon glyphicon-user"></span> Settings</a></li> 
-                            <li><a href = "#"><span class = "glyphicon glyphicon-log-in"></span> Logout</a></li> 
-                            <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li> 
-                            <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li> 
+                            <li><a href="/user/signup"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li> 
+                            <li><a href="/user"><span class="glyphicon glyphicon-log-in"></span> Login</a></li> 
                     </ul> 
                 </div> 
             </div> 
@@ -67,6 +65,12 @@
 					</div>
 					<div class="form-group">
                         <input type="password" name="password" placeholder="Password" class="form-control" required="True" pattern=".{6,}">
+					</div>
+                    <div class="form-group">                     
+                        <input type="text" name="designation" placeholder="Designation" class="form-control" required="True">
+					</div>
+                    <div class="form-group">                     
+                        <input type="text" name="department" placeholder="Department" class="form-control" required="True">
 					</div>
 					<center>
 						<div class="form-group">
