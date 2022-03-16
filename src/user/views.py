@@ -113,7 +113,7 @@ def patient(request):
 def form(request):
     user = IsLoggedIn(request)
     if user is not None:
-        return render(request,'form.html')
+        return render(request,'form.html', {'user': IsLoggedIn(request)})
     else:
         messages.warning(request, 'Please login first to fill reimbursement form!')
         return HttpResponseRedirect("/user")
