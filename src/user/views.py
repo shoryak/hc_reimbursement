@@ -1,6 +1,6 @@
 from django.forms import PasswordInput
 from django.shortcuts import render, redirect, HttpResponseRedirect
-from .models import Transaction, User, Form
+from .models import Transaction, User, Form, Patient, Doctor
 from django.contrib import messages
 from django.contrib.auth import logout, login, authenticate
 from .utils import (
@@ -52,8 +52,10 @@ def registerPatient(request):
                 user.email = email
                 user.password = password
                 user.designation = designation
-                user.department = department
                 user.save()
+                patient = Patient(user = user, department = department)
+                patient.save()
+                
                 messages.success(request, 'User account created successfully!')
                 return HttpResponseRedirect("/user")
     else:
@@ -111,13 +113,13 @@ def logout(request):
             return HttpResponseRedirect("/user")
 
 def patient(request):
-    return render(request, 'patient_dashboard.html', {'user': IsLoggedIn(request)})
+    return render(request, 'patient_dashboard.html', {'user': IsLoggedIn(request), 'patient': Patient.objects.get(user = IsLoggedIn(request))})
 
 
 def form(request):
     user = IsLoggedIn(request)
     if user is not None:
-        return render(request,'form.html', {'user': IsLoggedIn(request)})
+        return render(request,'form.html', {'user': IsLoggedIn(request), 'patient': Patient.objects.get(user = IsLoggedIn(request)), 'doctors': Doctor.objects.all()})
     else:
         messages.warning(request, 'Please login first to fill reimbursement form!')
         return HttpResponseRedirect("/user")

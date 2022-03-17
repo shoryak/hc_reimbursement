@@ -4,28 +4,55 @@ from django.utils import timezone
 # Create your models here.
 # Database initilization
 class User(models.Model):
-    user_id = models.AutoField(primary_key = True)
+    user_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=120)
     username = models.CharField(max_length=40, unique=True)
-    roll = models.CharField(max_length=10, unique=True)
+    roll = models.CharField(max_length=6, unique=True)
     email = models.EmailField(max_length=100, unique=True)
     password = models.CharField(max_length=100, blank=False)
-    roles = models.CharField(max_length=10)  # patient doctor hcadmin accounts
+    contact = models.CharField(max_length=10, blank=False)
+    address = models.CharField(max_length=400)
     designation = models.CharField(max_length=120)
-    department = models.CharField(max_length=120)
+    roles = models.CharField(max_length=10)  # patient doctor hcadmin accounts
 
     def __str__(self):
         return str(self.user_id)
 
+class Patient(models.Model):
+    patient_id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    bank_name = models.CharField(max_length=40)
+    department = models.CharField(max_length=20)
+    bank_IFSC = models.CharField(max_length=11)
+    bank_AC = models.CharField(max_length=18)
+
+    def __str__(self):
+        return str(self.patient_id)
+
+class Doctor(models.Model):
+    doctor_id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    specialization = models.CharField(max_length=20)
+
+    def __str__(self):
+        return str(self.doctor_id)
+
+class HCAdmin(models.Model):
+    admin_id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.admin_id)
+
 class Form(models.Model):
     form_id = models.AutoField(primary_key = True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null = True)
-    name = models.CharField(max_length=120)
-    # residence = models.CharField(max_length=120)
-    # hc_medical_advisor = models.CharField(max_length=120)
-    # referral_medical_advisor = models.CharField(max_length=120)
-    # consultation_number = models.IntegerField()
-    # consulation_fees = models.IntegerField()
+    user = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    patient_name = models.CharField(max_length=120)
+    hc_medical_advisor = models.ForeignKey(User, on_delete=models.CASCADE, null = True)
+    consultation_date = models.DateTimeField()
+    referral_advisor = models.CharField(max_length=120)
+    consultation_fees = models.IntegerField(default = 0)
+    consultation_visits = models.IntegerField(default = 0)
     created_date = models.DateTimeField(default=timezone.now)
 
     def publish(self):
@@ -40,10 +67,32 @@ class Transaction(models.Model):
     transaction_id = models.AutoField(primary_key=True)
     form = models.ForeignKey(Form, on_delete=models.CASCADE)
     status = models.CharField(max_length=50)
+    reimbursement_amount = models.IntegerField()
     # Form submitted, Waiting Doctor approval, Waiting HC Admin approval, Sent to Accounts,  Approved by Accounts
     feedback = models.CharField(max_length=400)
+    created_date = models.DateTimeField(default=timezone.now)
+    admin_update_date = models.DateTimeField()
+    doctor_update_date = models.DateTimeField()
+    account_sent_date = models.DateTimeField()
+    account_approve_date = models.DateTimeField()
 
     def __str__(self):
         return str(self.transaction_id)
 
-    
+class Medicine(models.Model):
+    medicine_id = models.AutoField(primary_key=True)
+    medicine_name = models.CharField(max_length=50)
+    brand = models.CharField(max_length=50)
+    price = models.IntegerField(default=0)
+
+    def __str__(self):
+        return str(self.medicine_id)
+
+class FormMedicine(models.Model):
+    fm_id = models.AutoField(primary_key=True)
+    form = models.ForeignKey(Form, on_delete=models.CASCADE)
+    medicine = models.ForeignKey(Medicine, on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=0)
+
+    def __str__(self):
+        return str(self.fm_id)

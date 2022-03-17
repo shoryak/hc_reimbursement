@@ -109,9 +109,14 @@
                 
                 <div class="mb-3">
                     <div class="form-row">
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-4">
                             <label for="inputEmail5">Name of Medical Advisor</label>
-                            <input type="text" class="form-control" id="inputEmail5" placeholder="Name of Medical Advisor">
+                            <select class="form-select form-control form-select-lg mb-3" aria-label=".form-select-lg" id="inputEmail5" name="hc_medical_advisor">
+                                <option selected>Name of Medical Advisor</option>
+                                {% for doctor in doctors %}
+                                <option value="{{doctor.doctor_id}}" name="hc_medical_advisor">{{doctor.user.name}}</option>
+                                {%endfor%}
+                            </select>
                         </div>
                         <div class="form-group col-md-3">
                             <label for="inputEmail5">Specialization</label>
