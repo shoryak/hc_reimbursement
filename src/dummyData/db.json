@@ -7,7 +7,7 @@
             "username": "shoryak",
             "roll": "190818",
             "email": "shoryak@iitk.ac.in",
-            "password": "$2b$12$/RE/gRPWPgbQf5dCbrFueO1.054SYZtwRMqbR.NNRGEMOboq/RNo2",
+            "password": "$2b$12$/RE/gRPWPgbQf5dCbrFueO1.054SYZtwRMqbR.NNRGEMOboq/RNo2", // Shorya
             "roles": "patient"
         }
     },
@@ -55,7 +55,7 @@
             "username": "hcadmin_username",
             "roll": "190465",
             "email": "hcadmin_email@iitk.ac.in",
-            "password": "$2b$12$/Mg1YSfrCLzVtGMSxnkblOiqyAhV.kkaqrEMrfwn.8ij3wOxzj/OW",
+            "password": "$2b$12$/Mg1YSfrCLzVtGMSxnkblOiqyAhV.kkaqrEMrfwn.8ij3wOxzj/OW", // hcadmin
             "roles": "hcadmin"
         }
     },

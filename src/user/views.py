@@ -76,11 +76,11 @@ def loginUser(request):
                     if user.roles == "patient":
                         return HttpResponseRedirect("/user/patient_dashboard")
                     elif user.roles == "hcadmin":
-                        return HttpResponse("current login:: Welcome hcadmin,")
+                        return HttpResponseRedirect("/user/hcadmin_dashboard")
                     elif user.roles == "doctor":
-                        return HttpResponse("current login:: Welcome doctor,")
+                        return HttpResponseRedirect("/user/doctor_dashboard")
                     elif user.roles == "accounts":
-                        return HttpResponse("current login:: Welcome accounts office,")
+                        return HttpResponseRedirect("/user/accounts_dashboard")
                     else:
                         return HttpResponse("current login:: Welcome none,")
                 else:
@@ -93,11 +93,11 @@ def loginUser(request):
         if user.roles == "patient":
             return redirect("/user/patient_dashboard")
         elif user.roles == "hcadmin":
-            return HttpResponse("already loggedin:: Welcome hcadmin,")
+            return redirect("/user/hcadmin_dashboard")
         elif user.roles == "doctor":
-            return HttpResponse("already loggedin:: Welcome doctor,")
+            return redirect("/user/doctor_dashboard")
         elif user.roles == "accounts":
-            return HttpResponse("already loggedin:: Welcome accounts office,")
+            return redirect("/user/accounts_dashboard")
         else:
             return HttpResponse("current login:: Welcome none,")
 
@@ -112,6 +112,15 @@ def logout(request):
 
 def patient(request):
     return render(request, 'patient_dashboard.html', {'user': IsLoggedIn(request)})
+
+def hcadmin(request):
+    return render(request, 'hcadmin_dashboard.html', {'user': IsLoggedIn(request)})
+
+def doctor(request):
+    return render(request, 'doctor_dashboard.html', {'user': IsLoggedIn(request)})
+
+def accounts(request):
+    return render(request, 'accounts_dashboard.html', {'user': IsLoggedIn(request)})
 
 
 def form(request):

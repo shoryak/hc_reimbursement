@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<title>HC Reimbursement Portal</title>
+		<meta charset="utf-8">
+		<meta name='viewport' content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		{% load static %}
+		<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Oxygen&display=swap" rel="stylesheet">
+		<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+		<link href="{% static 'css/index.css' %}" rel="stylesheet">
+		<script src="{% static 'js/jquery-3.5.1.min.js' %}"></script>
+		<script src="{% static 'js/bootstrap.min.js' %}"></script>
+        <style>
+            .sidebar {
+                position: fixed;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                z-index: 100;
+                padding: 90px 0 0;
+                box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+                z-index: 99;
+            }
+            .action {
+                width: 200px;
+            }
+
+        
+            @media (max-width: 767.98px) {
+                .sidebar {
+                    top: 11.5rem;
+                    padding: 0;
+                }
+            }
+        
+            .navbar {
+                box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .1);
+            }
+        
+            @media (min-width: 767.98px) {
+                .navbar {
+                    top: 0;
+                    position: sticky;
+                    z-index: 999;
+                }
+            }
+        
+            .sidebar .nav-link {
+                color: #333;
+            }
+        
+            .sidebar .nav-link.active {
+                color: #0d6efd;
+            }
+        </style>
+	</head>
+
+	<body>
+
+        <div class="navbar navbar-inverse navbar-fixed-top"> 
+            <div class="container"> 
+                <div class="navbar-header"> 
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar"> 
+                        <span class="icon-bar"></span> 
+                        <span class="icon-bar"></span> 
+                        <span class="icon-bar"></span> 
+                    </button>
+                    <a class="navbar-brand" href="/user/patient_dashboard" style="margin-right: 25px;">Dashboard</a>
+                    <a class="navbar-brand" href="/user/form" style="margin-right: 25px;">Register New User</a> 
+                </div>
+                <div class="collapse navbar-collapse" id="myNavbar"> 
+                    <ul class="nav navbar-nav navbar-right"> 
+                        <li><a href = "/#"><span class = "glyphicon glyphicon-user"></span> {{ user.username }}</a></li> 
+                        <li><a href = "/user/logout"><span class = "glyphicon glyphicon-log-in"></span> Logout</a></li> 
+                    </ul> 
+                </div> 
+            </div> 
+        </div>
+
+       <div class="container container-fluid">
+            <div class="row">
+                <main class="col-md-9 ml-sm-auto col-lg-12 px-md-4 py-4">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/#">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Overview</li>
+                        </ol>
+                    </nav>
+                    <h1 class="h2">Dashboard</h1>
+                    <div class="row">
+                        <div class="col-12 col-xl-8 mb-4 mb-lg-0">
+                            <div class="card">
+                                <h5 class="card-header">Pending Forms</h5>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Form No.</th>
+                                                    <th scope="col">Patient Name</th>
+                                                    <th scope="col">Date of Submission</th>
+                                                    <th scope="col">Date of Arrival</th>
+                                                    <th scope="col">Status of Form</th>
+                                                    <th scope="col">Comments</th>
+                                                    <th scope="col"></th>
+                                                    <th scope="col"></th>
+                                                    <th class="action" scope="col">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <th scope="row">17371705</th>
+                                                    <td>Gaurav</td>
+                                                    <td>11/03/2022</td>
+                                                    <td>11/03/2022</td>
+                                                    <td>Waiting for HC Admin Verification</td>
+                                                    <td>N/A</td>
+                                                    <td><a href="#" class="btn btn-sm btn-primary">View Form</a></td>
+                                                    <td><a href="#" class="btn btn-sm btn-primary">View Request</a></td>
+                                                    <td><a href="#" class="btn btn-sm btn-success">Accept</a> <a href="#" class="btn btn-sm btn-danger">Reject</a></td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">17370540</th>
+                                                    <td>Atreya</td>
+                                                    <td>06/03/2022</td>
+                                                    <td>06/03/2022</td>
+                                                    <td>Waiting for HC Admin Verification</td>
+                                                    <td>Payment proceedings initiated by accounts office</td>
+                                                    <td><a href="#" class="btn btn-sm btn-primary">View Form</a></td>
+                                                    <td><a href="#" class="btn btn-sm btn-primary">View Request</a></td>
+                                                    <td><a href="#" class="btn btn-sm btn-success">Accept</a> <a href="#" class="btn btn-sm btn-danger">Reject</a></td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">17371705</th>
+                                                    <td>Shorya</td>
+                                                    <td>04/03/2022</td>
+                                                    <td>04/03/2022</td>
+                                                    <td>Waiting for HC Admin Verification</td>
+                                                    <td>Provide clearer photo of prescription</td>
+                                                    <td><a href="#" class="btn btn-sm btn-primary">View Form</a></td>
+                                                    <td><a href="#" class="btn btn-sm btn-primary">View Request</a></td>
+                                                    <td><a href="#" class="btn btn-sm btn-success">Accept</a> <a href="#" class="btn btn-sm btn-danger">Reject</a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                <a href="#" class="btn btn-block btn-light">View all</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-xl-8 mb-4 mb-lg-0">
+                            <div class="card">
+                                <h5 class="card-header">Waiting For Doctor Approval</h5>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Form No.</th>
+                                                    <th scope="col">Patient Name</th>
+                                                    <th scope="col">Date of Submission</th>
+                                                    <th scope="col">Date of Arrival</th>
+                                                    <th scope="col">Date Sent for Doctor Approval</th>
+                                                    <th scope="col">Status of Form</th>
+                                                    <th scope="col">Comments</th>
+                                                    <th scope="col"></th>
+                                                    <th scope="col"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <th scope="row">17371705</th>
+                                                    <td>Gaurav</td>
+                                                    <td>11/03/2022</td>
+                                                    <td>11/03/2022</td>
+                                                    <td>15/03/2022</td>
+                                                    <td>Waiting for Doctor Verification</td>
+                                                    <td>N/A</td>
+                                                    <td><a href="#" class="btn btn-sm btn-primary">View Form</a></td>
+                                                    <td><a href="#" class="btn btn-sm btn-primary">View Request</a></td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">17370540</th>
+                                                    <td>Atreya</td>
+                                                    <td>06/03/2022</td>
+                                                    <td>06/03/2022</td>
+                                                    <td>10/03/2022</td>
+                                                    <td>Waiting for Doctor Verification</td>
+                                                    <td>Payment proceedings initiated by accounts office</td>
+                                                    <td><a href="#" class="btn btn-sm btn-primary">View Form</a></td>
+                                                    <td><a href="#" class="btn btn-sm btn-primary">View Request</a></td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">17371705</th>
+                                                    <td>Shorya</td>
+                                                    <td>04/03/2022</td>
+                                                    <td>04/03/2022</td>
+                                                    <td>10/03/2022</td>
+                                                    <td>Waiting for Doctor Verification</td>
+                                                    <td>Provide clearer photo of prescription</td>
+                                                    <td><a href="#" class="btn btn-sm btn-primary">View Form</a></td>
+                                                    <td><a href="#" class="btn btn-sm btn-primary">View Request</a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                <a href="#" class="btn btn-block btn-light">View all</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 col-xl-8 mb-4 mb-lg-0">
+                            <div class="card">
+                                <h5 class="card-header">Arrived after Doctor Verification</h5>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Form No.</th>
+                                                    <th scope="col">Patient Name</th>
+                                                    <th scope="col">Date of Submission</th>
+                                                    <th scope="col">Date of Arrival</th>
+                                                    <th scope="col">Doctor Verdict </th>
+                                                    <th scope="col">Status of Form</th>
+                                                    <th scope="col">Comments</th>
+                                                    <th scope="col"></th>
+                                                    <th scope="col"></th>
+                                                    <th class="action" scope="col">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <th scope="row">17371705</th>
+                                                    <td>Gaurav</td>
+                                                    <td>11/03/2022</td>
+                                                    <td>19/03/2022</td>
+                                                    <td>Accepted</td>
+                                                    <td>Waiting for HC Admin Verification</td>
+                                                    <td>N/A</td>
+                                                    <td><a href="#" class="btn btn-sm btn-primary">View Form</a></td>
+                                                    <td><a href="#" class="btn btn-sm btn-primary">View Request</a></td>
+                                                    <td><a href="#" class="btn btn-sm btn-success">Accept</a> <a href="#" class="btn btn-sm btn-danger">Reject</a></td>   
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">17370540</th>
+                                                    <td>Atreya</td>
+                                                    <td>06/03/2022</td>
+                                                    <td>06/03/2022</td>
+                                                    <td>Rejected</td>
+                                                    <td>Rejected by Doctor</td>
+                                                    <td>Payment proceedings initiated by accounts office</td>
+                                                    <td><a href="#" class="btn btn-sm btn-primary">View Form</a></td>
+                                                    <td><a href="#" class="btn btn-sm btn-primary">View Request</a></td>
+                                                    <td><a href="#" class="btn btn-sm btn-danger">Reject</a></td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">17371705</th>
+                                                    <td>Shorya</td>
+                                                    <td>04/03/2022</td>
+                                                    <td>14/03/2022</td>
+                                                    <td>Accepted</td>
+                                                    <td>Waiting for HC Admin Verification</td>
+                                                    <td>Provide clearer photo of prescription</td>
+                                                    <td><a href="#" class="btn btn-sm btn-primary">View Form</a></td>
+                                                    <td><a href="#" class="btn btn-sm btn-primary">View Request</a></td>
+                                                    <td><a href="#" class="btn btn-sm btn-success">Accept</a> <a href="#" class="btn btn-sm btn-danger">Reject</a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                <a href="#" class="btn btn-block btn-light">View all</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-xl-8 mb-4 mb-lg-0">
+                            <div class="card">
+                                <h5 class="card-header">Accepted Forms</h5>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Form No.</th>
+                                                    <th scope="col">Patient Name</th>
+                                                    <th scope="col">Date of Submission</th>
+                                                    <th scope="col">Date of Arrival</th>
+                                                    <th scope="col">Date of Approval</th>
+                                                    <th scope="col">Status of Form</th>
+                                                    <th scope="col">Comments</th>
+                                                    <th scope="col"></th>
+                                                    <th scope="col"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <th scope="row">17371705</th>
+                                                    <td>Sanchit</td>
+                                                    <td>11/03/2022</td>
+                                                    <td>11/03/2022</td>
+                                                    <td>21/03/2022</td>
+                                                    <td>Forwarded to Accounts For Verification</td>
+                                                    <td>N/A</td>
+                                                    <td><a href="#" class="btn btn-sm btn-primary">View Form</a></td>
+                                                    <td><a href="#" class="btn btn-sm btn-primary">View Request</a></td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">17370540</th>
+                                                    <td>Harsh</td>
+                                                    <td>06/03/2022</td>
+                                                    <td>06/03/2022</td>
+                                                    <td>23/03/2022</td>
+                                                    <td>Accepted by accounts</td>
+                                                    <td>Payment proceedings initiated by accounts office</td>
+                                                    <td><a href="#" class="btn btn-sm btn-primary">View Form</a></td>
+                                                    <td><a href="#" class="btn btn-sm btn-primary">View Request</a></td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">17371705</th>
+                                                    <td>Subhro</td>
+                                                    <td>04/03/2022</td>
+                                                    <td>04/03/2022</td>
+                                                    <td>25/03/2022</td>
+                                                    <td>Rejected by Accounts</td>
+                                                    <td>Claims not reimbursable</td>
+                                                    <td><a href="#" class="btn btn-sm btn-primary">View Form</a></td>
+                                                    <td><a href="#" class="btn btn-sm btn-primary">View Request</a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                <a href="#" class="btn btn-block btn-light">View all</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-xl-8 mb-4 mb-lg-0">
+                            <div class="card">
+                                <h5 class="card-header">Rejected Forms</h5>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Form No.</th>
+                                                    <th scope="col">Patient Name</th>
+                                                    <th scope="col">Date of Submission</th>
+                                                    <th scope="col">Date Rejected</th>
+                                                    <th scope="col">Status of Form</th>
+                                                    <th scope="col">Comments</th>
+                                                    <th scope="col"></th>
+                                                    <th scope="col"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <th scope="row">17371705</th>
+                                                    <td>Sanchit</td>
+                                                    <td>11/03/2022</td>
+                                                    <td>19/03/2022</td>
+                                                    <td>Rejected by Doctor</td>
+                                                    <td>Lab Test is not related to description</td>
+                                                    <td><a href="#" class="btn btn-sm btn-primary">View Form</a></td>
+                                                    <td><a href="#" class="btn btn-sm btn-primary">View Request</a></td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">17373540</th>
+                                                    <td>Harsh</td>
+                                                    <td>06/03/2022</td>
+                                                    <td>18/03/2022</td>
+                                                    <td>Rejected by HC Admin</td>
+                                                    <td>Prescription Photos not clear</td>
+                                                    <td><a href="#" class="btn btn-sm btn-primary">View Form</a></td>
+                                                    <td><a href="#" class="btn btn-sm btn-primary">View Request</a></td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">17371705</th>
+                                                    <td>Subhro</td>
+                                                    <td>04/03/2022</td>
+                                                    <td>04/03/2022</td>
+                                                    <td>Rejected by HC Admin</td>
+                                                    <td>The tests are not refundable</td>
+                                                    <td><a href="#" class="btn btn-sm btn-primary">View Form</a></td>
+                                                    <td><a href="#" class="btn btn-sm btn-primary">View Request</a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                <a href="#" class="btn btn-block btn-light">View all</a>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+            <div class="push"></div>
+        </div>
+                
+
+		<footer class = "navbar-fixed-bottom">
+            <div class="container"> 
+                <center> 
+                    <p>
+                        Copyright &copy; HC Reimbursement Portal All Rights Reserved | Contact Team-6.
+                    </p> 
+                </center> 
+            </div> 
+        </footer>
+	</body>
+</html>
