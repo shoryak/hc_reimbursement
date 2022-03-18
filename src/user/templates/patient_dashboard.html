@@ -68,7 +68,7 @@
                 </div>
                 <div class="collapse navbar-collapse" id="myNavbar"> 
                     <ul class="nav navbar-nav navbar-right"> 
-                        <li><a href = "/#"><span class = "glyphicon glyphicon-user"></span> {{ user.username }}</a></li> 
+                        <li><a href = "/#"><span class = "glyphicon glyphicon-user"></span> {{ patient.user.username }}</a></li> 
                         <li><a href = "/user/logout"><span class = "glyphicon glyphicon-log-in"></span> Logout</a></li> 
                     </ul> 
                 </div> 
@@ -99,30 +99,53 @@
                                                     <th scope="col">Status of Form</th>
                                                     <th scope="col">Comments</th>
                                                     <th scope="col"></th>
+                                                    <th scope="col"></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                {% for item in items %}
                                                 <tr>
-                                                    <th scope="row">17371705</th>
-                                                    <td>11/03/2022</td>
-                                                    <td>Forwarded to Doctor For Verification</td>
-                                                    <td>N/A</td>
-                                                    <td><a href="#" class="btn btn-sm btn-primary">View Form</a></td>
+                                                    <th scope="row">{{ item.transaction.form.form_id }}</th>
+                                                    <td>{{ item.transaction.created_date }}</td>
+                                                    <td>{{ item.transaction.status }}</td>
+                                                    <td>{{ item.transaction.feedabck }}</td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ViewFormModal">View Form</button>
+                                                        <div class="modal fade" id="ViewFormModal" tabindex="-1" aria-labelledby="ViewFormModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                  <div class="modal-header">
+                                                                    <h5 class="modal-title" id="ViewFormModalLabel">Form No. {{ item.transaction.form.form_id }}</h5>
+                                                                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                                                                  </div>
+                                                                  <div class="modal-body">
+                                                                    <p>Display Form</p>
+                                                                  </div>
+                                                                  <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                  </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ViewRequestModal">View Request</button>
+                                                        <div class="modal fade" id="ViewRequestModal" tabindex="-1" aria-labelledby="ViewRequestModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                  <div class="modal-header">
+                                                                    <h5 class="modal-title" id="ViewRequestModalLabel">Request No. {{ item.transaction.transaction_id }}</h5>
+                                                                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                                                                  </div>
+                                                                  <div class="modal-body">
+                                                                    <p>Display Transaction</p>
+                                                                  </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
                                                 </tr>
-                                                <tr>
-                                                    <th scope="row">17370540</th>
-                                                    <td>06/03/2022</td>
-                                                    <td>Accepted</td>
-                                                    <td>Payment proceedings initiated by accounts office</td>
-                                                    <td><a href="#" class="btn btn-sm btn-primary">View Form</a></td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">17371705</th>
-                                                    <td>04/03/2022</td>
-                                                    <td>Rejected by Health Center</td>
-                                                    <td>Provide clearer photo of prescription</td>
-                                                    <td><a href="#" class="btn btn-sm btn-primary">View Form</a></td>
-                                                </tr>
+                                                {% endfor %}
                                             </tbody>
                                         </table>
                                     </div>
@@ -135,7 +158,7 @@
             <div class="push"></div>
         </div>
             
-
+        
 		
 
 		<footer class = "navbar-fixed-bottom">
