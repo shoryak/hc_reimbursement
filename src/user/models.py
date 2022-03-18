@@ -50,7 +50,7 @@ class HCAdmin(models.Model):
 
 class Form(models.Model):
     form_id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     patient_name = models.CharField(max_length=120)
     hc_medical_advisor = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     consultation_date = models.DateTimeField(null=True)
