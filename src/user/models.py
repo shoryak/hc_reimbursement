@@ -18,6 +18,7 @@ class User(models.Model):
     def __str__(self):
         return str(self.user_id)
 
+
 class Patient(models.Model):
     patient_id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -29,6 +30,7 @@ class Patient(models.Model):
     def __str__(self):
         return str(self.patient_id)
 
+
 class Doctor(models.Model):
     doctor_id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -37,6 +39,7 @@ class Doctor(models.Model):
     def __str__(self):
         return str(self.doctor_id)
 
+
 class HCAdmin(models.Model):
     admin_id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -44,15 +47,16 @@ class HCAdmin(models.Model):
     def __str__(self):
         return str(self.admin_id)
 
+
 class Form(models.Model):
-    form_id = models.AutoField(primary_key = True)
+    form_id = models.AutoField(primary_key=True)
     user = models.ForeignKey(Patient, on_delete=models.CASCADE)
     patient_name = models.CharField(max_length=120)
-    hc_medical_advisor = models.ForeignKey(User, on_delete=models.CASCADE, null = True)
-    consultation_date = models.DateTimeField()
+    hc_medical_advisor = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    consultation_date = models.DateTimeField(null=True)
     referral_advisor = models.CharField(max_length=120)
-    consultation_fees = models.IntegerField(default = 0)
-    consultation_visits = models.IntegerField(default = 0)
+    consultation_fees = models.IntegerField(default=0)
+    consultation_visits = models.IntegerField(default=0)
     created_date = models.DateTimeField(default=timezone.now)
 
     def publish(self):
@@ -79,6 +83,7 @@ class Transaction(models.Model):
     def __str__(self):
         return str(self.transaction_id)
 
+
 class Medicine(models.Model):
     medicine_id = models.AutoField(primary_key=True)
     medicine_name = models.CharField(max_length=50)
@@ -87,6 +92,7 @@ class Medicine(models.Model):
 
     def __str__(self):
         return str(self.medicine_id)
+
 
 class FormMedicine(models.Model):
     fm_id = models.AutoField(primary_key=True)
