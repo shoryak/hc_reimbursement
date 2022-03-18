@@ -370,9 +370,131 @@ def rejectByAccounts(request):
     else:
         return HttpResponse("Something is wrong")
 
+# allowing hcadmin to register any user 
+def adminsignup(request):
+    user = IsLoggedIn(request)
+    if user is None:
+        return render(request, "signup.html")
+    else:
+        if user.roles == "hcadmin":
+            data = {"hcadmin": None}
+            for hc in HCAdmin.objects.all():
+                if hc.user == user:
+                    data["hcadmin"] = hc
+                    break
+            return render(request, "signup_admin.html", data)
+        else:
+            return HttpResponseRedirect("/user")
 
-def viewForm(request):
-    pass
+def register_any_user(request):
+    user = IsLoggedIn(request)
+    if user is not None:
+        if request.method == "POST":
+            name = request.POST.get("name")
+            username = request.POST.get("username")
+            roll = request.POST.get("roll")
+            email = request.POST.get("email")
+            designation = request.POST.get("designation")
+            department = request.POST.get("department")
+            password = MAKE_PASSWORD(request.POST.get("password"))
+            role = request.POST.get("role")
+            if User.objects.filter(username=username).exists():
+                messages.error(request, "Username already in use!")
+                return HttpResponseRedirect("/user/hcadmin_dashboard/signup_admin")
+            else:
+                user = User()
+                user.name = name
+                user.username = username
+                user.roll = roll
+                user.email = email
+                user.password = password
+                user.designation = designation
+                user.roles = role
+                user.save()
+                if(role == "patient"):
+                    patient = Patient(user=user, department=department)
+                    patient.save()
+                elif(role == "doctor"):
+                    doctor = Doctor(user=user)
+                    doctor.save()
+                elif(role == "hcadmin"):
+                    hcadmin = HCAdmin(user=user)
+                    hcadmin.save()
+                elif(role == "accounts"):  
+                    accounts = Accounts(user=user)
+                    accounts.save()
+                else:
+                    messages.error(request, "Invalid User!")
+                    return HttpResponseRedirect("/user/hcadmin_dashboard/signup_admin")
+
+                messages.success(request, "User account created successfully!")
+                return HttpResponseRedirect("/user/hcadmin_dashboard/signup_admin")
+    else:
+        return HttpResponseRedirect("/user")
+
+
+# displaying dashboards
+# def patient_dashboard_display(request):
+#     user = IsLoggedIn(request)
+#     data = {"patient": None, "items": []}
+#     for p in Patient.objects.all():
+#         if p.user == user:
+#             data["patient"] = p
+#             break
+#     for t in Transaction.objects.all():
+#         if t.form.patient.user == user:
+#             data["items"].append(
+#                 {
+#                     "transaction": t,
+#                     "medicines": FormMedicine.objects.filter(form=t.form),
+#                     "tests": FormTest.objects.filter(form=t.form),
+#                 }
+#             )
+
+#     return render(request, "patient_dashboard.html", data)
+
+
+# def patientsignup(request):
+#     user = IsLoggedIn(request)
+#     if user is None:
+#         return render(request, "signup.html")
+#     else:
+#         if user.roles == "patient":
+#             return HttpResponseRedirect("/user/patient_dashboard")
+
+
+# def registerPatient(request):
+#     user = IsLoggedIn(request)
+#     if user is None:
+#         if request.method == "POST":
+#             name = request.POST.get("name")
+#             username = request.POST.get("username")
+#             roll = request.POST.get("roll")
+#             email = request.POST.get("email")
+#             designation = request.POST.get("designation")
+#             department = request.POST.get("department")
+#             password = MAKE_PASSWORD(request.POST.get("password"))
+#             if User.objects.filter(username=username).exists():
+#                 messages.error(request, "Username already in use!")
+#                 return HttpResponseRedirect("/user/signup")
+#             else:
+#                 user = User(roles="patient")
+#                 user.name = name
+#                 user.username = username
+#                 user.roll = roll
+#                 user.email = email
+#                 user.password = password
+#                 user.designation = designation
+#                 user.save()
+#                 patient = Patient(user=user, department=department)
+#                 patient.save()
+
+#                 messages.success(request, "User account created successfully!")
+#                 return HttpResponseRedirect("/user")
+#     else:
+#         return HttpResponseRedirect("/user/patient_dashboard")
+
+
 
 def viewProfile(request):
     pass

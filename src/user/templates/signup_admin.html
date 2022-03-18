@@ -24,12 +24,12 @@
                         <span class="icon-bar"></span> 
                         <span class="icon-bar"></span> 
                         <span class="icon-bar"></span> 
-                    </button> <a class="navbar-brand" href="/user">HC Reimbursement Portal</a> 
+                    </button> <a class="navbar-brand" href="/user/hcadmin_dashboard">Dashboard </a> 
                 </div> 
                 <div class="collapse navbar-collapse" id="myNavbar"> 
                     <ul class="nav navbar-nav navbar-right"> 
-                            <li><a href="/user/signup"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li> 
-                            <li><a href="/user"><span class="glyphicon glyphicon-log-in"></span> Login</a></li> 
+                        <li><a href = "/#"><span class = "glyphicon glyphicon-user"></span> {{ hcadmin.user.username }}</a></li> 
+                        <li><a href = "/user/logout"><span class = "glyphicon glyphicon-log-in"></span> Logout</a></li> 
                     </ul> 
                 </div> 
             </div> 
@@ -38,7 +38,7 @@
 		<div class="container container-modi">
 			<div class="row row-style">
 				<div class="col-xs-offset-2 col-xs-8 col-md-offset-3 col-md-6">
-                    <form method="post" action="/user/register">
+                    <form method="post" action="register_any_user">
                         {% if messages %}
                         <div class="panel panel-danger">
                             <div class="panel-heading">
@@ -66,6 +66,16 @@
 					<div class="form-group">
                         <input type="password" name="password" placeholder="Password" class="form-control" required="True" pattern=".{6,}">
 					</div>
+                    <div class="form-group">
+                        <label for="role">Role</label> <br>
+                        <!-- <input type="text" class="form-control" placeholder="Name of Medicine"> -->
+                        <select class="form-select form-control form-select-lg mb-3" aria-label=".form-select-lg" id="role" name="role">
+                            <option value = "patient" selected>patient</option>
+                            <option value = "doctor">doctor</option>
+                            <option value = "hcadmin">hcadmin</option>
+                            <option value = "accounts">accounts</option>
+                        </select>
+                    </div>
                     <div class="form-group">                     
                         <input type="text" name="designation" placeholder="Designation" class="form-control" required="True">
 					</div>

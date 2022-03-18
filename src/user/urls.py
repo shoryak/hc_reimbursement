@@ -20,4 +20,6 @@ urlpatterns = [
     path("doctor_dashboard/rejectByDoctor", views.rejectByDoctor, name="rejectByDoctor"),
     path("accounts_dashboard/acceptByAccounts", views.acceptByAccounts, name="acceptByAccounts"),
     path("accounts_dashboard/rejectByAccounts", views.rejectByAccounts, name="rejectByAccounts"),
+    path("hcadmin_dashboard/signup_admin", views.adminsignup, name="adminsignup"),
+    path("hcadmin_dashboard/register_any_user", views.register_any_user, name="register_any_user"),
 ]
