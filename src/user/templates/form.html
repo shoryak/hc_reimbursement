@@ -52,7 +52,10 @@
           <div class="container">
             <h4 style="line-height: 50px;"><strong>Details of Patient and Employee</strong></h4>
             
-            <form style="margin-top: 20px;">
+            <!-- need to update this with proper names -->
+            <!-- <form action = "form/formsubmit" method = "post" margin-top: 20px;"> -->
+            <form margin-top: 20px;">
+                    {% csrf_token %}
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="inputEmail4">Full Name</label>
@@ -119,8 +122,8 @@
                             </select>
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="inputEmail5">Specialization</label>
-                            <input type="text" class="form-control" id="inputEmail5" placeholder="Specialization">
+                            <!-- <label for="inputEmail5">Specialization</label>
+                            <input type="text" class="form-control" id="inputEmail5" placeholder="Specialization"> -->
                         </div>
                         <div class="form-group col-md-3">
                             <label for="inputPassword6">Date of consultation</label>
@@ -148,7 +151,15 @@
                             <label for="atle">Medicines and their quantities and respective costs</label>
                             <div class="form-row" id="atle">
                                 <center>
-                                    <div class="form-group col-md-6"><input type="text" class="form-control" placeholder="Name of Medicine"></div>
+                                    <div class="form-group col-md-6">
+                                        <!-- <input type="text" class="form-control" placeholder="Name of Medicine"> -->
+                                        <select class="form-select form-control form-select-lg mb-3" aria-label=".form-select-lg" id="inputEmail5" name="hc_medical_advisor">
+                                            <option selected>Name of Medicine</option>
+                                            {% for medicine in medicines %}
+                                            <option value="{{medicine.medicine_id}}" name="medicine_name">{{medicine.medicine_name}}</option>
+                                            {%endfor%}
+                                        </select>
+                                    </div>
                                     <div class="form-group col-md-2"><input type="number" class="form-control" placeholder="Quantity"></div>
                                     <div class="form-group col-md-2"><input type="text" class="form-control" placeholder="Price (in Rs.)"></div>
                                     <div class="col-md-1">
@@ -180,7 +191,15 @@
                             <label for="atle">Pathological tests and their respective costs</label>
                             <div class="form-row" id="atle">
                                 <center>
-                                    <div class="form-group col-md-4"><input type="text" class="form-control" placeholder="Test Name"></div>
+                                    <div class="form-group col-md-4">
+                                        <!-- <input type="text" class="form-control" placeholder="Test Name"> -->
+                                        <select class="form-select form-control form-select-lg mb-3" aria-label=".form-select-lg" id="inputEmail5" name="hc_medical_advisor">
+                                            <option selected>Name of Test</option>
+                                            {% for test in tests %}
+                                            <option value="{{test.test_id}}" name="medicine_name">{{test.test_name}}</option>
+                                            {%endfor%}
+                                        </select>
+                                    </div>
                                     <div class="form-group col-md-4"><input type="text" class="form-control" placeholder="Laboratory"></div>
                                     <div class="form-group col-md-2"><input type="text" class="form-control" placeholder="Charges (in Rs.)"></div>
                                     <div class="col-md-1">
@@ -264,7 +283,7 @@
     <script type="text/javascript">
         $("#rowAdder").click(function () {
         newRowAdd =
-                '<div class="mb-3" id="deltarget"><div class="form-row"><center><div class="form-group col-md-6"><input type="text" class="form-control" placeholder="Name of Medicine"></div><div class="form-group col-md-2"><input type="number" class="form-control" placeholder="Quantity"></div><div class="form-group col-md-2"><input type="text" class="form-control" placeholder="Price (in Rs.)"></div> <div class="form-group col-md-1"><button class="btn btn-danger" id="DeleteRow" type="button"><i class="bi bi-trash"></i>Delete</button></div></center></div></div><div></div>'
+                '<div class="mb-3" id="deltarget"><div class="form-row"><center><div class="form-group col-md-6"> <select class="form-select form-control form-select-lg mb-3" aria-label=".form-select-lg" id="inputEmail5" name="hc_medical_advisor"> <option selected>Name of Medicine</option> {% for medicine in medicines %} <option value="{{medicine.medicine_id}}" name="medicine_name">{{medicine.medicine_name}}</option> {%endfor%} </select> </div><div class="form-group col-md-2"><input type="number" class="form-control" placeholder="Quantity"></div><div class="form-group col-md-2"><input type="text" class="form-control" placeholder="Price (in Rs.)"></div> <div class="form-group col-md-1"><button class="btn btn-danger" id="DeleteRow" type="button"><i class="bi bi-trash"></i>Delete</button></div></center></div></div><div></div>'
             ;
 
         $('#newinput').append(newRowAdd);
@@ -277,7 +296,7 @@
     <script type="text/javascript">
         $("#rowAdder2").click(function () {
         newRowAdd =
-                '<div class="mb-3" id="deltarget2"><div class="form-row"><center><div class="form-group col-md-4"><input type="text" class="form-control" placeholder="Test Name"></div><div class="form-group col-md-4"><input type="text" class="form-control" placeholder="Laboratory"></div><div class="form-group col-md-2"><input type="text" class="form-control" placeholder="Charges (in Rs.)"></div> <div class="form-group col-md-1"><button class="btn btn-danger" id="DeleteRow2" type="button"><i class="bi bi-trash"></i>Delete</button></div></center></div></div><div></div>'
+                '<div class="mb-3" id="deltarget2"><div class="form-row"><center><div class="form-group col-md-4"> <select class="form-select form-control form-select-lg mb-3" aria-label=".form-select-lg" id="inputEmail5" name="hc_medical_advisor"> <option selected>Name of Test</option> {% for test in tests %} <option value="{{test.test_id}}" name="medicine_name">{{test.test_name}}</option> {%endfor%} </select> </div><div class="form-group col-md-4"><input type="text" class="form-control" placeholder="Laboratory"></div><div class="form-group col-md-2"><input type="text" class="form-control" placeholder="Charges (in Rs.)"></div> <div class="form-group col-md-1"><button class="btn btn-danger" id="DeleteRow2" type="button"><i class="bi bi-trash"></i>Delete</button></div></center></div></div><div></div>'
             ;
 
         $('#newinput2').append(newRowAdd);

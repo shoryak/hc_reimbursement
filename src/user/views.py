@@ -162,6 +162,8 @@ def form(request):
                 "user": IsLoggedIn(request),
                 "patient": Patient.objects.get(user=IsLoggedIn(request)),
                 "doctors": Doctor.objects.all(),
+                "tests": Test.objects.all(),
+                "medicines": Medicine.objects.all(),
             },
         )
     else:
@@ -307,10 +309,6 @@ def acceptFormByHC(request):
         return HttpResponse("Something is wrong")
 
 
-def viewForm(request):
-    pass
-
-
 def rejectFormByHC(request):
     t_no = request.POST.get("t_no")
     if Transaction.objects.filter(transaction_id=t_no).exists():
@@ -372,6 +370,9 @@ def rejectByAccounts(request):
     else:
         return HttpResponse("Something is wrong")
 
+
+def viewForm(request):
+    pass
 
 def viewProfile(request):
     pass
