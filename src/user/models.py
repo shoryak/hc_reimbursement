@@ -10,7 +10,7 @@ class User(models.Model):
     roll = models.CharField(max_length=6, unique=True)
     email = models.EmailField(max_length=100, unique=True)
     password = models.CharField(max_length=100, blank=False)
-    contact = models.CharField(max_length=10, blank=False)
+    contact = models.CharField(max_length=10)
     address = models.CharField(max_length=400)
     designation = models.CharField(max_length=120)
     roles = models.CharField(max_length=10)  # patient doctor hcadmin accounts
@@ -53,7 +53,7 @@ class Accounts(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return str(self.admin_id)
+        return str(self.acc_id)
 
 
 class Form(models.Model):
