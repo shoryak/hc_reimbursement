@@ -1,6 +1,18 @@
 from django.forms import PasswordInput
 from django.shortcuts import render, redirect, HttpResponseRedirect
-from .models import Transaction, User, Form, Patient, Doctor
+from .models import (
+    User,
+    Form,
+    Transaction,
+    Patient,
+    Doctor,
+    HCAdmin,
+    Medicine,
+    FormMedicine,
+    Accounts,
+    FormTest,
+    Test,
+)
 from django.contrib import messages
 from django.contrib.auth import logout, login, authenticate
 from .utils import (
@@ -29,6 +41,7 @@ def patientsignup(request):
     else:
         if user.roles == "patient":
             return HttpResponseRedirect("/user/patient_dashboard")
+
 
 def registerPatient(request):
     user = IsLoggedIn(request)
@@ -60,7 +73,6 @@ def registerPatient(request):
                 return HttpResponseRedirect("/user")
     else:
         return HttpResponseRedirect("/user/patient_dashboard")
-
 
 
 def loginUser(request):
@@ -112,6 +124,7 @@ def logout(request):
         else:
             return HttpResponseRedirect("/user")
 
+
 def patient(request):
     return render(request, 'patient_dashboard.html', {'user': IsLoggedIn(request), 'patient': Patient.objects.get(user = IsLoggedIn(request))})
 
@@ -124,6 +137,7 @@ def form(request):
         messages.warning(request, 'Please login first to fill reimbursement form!')
         return HttpResponseRedirect("/user")
     
+
 def submitForm(request):
     if request.method=="POST":
         user = IsLoggedIn(request)
@@ -146,3 +160,56 @@ def submitForm(request):
         else:
             messages.warning(request, 'Please login first to fill reimbursement form!')
             return HttpResponseRedirect("/user")
+
+
+def doctor_dashboard_display(request):
+    user = IsLoggedIn(request)
+    data = {'doctor':None, 'items':[]}
+    for d in Doctor.objects.all():
+        if d.user == user:
+            data['doctor'] = d
+            break
+    for t in Transaction.objects.all():
+        if t.form.hc_medical_advisor==user:
+            data['items'].append({'transaction':t, 'medicines':FormMedicine.objects.filter(form=t.form), 'tests':FormTest.objects.filter(form=t.form)})
+    
+    return render(request, 'doctor_dashboard.html', data)
+
+
+def patient_dashboard_display(request):
+    user = IsLoggedIn(request)
+    data = {'patient':None, 'items':[]}
+    for p in Patient.objects.all():
+        if p.user == user:
+            data['patient'] = p
+            break
+    for t in Transaction.objects.all():
+        if t.form.patient.user==user:
+            data['items'].append({'transaction':t, 'medicines':FormMedicine.objects.filter(form=t.form), 'tests':FormTest.objects.filter(form=t.form)})
+
+    return render(request, 'patient_dashboard.html', data)
+
+
+def hcadmin_dashboard_display(request):
+    user = IsLoggedIn(request)
+    data = {'hcadmin':None, 'items':[]}
+    for hc in HCAdmin.objects.all():
+        if hc.user == user:
+            data['hcadmin'] = hc
+            break
+    for t in Transaction.objects.all():
+            data['items'].append({'transaction':t, 'medicines':FormMedicine.objects.filter(form=t.form), 'tests':FormTest.objects.filter(form=t.form)})
+
+    return render(request, 'hcadmin_dashboard.html', data)
+
+
+def accounts_dashboard_display(request):
+    user = IsLoggedIn(request)
+    data = {'accounts':None, 'items':[]}
+    for acc in Accounts.objects.all():
+        if acc.user == user:
+            data['accounts'] = acc
+            break
+    for t in Transaction.objects.all():
+            data['items'].append({'transaction':t, 'medicines':FormMedicine.objects.filter(form=t.form), 'tests':FormTest.objects.filter(form=t.form)})
+    return render(request, 'accounts_dashboard.html', data)

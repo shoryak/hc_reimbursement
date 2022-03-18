@@ -48,6 +48,14 @@ class HCAdmin(models.Model):
         return str(self.admin_id)
 
 
+class Accounts(models.Model):
+    acc_id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.admin_id)
+
+
 class Form(models.Model):
     form_id = models.AutoField(primary_key=True)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
@@ -72,7 +80,7 @@ class Transaction(models.Model):
     form = models.ForeignKey(Form, on_delete=models.CASCADE)
     status = models.CharField(max_length=50)
     reimbursement_amount = models.IntegerField()
-    # Form submitted, Waiting Doctor approval, Waiting HC Admin approval, Sent to Accounts,  Approved by Accounts
+    # Form submitted, Waiting Doctor approval, Waiting HC Admin approval, Sent to Accounts,  Approved by Accounts, Rejected
     feedback = models.CharField(max_length=400)
     created_date = models.DateTimeField(default=timezone.now)
     admin_update_date = models.DateTimeField()
@@ -88,7 +96,7 @@ class Medicine(models.Model):
     medicine_id = models.AutoField(primary_key=True)
     medicine_name = models.CharField(max_length=50)
     brand = models.CharField(max_length=50)
-    price = models.IntegerField(default=0)
+    price = models.DecimalField(max_digits=7, decimal_places=2)
 
     def __str__(self):
         return str(self.medicine_id)
@@ -102,3 +110,21 @@ class FormMedicine(models.Model):
 
     def __str__(self):
         return str(self.fm_id)
+
+
+class Test(models.Model):
+    test_id = models.AutoField(primary_key=True)
+    test_name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return str(self.test_id)
+
+
+class FormTest(models.Model):
+    ft_id = models.AutoField(primary_key=True)
+    form = models.ForeignKey(Form, on_delete=models.CASCADE)
+    test = models.ForeignKey(Test, on_delete=models.CASCADE)
+    cost = models.DecimalField(max_digits=7, decimal_places=2)
+
+    def __str__(self):
+        return str(self.ft_id)
