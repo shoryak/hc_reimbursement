@@ -304,9 +304,8 @@ def acceptFormByHC(request):
         transaction.status = "Sent to Accounts"
         # update corresponding feedback
         transaction.account_sent_date = timezone.now()
-        transaction.save() #change it to save and redirect to hcadmin_dashboard
+        transaction.save()
         return HttpResponseRedirect("/user/hcadmin_dashboard")
-        # return HttpResponse( "you are viewing transaction no " + str(t_no) + " : " + str(transaction.status) + " : " + str(transaction.form.patient.user.username) )
     else:
         return HttpResponse("Something is wrong")
 
@@ -317,12 +316,10 @@ def rejectFormByHC(request):
         transaction = Transaction.objects.get(transaction_id=t_no)
         transaction.status = "Rejected"
         # update corresponding feedback
-        transaction.save() #change it to save and redirect to hcadmin_dashboard
+        transaction.save()
         return HttpResponseRedirect("/user/hcadmin_dashboard")
-        # return HttpResponse( "you are viewing transaction no " + str(t_no) + " : " + str(transaction.status) + " : " + str(transaction.form.patient.user.username) )
     else:
         return HttpResponseRedirect("/user/hcadmin_dashboard")
-        # return HttpResponse("Something is wrong")
 
 
 def acceptByDoctor(request):
@@ -334,10 +331,8 @@ def acceptByDoctor(request):
         transaction.doctor_update_date = timezone.now()
         transaction.save()
         return HttpResponseRedirect("/user/doctor_dashboard")
-        # return HttpResponse( "you are viewing transaction no " + str(t_no) + " : " + str(transaction.status) + " : " + str(transaction.form.patient.user.username) )
     else:
         return HttpResponseRedirect("/user/doctor_dashboard")
-        # return HttpResponse("Something is wrong")
 
 
 def rejectByDoctor(request):
@@ -346,12 +341,10 @@ def rejectByDoctor(request):
         transaction = Transaction.objects.get(transaction_id=t_no)
         transaction.status = "Rejected"
         # update corresponding feedback
-        transaction.save() #change it to save and redirect to hcadmin_dashboard
+        transaction.save() 
         return HttpResponseRedirect("/user/doctor_dashboard")
-        # return HttpResponse( "you are viewing transaction no " + str(t_no) + " : " + str(transaction.status) + " : " + str(transaction.form.patient.user.username) )
     else:
         return HttpResponseRedirect("/user/doctor_dashboard")
-        # return HttpResponse("Something is wrong")
 
 
 def acceptByAccounts(request):
@@ -363,10 +356,8 @@ def acceptByAccounts(request):
         transaction.account_approve_date = timezone.now()
         transaction.save()
         return HttpResponseRedirect("/user/accounts_dashboard")
-        # return HttpResponse( "you are viewing transaction no " + str(t_no) + " : " + str(transaction.status) + " : " + str(transaction.form.patient.user.username) )
     else:
         return HttpResponseRedirect("/user/accounts_dashboard")
-        # return HttpResponse("Something is wrong")
 
 
 def rejectByAccounts(request):
@@ -377,10 +368,8 @@ def rejectByAccounts(request):
         # update corresponding feedback
         transaction.save()
         return HttpResponseRedirect("/user/accounts_dashboard")
-        # return HttpResponse( "you are viewing transaction no " + str(t_no) + " : " + str(transaction.status) + " : " + str(transaction.form.patient.user.username) )
     else:
         return HttpResponseRedirect("/user/accounts_dashboard")
-        # return HttpResponse("Something is wrong")
 
 # allowing hcadmin to register any user 
 def adminsignup(request):
