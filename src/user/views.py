@@ -1,3 +1,4 @@
+from audioop import add
 from django.utils import timezone
 from django.forms import PasswordInput
 from django.shortcuts import render, redirect, HttpResponseRedirect
@@ -303,8 +304,9 @@ def acceptFormByHC(request):
         transaction.status = "Sent to Accounts"
         # update corresponding feedback
         transaction.account_sent_date = timezone.now()
-        # transaction.save() #change it to save and redirect to hcadmin_dashboard
-        return HttpResponse( "you are viewing transaction no " + str(t_no) + " : " + str(transaction.status) + " : " + str(transaction.form.patient.user.username) )
+        transaction.save() #change it to save and redirect to hcadmin_dashboard
+        return HttpResponseRedirect("/user/hcadmin_dashboard")
+        # return HttpResponse( "you are viewing transaction no " + str(t_no) + " : " + str(transaction.status) + " : " + str(transaction.form.patient.user.username) )
     else:
         return HttpResponse("Something is wrong")
 
@@ -315,10 +317,12 @@ def rejectFormByHC(request):
         transaction = Transaction.objects.get(transaction_id=t_no)
         transaction.status = "Rejected"
         # update corresponding feedback
-        # transaction.save() #change it to save and redirect to hcadmin_dashboard
-        return HttpResponse( "you are viewing transaction no " + str(t_no) + " : " + str(transaction.status) + " : " + str(transaction.form.patient.user.username) )
+        transaction.save() #change it to save and redirect to hcadmin_dashboard
+        return HttpResponseRedirect("/user/hcadmin_dashboard")
+        # return HttpResponse( "you are viewing transaction no " + str(t_no) + " : " + str(transaction.status) + " : " + str(transaction.form.patient.user.username) )
     else:
-        return HttpResponse("Something is wrong")
+        return HttpResponseRedirect("/user/hcadmin_dashboard")
+        # return HttpResponse("Something is wrong")
 
 
 def acceptByDoctor(request):
@@ -328,10 +332,12 @@ def acceptByDoctor(request):
         transaction.status = "Waiting HC Admin approval"
         # update corresponding feedback
         transaction.doctor_update_date = timezone.now()
-        # transaction.save()
-        return HttpResponse( "you are viewing transaction no " + str(t_no) + " : " + str(transaction.status) + " : " + str(transaction.form.patient.user.username) )
+        transaction.save()
+        return HttpResponseRedirect("/user/doctor_dashboard")
+        # return HttpResponse( "you are viewing transaction no " + str(t_no) + " : " + str(transaction.status) + " : " + str(transaction.form.patient.user.username) )
     else:
-        return HttpResponse("Something is wrong")
+        return HttpResponseRedirect("/user/doctor_dashboard")
+        # return HttpResponse("Something is wrong")
 
 
 def rejectByDoctor(request):
@@ -340,10 +346,12 @@ def rejectByDoctor(request):
         transaction = Transaction.objects.get(transaction_id=t_no)
         transaction.status = "Rejected"
         # update corresponding feedback
-        # transaction.save() #change it to save and redirect to hcadmin_dashboard
-        return HttpResponse( "you are viewing transaction no " + str(t_no) + " : " + str(transaction.status) + " : " + str(transaction.form.patient.user.username) )
+        transaction.save() #change it to save and redirect to hcadmin_dashboard
+        return HttpResponseRedirect("/user/doctor_dashboard")
+        # return HttpResponse( "you are viewing transaction no " + str(t_no) + " : " + str(transaction.status) + " : " + str(transaction.form.patient.user.username) )
     else:
-        return HttpResponse("Something is wrong")
+        return HttpResponseRedirect("/user/doctor_dashboard")
+        # return HttpResponse("Something is wrong")
 
 
 def acceptByAccounts(request):
@@ -353,10 +361,12 @@ def acceptByAccounts(request):
         transaction.status = "Approved by Accounts"
         # update corresponding feedback
         transaction.account_approve_date = timezone.now()
-        # transaction.save()
-        return HttpResponse( "you are viewing transaction no " + str(t_no) + " : " + str(transaction.status) + " : " + str(transaction.form.patient.user.username) )
+        transaction.save()
+        return HttpResponseRedirect("/user/accounts_dashboard")
+        # return HttpResponse( "you are viewing transaction no " + str(t_no) + " : " + str(transaction.status) + " : " + str(transaction.form.patient.user.username) )
     else:
-        return HttpResponse("Something is wrong")
+        return HttpResponseRedirect("/user/accounts_dashboard")
+        # return HttpResponse("Something is wrong")
 
 
 def rejectByAccounts(request):
@@ -365,10 +375,12 @@ def rejectByAccounts(request):
         transaction = Transaction.objects.get(transaction_id=t_no)
         transaction.status = "Rejected"
         # update corresponding feedback
-        # transaction.save()
-        return HttpResponse( "you are viewing transaction no " + str(t_no) + " : " + str(transaction.status) + " : " + str(transaction.form.patient.user.username) )
+        transaction.save()
+        return HttpResponseRedirect("/user/accounts_dashboard")
+        # return HttpResponse( "you are viewing transaction no " + str(t_no) + " : " + str(transaction.status) + " : " + str(transaction.form.patient.user.username) )
     else:
-        return HttpResponse("Something is wrong")
+        return HttpResponseRedirect("/user/accounts_dashboard")
+        # return HttpResponse("Something is wrong")
 
 # allowing hcadmin to register any user 
 def adminsignup(request):
@@ -431,6 +443,46 @@ def register_any_user(request):
                 return HttpResponseRedirect("/user/hcadmin_dashboard/signup_admin")
     else:
         return HttpResponseRedirect("/user")
+
+def patient_profile(request):
+    user = IsLoggedIn(request)
+    if user is None:
+        return HttpResponseRedirect("/user")
+    else:
+        data = {"patient": None}
+        for p in Patient.objects.all():
+            if p.user == user:
+                data["patient"] = p
+                break
+        return render(request, "patient_profile.html", data)
+
+def update_patient_profile(request):
+    user = IsLoggedIn(request)
+    if user is None:
+        return HttpResponseRedirect("/user")
+    else:
+        if(user.roles != "patient"):
+            return HttpResponseRedirect("/user")
+        else:
+            username = user.username
+            contact = request.POST.get("contact")
+            address = request.POST.get("address")
+            bank_name = request.POST.get("bank_name")
+            bank_IFSC = request.POST.get("bank_IFSC")
+            bank_AC = request.POST.get("bank_AC")
+            
+            # return HttpResponse(str(username) + " " + str(contact))
+            userp = User.objects.get(username=username)
+            userp.contact = contact
+            userp.address = address
+            userp.save()
+
+            patient = Patient.objects.get(user=user) 
+            patient.bank_name=bank_name
+            patient.bank_IFSC=bank_IFSC
+            patient.bank_AC=bank_AC
+            patient.save()
+            return HttpResponseRedirect("/user/patient_dashboard/patient_profile")
 
 
 # displaying dashboards

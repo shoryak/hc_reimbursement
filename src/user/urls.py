@@ -22,4 +22,7 @@ urlpatterns = [
     path("accounts_dashboard/rejectByAccounts", views.rejectByAccounts, name="rejectByAccounts"),
     path("hcadmin_dashboard/signup_admin", views.adminsignup, name="adminsignup"),
     path("hcadmin_dashboard/register_any_user", views.register_any_user, name="register_any_user"),
+    path("hcadmin_dashboard/register_any_user", views.register_any_user, name="register_any_user"),
+    path("patient_dashboard/patient_profile", views.patient_profile, name="patient_profile"),
+    path("patient_dashboard/patient_profile/update_patient_profile", views.update_patient_profile, name="update_patient_profile"),
 ]
