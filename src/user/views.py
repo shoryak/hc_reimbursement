@@ -32,7 +32,16 @@ def login(request):
     else:
         if user.roles == "patient":
             return HttpResponseRedirect("/user/patient_dashboard")
-    # return HttpResponse("Hello, world.")
+        elif user.roles == "hcadmin":
+            return HttpResponseRedirect("/user/hcadmin_dashboard")
+        elif user.roles == "doctor":
+            return HttpResponseRedirect("/user/doctor_dashboard")
+        elif user.roles == "accounts":
+            return HttpResponseRedirect("/user/accounts_dashboard")
+        else:
+            messages.error(request, "Invalid user")
+            return HttpResponseRedirect("/user")
+
 
 def patientsignup(request):
     user = IsLoggedIn(request)
@@ -55,10 +64,10 @@ def registerPatient(request):
             department = request.POST.get("department")
             password = MAKE_PASSWORD(request.POST.get("password"))
             if User.objects.filter(username=username).exists():
-                messages.error(request, 'Username already in use!')
+                messages.error(request, "Username already in use!")
                 return HttpResponseRedirect("/user/signup")
             else:
-                user = User(roles = "patient")
+                user = User(roles="patient")
                 user.name = name
                 user.username = username
                 user.roll = roll
@@ -66,10 +75,10 @@ def registerPatient(request):
                 user.password = password
                 user.designation = designation
                 user.save()
-                patient = Patient(user = user, department = department)
+                patient = Patient(user=user, department=department)
                 patient.save()
-                
-                messages.success(request, 'User account created successfully!')
+
+                messages.success(request, "User account created successfully!")
                 return HttpResponseRedirect("/user")
     else:
         return HttpResponseRedirect("/user/patient_dashboard")
@@ -90,30 +99,36 @@ def loginUser(request):
                     if user.roles == "patient":
                         return HttpResponseRedirect("/user/patient_dashboard")
                     elif user.roles == "hcadmin":
-                        return HttpResponse("current login:: Welcome hcadmin,")
+                        return HttpResponseRedirect("/user/hcadmin_dashboard")
                     elif user.roles == "doctor":
-                        return HttpResponse("current login:: Welcome doctor,")
+                        return HttpResponseRedirect("/user/doctor_dashboard")
                     elif user.roles == "accounts":
-                        return HttpResponse("current login:: Welcome accounts office,")
+                        return HttpResponseRedirect("/user/accounts_dashboard")
                     else:
-                        return HttpResponse("current login:: Welcome none,")
+                        messages.error(request, "Invalid user")
+                        return HttpResponseRedirect("/user")
                 else:
-                    messages.error(request, 'Wrong username or password!')
-                    return HttpResponseRedirect("/user") # redirect to login(wrong_password)
+                    messages.error(request, "Wrong username or password!")
+                    return HttpResponseRedirect(
+                        "/user"
+                    )  # redirect to login(wrong_password)
             else:
-                messages.error(request, 'User does not exist!')
-                return HttpResponseRedirect("/user")  # redirect to login(user_not_exists)
+                messages.error(request, "User does not exist!")
+                return HttpResponseRedirect(
+                    "/user"
+                )  # redirect to login(user_not_exists)
     else:
         if user.roles == "patient":
-            return redirect("/user/patient_dashboard")
+            return HttpResponseRedirect("/user/patient_dashboard")
         elif user.roles == "hcadmin":
-            return HttpResponse("already loggedin:: Welcome hcadmin,")
+            return HttpResponseRedirect("/user/hcadmin_dashboard")
         elif user.roles == "doctor":
-            return HttpResponse("already loggedin:: Welcome doctor,")
+            return HttpResponseRedirect("/user/doctor_dashboard")
         elif user.roles == "accounts":
-            return HttpResponse("already loggedin:: Welcome accounts office,")
+            return HttpResponseRedirect("/user/accounts_dashboard")
         else:
-            return HttpResponse("current login:: Welcome none,")
+            messages.error(request, "Invalid user")
+            return HttpResponseRedirect("/user")
 
 
 def logout(request):
@@ -126,90 +141,130 @@ def logout(request):
 
 
 def patient(request):
-    return render(request, 'patient_dashboard.html', {'user': IsLoggedIn(request), 'patient': Patient.objects.get(user = IsLoggedIn(request))})
+    return render(
+        request,
+        "patient_dashboard.html",
+        {
+            "user": IsLoggedIn(request),
+            "patient": Patient.objects.get(user=IsLoggedIn(request)),
+        },
+    )
 
 
 def form(request):
     user = IsLoggedIn(request)
     if user is not None:
-        return render(request,'form.html', {'user': IsLoggedIn(request), 'patient': Patient.objects.get(user = IsLoggedIn(request)), 'doctors': Doctor.objects.all()})
+        return render(
+            request,
+            "form.html",
+            {
+                "user": IsLoggedIn(request),
+                "patient": Patient.objects.get(user=IsLoggedIn(request)),
+                "doctors": Doctor.objects.all(),
+            },
+        )
     else:
-        messages.warning(request, 'Please login first to fill reimbursement form!')
+        messages.warning(request, "Please login first to fill reimbursement form!")
         return HttpResponseRedirect("/user")
-    
+
 
 def submitForm(request):
-    if request.method=="POST":
+    if request.method == "POST":
         user = IsLoggedIn(request)
         if IsLoggedIn(request) is not None:
-            form= Form()
+            form = Form()
             form.user = user
             # form.userid=user.username
-            form.name=request.POST.get("name")
-            form.department=request.POST.get("department")
-            form.designation=request.POST.get("designation")
+            form.name = request.POST.get("name")
+            form.department = request.POST.get("department")
+            form.designation = request.POST.get("designation")
             # if form.is_valid():
             #     form_application=form.save(commit=False)
             form.save()
-            transaction = Transaction(status = "Form submitted", form = form, user = user, feedback = "")
+            transaction = Transaction(
+                status="Form submitted", form=form, user=user, feedback=""
+            )
             # user feedback
             transaction.save()
-            return HttpResponse(
-                "form submitted"+str(form))
-                # return redirect('form_detail', pk=form.pk)
+            return HttpResponse("form submitted" + str(form))
+            # return redirect('form_detail', pk=form.pk)
         else:
-            messages.warning(request, 'Please login first to fill reimbursement form!')
+            messages.warning(request, "Please login first to fill reimbursement form!")
             return HttpResponseRedirect("/user")
 
 
 def doctor_dashboard_display(request):
     user = IsLoggedIn(request)
-    data = {'doctor':None, 'items':[]}
+    data = {"doctor": None, "items": []}
     for d in Doctor.objects.all():
         if d.user == user:
-            data['doctor'] = d
+            data["doctor"] = d
             break
     for t in Transaction.objects.all():
-        if t.form.hc_medical_advisor==user:
-            data['items'].append({'transaction':t, 'medicines':FormMedicine.objects.filter(form=t.form), 'tests':FormTest.objects.filter(form=t.form)})
-    
-    return render(request, 'doctor_dashboard.html', data)
+        if t.form.hc_medical_advisor == user:
+            data["items"].append(
+                {
+                    "transaction": t,
+                    "medicines": FormMedicine.objects.filter(form=t.form),
+                    "tests": FormTest.objects.filter(form=t.form),
+                }
+            )
+
+    return render(request, "doctor_dashboard.html", data)
 
 
 def patient_dashboard_display(request):
     user = IsLoggedIn(request)
-    data = {'patient':None, 'items':[]}
+    data = {"patient": None, "items": []}
     for p in Patient.objects.all():
         if p.user == user:
-            data['patient'] = p
+            data["patient"] = p
             break
     for t in Transaction.objects.all():
-        if t.form.patient.user==user:
-            data['items'].append({'transaction':t, 'medicines':FormMedicine.objects.filter(form=t.form), 'tests':FormTest.objects.filter(form=t.form)})
+        if t.form.patient.user == user:
+            data["items"].append(
+                {
+                    "transaction": t,
+                    "medicines": FormMedicine.objects.filter(form=t.form),
+                    "tests": FormTest.objects.filter(form=t.form),
+                }
+            )
 
-    return render(request, 'patient_dashboard.html', data)
+    return render(request, "patient_dashboard.html", data)
 
 
 def hcadmin_dashboard_display(request):
     user = IsLoggedIn(request)
-    data = {'hcadmin':None, 'items':[]}
+    data = {"hcadmin": None, "items": []}
     for hc in HCAdmin.objects.all():
         if hc.user == user:
-            data['hcadmin'] = hc
+            data["hcadmin"] = hc
             break
     for t in Transaction.objects.all():
-            data['items'].append({'transaction':t, 'medicines':FormMedicine.objects.filter(form=t.form), 'tests':FormTest.objects.filter(form=t.form)})
+        data["items"].append(
+            {
+                "transaction": t,
+                "medicines": FormMedicine.objects.filter(form=t.form),
+                "tests": FormTest.objects.filter(form=t.form),
+            }
+        )
 
-    return render(request, 'hcadmin_dashboard.html', data)
+    return render(request, "hcadmin_dashboard.html", data)
 
 
 def accounts_dashboard_display(request):
     user = IsLoggedIn(request)
-    data = {'accounts':None, 'items':[]}
+    data = {"accounts": None, "items": []}
     for acc in Accounts.objects.all():
         if acc.user == user:
-            data['accounts'] = acc
+            data["accounts"] = acc
             break
     for t in Transaction.objects.all():
-            data['items'].append({'transaction':t, 'medicines':FormMedicine.objects.filter(form=t.form), 'tests':FormTest.objects.filter(form=t.form)})
-    return render(request, 'accounts_dashboard.html', data)
+        data["items"].append(
+            {
+                "transaction": t,
+                "medicines": FormMedicine.objects.filter(form=t.form),
+                "tests": FormTest.objects.filter(form=t.form),
+            }
+        )
+    return render(request, "accounts_dashboard.html", data)
