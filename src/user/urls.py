@@ -14,4 +14,10 @@ urlpatterns = [
     path("accounts_dashboard", views.accounts_dashboard_display, name="accounts_dashboard_display"),
     path("form", views.form, name="form"),
     path("formsubmit",views.submitForm,name="formsubmit"),
+    path("hcadmin_dashboard/acceptFormByHC", views.acceptFormByHC, name="acceptFormByHC"),
+    path("hcadmin_dashboard/rejectFormByHC", views.rejectFormByHC, name="rejectFormByHC"),
+    path("doctor_dashboard/acceptByDoctor", views.acceptByDoctor, name="acceptByDoctor"),
+    path("doctor_dashboard/rejectByDoctor", views.rejectByDoctor, name="rejectByDoctor"),
+    path("accounts_dashboard/acceptByAccounts", views.acceptByAccounts, name="acceptByAccounts"),
+    path("accounts_dashboard/rejectByAccounts", views.rejectByAccounts, name="rejectByAccounts"),
 ]

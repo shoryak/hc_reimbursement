@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.forms import PasswordInput
 from django.shortcuts import render, redirect, HttpResponseRedirect
 from .models import (
@@ -213,6 +214,7 @@ def doctor_dashboard_display(request):
     return render(request, "doctor_dashboard.html", data)
 
 
+# displaying dashboards
 def patient_dashboard_display(request):
     user = IsLoggedIn(request)
     data = {"patient": None, "items": []}
@@ -268,3 +270,108 @@ def accounts_dashboard_display(request):
             }
         )
     return render(request, "accounts_dashboard.html", data)
+
+
+def acceptForDoctorApproval(request, t_no):
+    if Transaction.objects.filter(transaction_id=t_no).exists():
+        transaction = Transaction.objects.get(transaction_id=t_no)
+        transaction.status = "Waiting for Doctor Approval"
+        # transaction.save()
+        return HttpResponse(
+            "you are viewing transaction no "
+            + str(t_no)
+            + " : "
+            + str(transaction.status)
+            + " : "
+            + str(transaction.form.user.user.username)
+        )
+    else:
+        return HttpResponse("Something is wrong")
+
+
+# accept, reject and view form logic
+def viewRequest(request):
+    pass
+
+
+def acceptFormByHC(request):
+    t_no = request.POST.get("t_no")
+    if Transaction.objects.filter(transaction_id=t_no).exists():
+        transaction = Transaction.objects.get(transaction_id=t_no)
+        transaction.status = "Sent to Accounts"
+        # update corresponding feedback
+        transaction.account_sent_date = timezone.now()
+        # transaction.save() #change it to save and redirect to hcadmin_dashboard
+        return HttpResponse( "you are viewing transaction no " + str(t_no) + " : " + str(transaction.status) + " : " + str(transaction.form.patient.user.username) )
+    else:
+        return HttpResponse("Something is wrong")
+
+
+def viewForm(request):
+    pass
+
+
+def rejectFormByHC(request):
+    t_no = request.POST.get("t_no")
+    if Transaction.objects.filter(transaction_id=t_no).exists():
+        transaction = Transaction.objects.get(transaction_id=t_no)
+        transaction.status = "Rejected"
+        # update corresponding feedback
+        # transaction.save() #change it to save and redirect to hcadmin_dashboard
+        return HttpResponse( "you are viewing transaction no " + str(t_no) + " : " + str(transaction.status) + " : " + str(transaction.form.patient.user.username) )
+    else:
+        return HttpResponse("Something is wrong")
+
+
+def acceptByDoctor(request):
+    t_no = request.POST.get("t_no")
+    if Transaction.objects.filter(transaction_id=t_no).exists():
+        transaction = Transaction.objects.get(transaction_id=t_no)
+        transaction.status = "Waiting HC Admin approval"
+        # update corresponding feedback
+        transaction.doctor_update_date = timezone.now()
+        # transaction.save()
+        return HttpResponse( "you are viewing transaction no " + str(t_no) + " : " + str(transaction.status) + " : " + str(transaction.form.patient.user.username) )
+    else:
+        return HttpResponse("Something is wrong")
+
+
+def rejectByDoctor(request):
+    t_no = request.POST.get("t_no")
+    if Transaction.objects.filter(transaction_id=t_no).exists():
+        transaction = Transaction.objects.get(transaction_id=t_no)
+        transaction.status = "Rejected"
+        # update corresponding feedback
+        # transaction.save() #change it to save and redirect to hcadmin_dashboard
+        return HttpResponse( "you are viewing transaction no " + str(t_no) + " : " + str(transaction.status) + " : " + str(transaction.form.patient.user.username) )
+    else:
+        return HttpResponse("Something is wrong")
+
+
+def acceptByAccounts(request):
+    t_no = request.POST.get("t_no")
+    if Transaction.objects.filter(transaction_id=t_no).exists():
+        transaction = Transaction.objects.get(transaction_id=t_no)
+        transaction.status = "Approved by Accounts"
+        # update corresponding feedback
+        transaction.account_approve_date = timezone.now()
+        # transaction.save()
+        return HttpResponse( "you are viewing transaction no " + str(t_no) + " : " + str(transaction.status) + " : " + str(transaction.form.patient.user.username) )
+    else:
+        return HttpResponse("Something is wrong")
+
+
+def rejectByAccounts(request):
+    t_no = request.POST.get("t_no")
+    if Transaction.objects.filter(transaction_id=t_no).exists():
+        transaction = Transaction.objects.get(transaction_id=t_no)
+        transaction.status = "Rejected"
+        # update corresponding feedback
+        # transaction.save()
+        return HttpResponse( "you are viewing transaction no " + str(t_no) + " : " + str(transaction.status) + " : " + str(transaction.form.patient.user.username) )
+    else:
+        return HttpResponse("Something is wrong")
+
+
+def viewProfile(request):
+    pass

@@ -1,183 +1,240 @@
 <!DOCTYPE html>
 <html>
-    <head>
-		<title>HC Reimbursement Portal</title>
-		<meta charset="utf-8">
-		<meta name='viewport' content="width=device-width, initial-scale=1.0">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		{% load static %}
-		<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-		<link href="https://fonts.googleapis.com/css2?family=Oxygen&display=swap" rel="stylesheet">
-		<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-		<link href="{% static 'css/index.css' %}" rel="stylesheet">
-		<script src="{% static 'js/jquery-3.5.1.min.js' %}"></script>
-		<script src="{% static 'js/bootstrap.min.js' %}"></script>
-        <style>
+
+<head>
+    <title>HC Reimbursement Portal</title>
+    <meta charset="utf-8">
+    <meta name='viewport' content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    {% load static %}
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oxygen&display=swap" rel="stylesheet">
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/index.css' %}" rel="stylesheet">
+    <script src="{% static 'js/jquery-3.5.1.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <style>
+        .sidebar {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            padding: 90px 0 0;
+            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+            z-index: 99;
+        }
+
+        .action {
+            width: 200px;
+        }
+
+
+        @media (max-width: 767.98px) {
             .sidebar {
-                position: fixed;
-                top: 0;
-                bottom: 0;
-                left: 0;
-                z-index: 100;
-                padding: 90px 0 0;
-                box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
-                z-index: 99;
+                top: 11.5rem;
+                padding: 0;
             }
-            .action {
-                width: 200px;
-            }
+        }
 
-        
-            @media (max-width: 767.98px) {
-                .sidebar {
-                    top: 11.5rem;
-                    padding: 0;
-                }
-            }
-        
+        .navbar {
+            box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .1);
+        }
+
+        @media (min-width: 767.98px) {
             .navbar {
-                box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .1);
+                top: 0;
+                position: sticky;
+                z-index: 999;
             }
-        
-            @media (min-width: 767.98px) {
-                .navbar {
-                    top: 0;
-                    position: sticky;
-                    z-index: 999;
-                }
-            }
-        
-            .sidebar .nav-link {
-                color: #333;
-            }
-        
-            .sidebar .nav-link.active {
-                color: #0d6efd;
-            }
-        </style>
-	</head>
-	<body>
-        <div class="navbar navbar-inverse navbar-fixed-top"> 
-            <div class="container"> 
-                <div class="navbar-header"> 
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar"> 
-                        <span class="icon-bar"></span> 
-                        <span class="icon-bar"></span> 
-                        <span class="icon-bar"></span> 
-                    </button>
-                    <a class="navbar-brand" href="/user/hcadmin_dashboard" style="margin-right: 25px;">Dashboard</a>
-                </div>
-                <div class="collapse navbar-collapse" id="myNavbar"> 
-                    <ul class="nav navbar-nav navbar-right"> 
-                        <li><a href = "/#"><span class = "glyphicon glyphicon-user"></span> {{ hcadmin.user.username }}</a></li> 
-                        <li><a href = "/user/logout"><span class = "glyphicon glyphicon-log-in"></span> Logout</a></li> 
-                    </ul> 
-                </div> 
-            </div> 
-        </div>
+        }
 
-       <div class="container container-fluid">
-            <div class="row">
-                <main class="col-md-9 ml-sm-auto col-lg-12 px-md-4 py-4">
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/#">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Overview</li>
-                        </ol>
-                    </nav>
-                    <h1 class="h2">Dashboard</h1>
-                    <div class="row">
-                        <div class="col-12 col-xl-8 mb-4 mb-lg-0">
-                            <div class="card">
-                                <h5 class="card-header">Pending Forms</h5>
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">Form No.</th>
-                                                    <th scope="col">Patient Name</th>
-                                                    <th scope="col">Date of Submission</th>
-                                                    <th scope="col">Date of Arrival</th>
-                                                    <th scope="col">Status of Form</th>
-                                                    <th scope="col">Comments</th>
-                                                    <th scope="col"></th>
-                                                    <th scope="col"></th>
-                                                    <th class="action" scope="col">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {% for item in items %}
-                                                {% if item.transaction.status == "Form submitted" %}
-                                                <tr>
-                                                    <th scope="row">{{ item.transaction.form.form_id }}</th>
-                                                    <td>{{ item.transaction.form.patient }}</td>
-                                                    <td>{{ item.transaction.created_date }}</td>
-                                                    <td>{{ item.transaction.admin_update_date }}</td>
-                                                    <td>{{ item.transaction.status }}</td>
-                                                    <td>{{ item.transaction.feedabck }}</td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ViewFormModal">View Form</button>
-                                                        <div class="modal fade" id="ViewFormModal" tabindex="-1" aria-labelledby="ViewFormModalLabel" aria-hidden="true">
-                                                            <div class="modal-dialog">
-                                                                <div class="modal-content">
-                                                                  <div class="modal-header">
-                                                                    <h5 class="modal-title" id="ViewFormModalLabel">Form No. {{ item.transaction.form.form_id }}</h5>
-                                                                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-                                                                  </div>
-                                                                  <div class="modal-body">
+        .sidebar .nav-link {
+            color: #333;
+        }
+
+        .sidebar .nav-link.active {
+            color: #0d6efd;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/user/hcadmin_dashboard" style="margin-right: 25px;">Dashboard</a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/#"><span class="glyphicon glyphicon-user"></span> {{ hcadmin.user.username }}</a></li>
+                    <li><a href="/user/logout"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="container container-fluid">
+        <div class="row">
+            <main class="col-md-9 ml-sm-auto col-lg-12 px-md-4 py-4">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/#">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Overview</li>
+                    </ol>
+                </nav>
+                <h1 class="h2">Dashboard</h1>
+                <div class="row">
+                    <div class="col-12 col-xl-8 mb-4 mb-lg-0">
+                        <div class="card">
+                            <h5 class="card-header">Pending Forms</h5>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Form No.</th>
+                                                <th scope="col">Patient Name</th>
+                                                <th scope="col">Date of Submission</th>
+                                                <th scope="col">Date of Arrival</th>
+                                                <th scope="col">Status of Form</th>
+                                                <th scope="col">Comments</th>
+                                                <th scope="col"></th>
+                                                <th scope="col"></th>
+                                                <th class="action" scope="col">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for item in items %}
+                                            {% if item.transaction.status == "Form submitted" %}
+                                            <tr>
+                                                <th scope="row">{{ item.transaction.form.form_id }}</th>
+                                                <td>{{ item.transaction.form.patient }}</td>
+                                                <td>{{ item.transaction.created_date }}</td>
+                                                <td>{{ item.transaction.admin_update_date }}</td>
+                                                <td>{{ item.transaction.status }}</td>
+                                                <td>{{ item.transaction.feedabck }}</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                                                        data-target="#ViewPendingFormModal">View Form</button>
+                                                    <div class="modal fade" id="ViewPendingFormModal" tabindex="-1"
+                                                        aria-labelledby="ViewPendingFormModal" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="ViewPendingFormModal">
+                                                                        Form No. {{ item.transaction.form.form_id }}
+                                                                    </h5>
+                                                                    <button type="button" class="btn-close"
+                                                                        data-dismiss="modal"
+                                                                        aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
                                                                     <p>Display Form</p>
-                                                                  </div>
-                                                                  <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                  </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                        data-dismiss="modal">Close</button>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ViewRequestModal">View Request</button>
-                                                        <div class="modal fade" id="ViewRequestModal" tabindex="-1" aria-labelledby="ViewRequestModalLabel" aria-hidden="true">
-                                                            <div class="modal-dialog">
-                                                                <div class="modal-content">
-                                                                  <div class="modal-header">
-                                                                    <h5 class="modal-title" id="ViewRequestModalLabel">Request No. {{ item.transaction.transaction_id }}</h5>
-                                                                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-                                                                  </div>
-                                                                  <div class="modal-body">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                                                        data-target="#ViewPendingRequestModal">View Request</button>
+                                                    <div class="modal fade" id="ViewPendingRequestModal" tabindex="-1"
+                                                        aria-labelledby="ViewPendingRequestModal" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title"
+                                                                        id="ViewPendingRequestModal">Request No. {{
+                                                                        item.transaction.transaction_id }}</h5>
+                                                                    <button type="button" class="btn-close"
+                                                                        data-dismiss="modal"
+                                                                        aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
                                                                     <p>Display Transaction</p>
-                                                                  </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#AcceptModal">Accept</button>
-                                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#RejectModal">Reject</button>
-                                                        <div class="modal fade" id="AcceptRejectModal" tabindex="-1" aria-labelledby="AcceptRejectModalLabel" aria-hidden="true">
-                                                            <div class="modal-dialog">
-                                                                <div class="modal-content">
-                                                                  <div class="modal-header">
-                                                                    <h5 class="modal-title" id="AcceptRejectModalLabel">Are you sure ?</h5>
-                                                                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-                                                                  </div>
-                                                                  <div class="modal-body">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-success" data-toggle="modal"
+                                                        data-target="#AcceptModal">Accept</button>
+                                                    <div class="modal fade" id="AcceptModal" tabindex="-1"
+                                                        aria-labelledby="AcceptModal" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="AcceptModal">Do you want
+                                                                        to accept the form?</h5>
+                                                                    <!-- <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button> -->
+                                                                </div>
+                                                                <div class="modal-body">
                                                                     <p>Ask Feedback</p>
-                                                                  </div>
-                                                                  <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-success" data-dismiss="modal">Yes, I Am Sure</button>
-                                                                    <button type="button" class="btn btn-danger" data-dismiss="modal">No, Let Me Check Again</button>
-                                                                  </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <form action="hcadmin_dashboard/acceptFormByHC"
+                                                                        method="post">
+                                                                        {% csrf_token %}
+                                                                        <input type="hidden" id="t_no" name="t_no"
+                                                                            value={{ item.transaction.transaction_id }}>
+                                                                        <input type="submit"
+                                                                            class="btn btn-sm btn-warning btn-primary"
+                                                                            value="Yes">
+                                                                    </form>
+                                                                    </form>
+                                                                    <!-- <button type="button" class="btn btn-danger" data-dismiss="modal">No, Let Me Check Again</button> -->
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </td>
-                                                </tr>
-                                                {% endif %}
-                                                {% endfor %}
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                                    </div>
+
+                                                    <button type="button" class="btn btn-danger" data-toggle="modal"
+                                                        data-target="#RejectModal">Reject</button>
+                                                    <div class="modal fade" id="RejectModal" tabindex="-1"
+                                                        aria-labelledby="RejectModal" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="RejectModal">Do you want
+                                                                        to reject the form?</h5>
+                                                                    <!-- <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button> -->
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <p>Ask Feedback</p>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <form action="hcadmin_dashboard/rejectFormByHC"
+                                                                        method="post">
+                                                                        {% csrf_token %}
+                                                                        <input type="hidden" id="t_no" name="t_no"
+                                                                            value={{ item.transaction.transaction_id }}>
+                                                                        <input type="submit"
+                                                                            class="btn btn-sm btn-warning btn-primary"
+                                                                            value="Yes">
+                                                                    </form>
+                                                                    <!-- <button type="button" class="btn btn-danger" data-dismiss="modal">No, Let Me Check Again</button> -->
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            {% endif %}
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
                                 <a href="#" class="btn btn-block btn-light">View all</a>
                             </div>
                         </div>
@@ -213,36 +270,52 @@
                                                     <td>{{ item.transaction.status }}</td>
                                                     <td>{{ item.transaction.feedabck }}</td>
                                                     <td>
-                                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ViewFormModal">View Form</button>
-                                                        <div class="modal fade" id="ViewFormModal" tabindex="-1" aria-labelledby="ViewFormModalLabel" aria-hidden="true">
+                                                        <button type="button" class="btn btn-primary"
+                                                            data-toggle="modal" data-target="#ViewDoctorFormModal">View
+                                                            Form</button>
+                                                        <div class="modal fade" id="ViewDoctorFormModal" tabindex="-1"
+                                                            aria-labelledby="ViewDoctorFormModal" aria-hidden="true">
                                                             <div class="modal-dialog">
                                                                 <div class="modal-content">
-                                                                  <div class="modal-header">
-                                                                    <h5 class="modal-title" id="ViewFormModalLabel">Form No. {{ item.transaction.form.form_id }}</h5>
-                                                                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-                                                                  </div>
-                                                                  <div class="modal-body">
-                                                                    <p>Display Form</p>
-                                                                  </div>
-                                                                  <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                  </div>
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title"
+                                                                            id="ViewDoctorFormModal">Form No. {{
+                                                                            item.transaction.form.form_id }}</h5>
+                                                                        <button type="button" class="btn-close"
+                                                                            data-dismiss="modal"
+                                                                            aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <p>Display Form</p>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary"
+                                                                            data-dismiss="modal">Close</button>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ViewRequestModal">View Request</button>
-                                                        <div class="modal fade" id="ViewRequestModal" tabindex="-1" aria-labelledby="ViewRequestModalLabel" aria-hidden="true">
+                                                        <button type="button" class="btn btn-primary"
+                                                            data-toggle="modal"
+                                                            data-target="#ViewDoctorRequestModal">View Request</button>
+                                                        <div class="modal fade" id="ViewDoctorRequestModal"
+                                                            tabindex="-1" aria-labelledby="ViewDoctorRequestModal"
+                                                            aria-hidden="true">
                                                             <div class="modal-dialog">
                                                                 <div class="modal-content">
-                                                                  <div class="modal-header">
-                                                                    <h5 class="modal-title" id="ViewRequestModalLabel">Request No. {{ item.transaction.transaction_id }}</h5>
-                                                                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-                                                                  </div>
-                                                                  <div class="modal-body">
-                                                                    <p>Display Transaction</p>
-                                                                  </div>
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title"
+                                                                            id="ViewDoctorRequestModal">Request No. {{
+                                                                            item.transaction.transaction_id }}</h5>
+                                                                        <button type="button" class="btn-close"
+                                                                            data-dismiss="modal"
+                                                                            aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <p>Display Transaction</p>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -253,271 +326,399 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                <a href="#" class="btn btn-block btn-light">View all</a>
+                                    <a href="#" class="btn btn-block btn-light">View all</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="row">
-                        <div class="col-12 col-xl-8 mb-4 mb-lg-0">
-                            <div class="card">
-                                <h5 class="card-header">Arrived after Doctor Verification</h5>
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">Form No.</th>
-                                                    <th scope="col">Patient Name</th>
-                                                    <th scope="col">Date of Submission</th>
-                                                    <th scope="col">Date of Arrival</th>
-                                                    <th scope="col">Doctor Verdict </th>
-                                                    <th scope="col">Status of Form</th>
-                                                    <th scope="col">Comments</th>
-                                                    <th scope="col"></th>
-                                                    <th scope="col"></th>
-                                                    <th class="action" scope="col">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {% for item in items %}
-                                                {% if item.transaction.status == "Waiting HC Admin approval" %}
-                                                <tr>
-                                                    <th scope="row">{{ item.transaction.form.form_id }}</th>
-                                                    <td>{{ item.transaction.form.patient }}</td>
-                                                    <td>{{ item.transaction.created_date }}</td>
-                                                    <td>{{ item.transaction.admin_update_date }}</td>
-                                                    <td>{{ item.transaction.status }}</td>
-                                                    <td>{{ item.transaction.feedabck }}</td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ViewFormModal">View Form</button>
-                                                        <div class="modal fade" id="ViewFormModal" tabindex="-1" aria-labelledby="ViewFormModalLabel" aria-hidden="true">
-                                                            <div class="modal-dialog">
-                                                                <div class="modal-content">
-                                                                  <div class="modal-header">
-                                                                    <h5 class="modal-title" id="ViewFormModalLabel">Form No. {{ item.transaction.form.form_id }}</h5>
-                                                                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-                                                                  </div>
-                                                                  <div class="modal-body">
-                                                                    <p>Display Form</p>
-                                                                  </div>
-                                                                  <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                  </div>
+                        <div class="row">
+                            <div class="col-12 col-xl-8 mb-4 mb-lg-0">
+                                <div class="card">
+                                    <h5 class="card-header">Arrived after Doctor Verification</h5>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Form No.</th>
+                                                        <th scope="col">Patient Name</th>
+                                                        <th scope="col">Date of Submission</th>
+                                                        <th scope="col">Date of Arrival</th>
+                                                        <th scope="col">Doctor Verdict </th>
+                                                        <th scope="col">Status of Form</th>
+                                                        <th scope="col">Comments</th>
+                                                        <th scope="col"></th>
+                                                        <th scope="col"></th>
+                                                        <th class="action" scope="col">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for item in items %}
+                                                    {% if item.transaction.status == "Waiting HC Admin approval" %}
+                                                    <tr>
+                                                        <th scope="row">{{ item.transaction.form.form_id }}</th>
+                                                        <td>{{ item.transaction.form.patient }}</td>
+                                                        <td>{{ item.transaction.created_date }}</td>
+                                                        <td>{{ item.transaction.admin_update_date }}</td>
+                                                        <td>{{ item.transaction.status }}</td>
+                                                        <td>{{ item.transaction.feedabck }}</td>
+                                                        <td>
+                                                            <button type="button" class="btn btn-primary"
+                                                                data-toggle="modal"
+                                                                data-target="#ViewVerificationFormModal">View
+                                                                Form</button>
+                                                            <div class="modal fade" id="ViewVerificationFormModal"
+                                                                tabindex="-1"
+                                                                aria-labelledby="ViewVerificationFormModal"
+                                                                aria-hidden="true">
+                                                                <div class="modal-dialog">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title"
+                                                                                id="ViewVerificationFormModal">Form No.
+                                                                                {{ item.transaction.form.form_id }}</h5>
+                                                                            <button type="button" class="btn-close"
+                                                                                data-dismiss="modal"
+                                                                                aria-label="Close"></button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <p>Display Form</p>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button"
+                                                                                class="btn btn-secondary"
+                                                                                data-dismiss="modal">Close</button>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ViewRequestModal">View Request</button>
-                                                        <div class="modal fade" id="ViewRequestModal" tabindex="-1" aria-labelledby="ViewRequestModalLabel" aria-hidden="true">
-                                                            <div class="modal-dialog">
-                                                                <div class="modal-content">
-                                                                  <div class="modal-header">
-                                                                    <h5 class="modal-title" id="ViewRequestModalLabel">Request No. {{ item.transaction.transaction_id }}</h5>
-                                                                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-                                                                  </div>
-                                                                  <div class="modal-body">
-                                                                    <p>Display Transaction</p>
-                                                                  </div>
+                                                        </td>
+                                                        <td>
+                                                            <button type="button" class="btn btn-primary"
+                                                                data-toggle="modal"
+                                                                data-target="#ViewVerificationRequestModal">View
+                                                                Request</button>
+                                                            <div class="modal fade" id="ViewVerificationRequestModal"
+                                                                tabindex="-1"
+                                                                aria-labelledby="ViewVerificationRequestModal"
+                                                                aria-hidden="true">
+                                                                <div class="modal-dialog">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title"
+                                                                                id="ViewVerificationRequestModal">
+                                                                                Request No. {{
+                                                                                item.transaction.transaction_id }}</h5>
+                                                                            <button type="button" class="btn-close"
+                                                                                data-dismiss="modal"
+                                                                                aria-label="Close"></button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <p>Display Transaction</p>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#AcceptModal">Accept</button>
-                                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#RejectModal">Reject</button>
-                                                        <div class="modal fade" id="AcceptRejectModal" tabindex="-1" aria-labelledby="AcceptRejectModalLabel" aria-hidden="true">
-                                                            <div class="modal-dialog">
-                                                                <div class="modal-content">
-                                                                  <div class="modal-header">
-                                                                    <h5 class="modal-title" id="AcceptRejectModalLabel">Are you sure ?</h5>
-                                                                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-                                                                  </div>
-                                                                  <div class="modal-body">
-                                                                    <p>Ask Feedback</p>
-                                                                  </div>
-                                                                  <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-success" data-dismiss="modal">Yes, I Am Sure</button>
-                                                                    <button type="button" class="btn btn-danger" data-dismiss="modal">No, Let Me Check Again</button>
-                                                                  </div>
+                                                        </td>
+                                                        <td>
+                                                            <button type="button" class="btn btn-success"
+                                                                data-toggle="modal"
+                                                                data-target="#AcceptDisplayModal">Accept</button>
+                                                            <div class="modal fade" id="AcceptDisplayModal"
+                                                                tabindex="-1" aria-labelledby="AcceptDisplayModal"
+                                                                aria-hidden="true">
+                                                                <div class="modal-dialog">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title"
+                                                                                id="AcceptDisplayModal">Do you want to
+                                                                                accept the form?</h5>
+                                                                            <!-- <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button> -->
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <p>Ask Feedback</p>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <form
+                                                                                action="hcadmin_dashboard/acceptFormByHC"
+                                                                                method="post">
+                                                                                {% csrf_token %}
+                                                                                <input type="hidden" id="t_no"
+                                                                                    name="t_no" value={{
+                                                                                    item.transaction.transaction_id }}>
+                                                                                <input type="submit"
+                                                                                    class="btn btn-sm btn-warning btn-primary"
+                                                                                    value="Yes">
+                                                                            </form>
+                                                                            </form>
+                                                                            <!-- <button type="button" class="btn btn-danger" data-dismiss="modal">No, Let Me Check Again</button> -->
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                {% endif %}
-                                                {% endfor %}
-                                            </tbody>
-                                        </table>
+
+                                                            <button type="button" class="btn btn-danger"
+                                                                data-toggle="modal"
+                                                                data-target="#RejectDisplayModal">Reject</button>
+                                                            <div class="modal fade" id="RejectDisplayModal"
+                                                                tabindex="-1" aria-labelledby="RejectDisplayModal"
+                                                                aria-hidden="true">
+                                                                <div class="modal-dialog">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title"
+                                                                                id="RejectDisplayModal">Do you want to
+                                                                                reject the form?</h5>
+                                                                            <!-- <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button> -->
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <p>Ask Feedback</p>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <form
+                                                                                action="hcadmin_dashboard/rejectFormByHC"
+                                                                                method="post">
+                                                                                {% csrf_token %}
+                                                                                <input type="hidden" id="t_no"
+                                                                                    name="t_no" value={{
+                                                                                    item.transaction.transaction_id }}>
+                                                                                <input type="submit"
+                                                                                    class="btn btn-sm btn-warning btn-primary"
+                                                                                    value="Yes">
+                                                                            </form>
+                                                                            <!-- <button type="button" class="btn btn-danger" data-dismiss="modal">No, Let Me Check Again</button> -->
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    {% endif %}
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <a href="#" class="btn btn-block btn-light">View all</a>
                                     </div>
-                                <a href="#" class="btn btn-block btn-light">View all</a>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12 col-xl-8 mb-4 mb-lg-0">
-                            <div class="card">
-                                <h5 class="card-header">Accepted Forms</h5>
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">Form No.</th>
-                                                    <th scope="col">Patient Name</th>
-                                                    <th scope="col">Date of Submission</th>
-                                                    <th scope="col">Date of Arrival</th>
-                                                    <th scope="col">Date of Approval</th>
-                                                    <th scope="col">Status of Form</th>
-                                                    <th scope="col">Comments</th>
-                                                    <th scope="col"></th>
-                                                    <th scope="col"></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {% for item in items %}
-                                                {% if item.transaction.status == "Sent to Accounts" %}
-                                                <tr>
-                                                    <th scope="row">{{ item.transaction.form.form_id }}</th>
-                                                    <td>{{ item.transaction.form.patient }}</td>
-                                                    <td>{{ item.transaction.created_date }}</td>
-                                                    <td>{{ item.transaction.admin_update_date }}</td>
-                                                    <td>{{ item.transaction.status }}</td>
-                                                    <td>{{ item.transaction.feedabck }}</td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ViewFormModal">View Form</button>
-                                                        <div class="modal fade" id="ViewFormModal" tabindex="-1" aria-labelledby="ViewFormModalLabel" aria-hidden="true">
-                                                            <div class="modal-dialog">
-                                                                <div class="modal-content">
-                                                                  <div class="modal-header">
-                                                                    <h5 class="modal-title" id="ViewFormModalLabel">Form No. {{ item.transaction.form.form_id }}</h5>
-                                                                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-                                                                  </div>
-                                                                  <div class="modal-body">
-                                                                    <p>Display Form</p>
-                                                                  </div>
-                                                                  <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                  </div>
+                            <div class="row">
+                                <div class="col-12 col-xl-8 mb-4 mb-lg-0">
+                                    <div class="card">
+                                        <h5 class="card-header">Accepted Forms</h5>
+                                        <div class="card-body">
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">Form No.</th>
+                                                            <th scope="col">Patient Name</th>
+                                                            <th scope="col">Date of Submission</th>
+                                                            <th scope="col">Date of Arrival</th>
+                                                            <th scope="col">Date of Approval</th>
+                                                            <th scope="col">Status of Form</th>
+                                                            <th scope="col">Comments</th>
+                                                            <th scope="col"></th>
+                                                            <th scope="col"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% for item in items %}
+                                                        {% if item.transaction.status == "Sent to Accounts" %}
+                                                        <tr>
+                                                            <th scope="row">{{ item.transaction.form.form_id }}</th>
+                                                            <td>{{ item.transaction.form.patient }}</td>
+                                                            <td>{{ item.transaction.created_date }}</td>
+                                                            <td>{{ item.transaction.admin_update_date }}</td>
+                                                            <td>{{ item.transaction.status }}</td>
+                                                            <td>{{ item.transaction.feedabck }}</td>
+                                                            <td>
+                                                                <button type="button" class="btn btn-primary"
+                                                                    data-toggle="modal"
+                                                                    data-target="#ViewAcceptedFormModal">View
+                                                                    Form</button>
+                                                                <div class="modal fade" id="ViewAcceptedFormModal"
+                                                                    tabindex="-1"
+                                                                    aria-labelledby="ViewAcceptedFormModal"
+                                                                    aria-hidden="true">
+                                                                    <div class="modal-dialog">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title"
+                                                                                    id="ViewAcceptedFormModal">Form No.
+                                                                                    {{ item.transaction.form.form_id }}
+                                                                                </h5>
+                                                                                <button type="button" class="btn-close"
+                                                                                    data-dismiss="modal"
+                                                                                    aria-label="Close"></button>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                <p>Display Form</p>
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <button type="button"
+                                                                                    class="btn btn-secondary"
+                                                                                    data-dismiss="modal">Close</button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ViewRequestModal">View Request</button>
-                                                        <div class="modal fade" id="ViewRequestModal" tabindex="-1" aria-labelledby="ViewRequestModalLabel" aria-hidden="true">
-                                                            <div class="modal-dialog">
-                                                                <div class="modal-content">
-                                                                  <div class="modal-header">
-                                                                    <h5 class="modal-title" id="ViewRequestModalLabel">Request No. {{ item.transaction.transaction_id }}</h5>
-                                                                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-                                                                  </div>
-                                                                  <div class="modal-body">
-                                                                    <p>Display Transaction</p>
-                                                                  </div>
+                                                            </td>
+                                                            <td>
+                                                                <button type="button" class="btn btn-primary"
+                                                                    data-toggle="modal"
+                                                                    data-target="#ViewAcceptedRequestModal">View
+                                                                    Request</button>
+                                                                <div class="modal fade" id="ViewAcceptedRequestModal"
+                                                                    tabindex="-1"
+                                                                    aria-labelledby="ViewAcceptedRequestModal"
+                                                                    aria-hidden="true">
+                                                                    <div class="modal-dialog">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title"
+                                                                                    id="ViewAcceptedRequestModal">
+                                                                                    Request No. {{
+                                                                                    item.transaction.transaction_id }}
+                                                                                </h5>
+                                                                                <button type="button" class="btn-close"
+                                                                                    data-dismiss="modal"
+                                                                                    aria-label="Close"></button>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                <p>Display Transaction</p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                {% endif %}
-                                                {% endfor %}
-                                            </tbody>
-                                        </table>
+                                                            </td>
+                                                        </tr>
+                                                        {% endif %}
+                                                        {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <a href="#" class="btn btn-block btn-light">View all</a>
+                                        </div>
                                     </div>
-                                <a href="#" class="btn btn-block btn-light">View all</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12 col-xl-8 mb-4 mb-lg-0">
-                            <div class="card">
-                                <h5 class="card-header">Rejected Forms</h5>
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">Form No.</th>
-                                                    <th scope="col">Patient Name</th>
-                                                    <th scope="col">Date of Submission</th>
-                                                    <th scope="col">Date Rejected</th>
-                                                    <th scope="col">Status of Form</th>
-                                                    <th scope="col">Comments</th>
-                                                    <th scope="col"></th>
-                                                    <th scope="col"></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {% for item in items %}
-                                                {% if item.transaction.status == "Rejected" %}
-                                                <tr>
-                                                    <th scope="row">{{ item.transaction.form.form_id }}</th>
-                                                    <td>{{ item.transaction.form.patient }}</td>
-                                                    <td>{{ item.transaction.created_date }}</td>
-                                                    <td>{{ item.transaction.admin_update_date }}</td>
-                                                    <td>{{ item.transaction.status }}</td>
-                                                    <td>{{ item.transaction.feedabck }}</td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ViewFormModal">View Form</button>
-                                                        <div class="modal fade" id="ViewFormModal" tabindex="-1" aria-labelledby="ViewFormModalLabel" aria-hidden="true">
-                                                            <div class="modal-dialog">
-                                                                <div class="modal-content">
-                                                                  <div class="modal-header">
-                                                                    <h5 class="modal-title" id="ViewFormModalLabel">Form No. {{ item.transaction.form.form_id }}</h5>
-                                                                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-                                                                  </div>
-                                                                  <div class="modal-body">
-                                                                    <p>Display Form</p>
-                                                                  </div>
-                                                                  <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                  </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ViewRequestModal">View Request</button>
-                                                        <div class="modal fade" id="ViewRequestModal" tabindex="-1" aria-labelledby="ViewRequestModalLabel" aria-hidden="true">
-                                                            <div class="modal-dialog">
-                                                                <div class="modal-content">
-                                                                  <div class="modal-header">
-                                                                    <h5 class="modal-title" id="ViewRequestModalLabel">Request No. {{ item.transaction.transaction_id }}</h5>
-                                                                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-                                                                  </div>
-                                                                  <div class="modal-body">
-                                                                    <p>Display Transaction</p>
-                                                                  </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                {% endif %}
-                                                {% endfor %}
-                                            </tbody>
-                                        </table>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-xl-8 mb-4 mb-lg-0">
+                                        <div class="card">
+                                            <h5 class="card-header">Rejected Forms</h5>
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">Form No.</th>
+                                                                <th scope="col">Patient Name</th>
+                                                                <th scope="col">Date of Submission</th>
+                                                                <th scope="col">Date Rejected</th>
+                                                                <th scope="col">Status of Form</th>
+                                                                <th scope="col">Comments</th>
+                                                                <th scope="col"></th>
+                                                                <th scope="col"></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for item in items %}
+                                                            {% if item.transaction.status == "Rejected" %}
+                                                            <tr>
+                                                                <th scope="row">{{ item.transaction.form.form_id }}</th>
+                                                                <td>{{ item.transaction.form.patient }}</td>
+                                                                <td>{{ item.transaction.created_date }}</td>
+                                                                <td>{{ item.transaction.admin_update_date }}</td>
+                                                                <td>{{ item.transaction.status }}</td>
+                                                                <td>{{ item.transaction.feedabck }}</td>
+                                                                <td>
+                                                                    <button type="button" class="btn btn-primary"
+                                                                        data-toggle="modal"
+                                                                        data-target="#ViewRejectedFormModal">View
+                                                                        Form</button>
+                                                                    <div class="modal fade" id="ViewRejectedFormModal"
+                                                                        tabindex="-1"
+                                                                        aria-labelledby="ViewRejectedFormModal"
+                                                                        aria-hidden="true">
+                                                                        <div class="modal-dialog">
+                                                                            <div class="modal-content">
+                                                                                <div class="modal-header">
+                                                                                    <h5 class="modal-title"
+                                                                                        id="ViewRejectedFormModal">Form
+                                                                                        No. {{
+                                                                                        item.transaction.form.form_id }}
+                                                                                    </h5>
+                                                                                    <button type="button"
+                                                                                        class="btn-close"
+                                                                                        data-dismiss="modal"
+                                                                                        aria-label="Close"></button>
+                                                                                </div>
+                                                                                <div class="modal-body">
+                                                                                    <p>Display Form</p>
+                                                                                </div>
+                                                                                <div class="modal-footer">
+                                                                                    <button type="button"
+                                                                                        class="btn btn-secondary"
+                                                                                        data-dismiss="modal">Close</button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <button type="button" class="btn btn-primary"
+                                                                        data-toggle="modal"
+                                                                        data-target="#ViewRejectedRequestModal">View
+                                                                        Request</button>
+                                                                    <div class="modal fade"
+                                                                        id="ViewRejectedRequestModal" tabindex="-1"
+                                                                        aria-labelledby="ViewRejectedRequestModal"
+                                                                        aria-hidden="true">
+                                                                        <div class="modal-dialog">
+                                                                            <div class="modal-content">
+                                                                                <div class="modal-header">
+                                                                                    <h5 class="modal-title"
+                                                                                        id="ViewRejectedRequestModal">
+                                                                                        Request No. {{
+                                                                                        item.transaction.transaction_id
+                                                                                        }}</h5>
+                                                                                    <button type="button"
+                                                                                        class="btn-close"
+                                                                                        data-dismiss="modal"
+                                                                                        aria-label="Close"></button>
+                                                                                </div>
+                                                                                <div class="modal-body">
+                                                                                    <p>Display Transaction</p>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            {% endif %}
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <a href="#" class="btn btn-block btn-light">View all</a>
+                                            </div>
+                                        </div>
                                     </div>
-                                <a href="#" class="btn btn-block btn-light">View all</a>
-                            </div>
-                        </div>
-                    </div>
-                </main>
-            </div>
-            <div class="push"></div>
+            </main>
         </div>
-                
+        <div class="push"></div>
+    </div>
 
-		<footer class = "navbar-fixed-bottom">
-            <div class="container"> 
-                <center> 
-                    <p>
-                        Copyright &copy; HC Reimbursement Portal All Rights Reserved | Contact Team-6.
-                    </p> 
-                </center> 
-            </div> 
-        </footer>
-	</body>
+
+    <footer class="navbar-fixed-bottom">
+        <div class="container">
+            <center>
+                <p>
+                    Copyright &copy; HC Reimbursement Portal All Rights Reserved | Contact Team-6.
+                </p>
+            </center>
+        </div>
+    </footer>
+</body>
+
 </html>
