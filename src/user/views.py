@@ -177,19 +177,31 @@ def submitForm(request):
         user = IsLoggedIn(request)
         if IsLoggedIn(request) is not None:
             form = Form()
-            form.user = user
-            # form.userid=user.username
-            form.name = request.POST.get("name")
-            form.department = request.POST.get("department")
-            form.designation = request.POST.get("designation")
+            form.patient = Patient.objects.get(user=IsLoggedIn(request));
+            form.patient_name = request.POST.get("patient_name");
+            form.relationship = request.POST.get("relationship");
+            form.hc_medical_advisor = Doctor.objects.get(doctor_id=request.POST.get("hc_medical_advisor"));
+            form.consultation_date = request.POST.get("con_date");
+            form.referral_advisor = request.POST.get("specialist");
+            form.consultation_fees = request.POST.get("con-charge");
+            form.consultation_visits = request.POST.get("visits");
+            form.created_date = timezone.now();
             # if form.is_valid():
             #     form_application=form.save(commit=False)
-            form.save()
+            form.save();
+            no_med = int(request.POST.get("n_med"));
+            no_test = int(request.POST.get("n_test"));
+            for i in range(1,no_med):
+                formmedicine = FormMedicine(form=form, medicine=Medicine.objects.get(medicine_id=request.POST.get("medicine-"+str(i))), quantity=request.POST.get("quantity-"+str(i)));
+                formmedicine.save()
+            for i in range(1,no_test):
+                formtest = FormTest(form=form, test=Test.objects.get(test_id=request.POST.get("test-"+str(i))), cost=request.POST.get("charge-"+str(i)));
+                formtest.save();
             transaction = Transaction(
-                status="Form submitted", form=form, user=user, feedback=""
-            )
+                status="Form submitted", form=form, feedback="", created_date=timezone.now(), reimbursement_amount = request.POST.get("total")
+            );
             # user feedback
-            transaction.save()
+            transaction.save();
             return HttpResponse("form submitted" + str(form))
             # return redirect('form_detail', pk=form.pk)
         else:
