@@ -69,7 +69,7 @@
                 </div>
                 <div class="collapse navbar-collapse" id="myNavbar"> 
                     <ul class="nav navbar-nav navbar-right"> 
-                        <li><a href = "/#"><span class = "glyphicon glyphicon-user"></span> {{ patient.user.username }}</a></li> 
+                        <li><a href=""><span class = "glyphicon glyphicon-user"></span> {{ patient.user.username }}</a></li> 
                         <li><a href = "/user/logout"><span class = "glyphicon glyphicon-log-in"></span> Logout</a></li> 
                     </ul> 
                 </div> 
@@ -81,7 +81,7 @@
                 <main class="col-md-9 ml-sm-auto col-lg-12 px-md-4 py-4">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/#">Home</a></li>
+                            <li class="breadcrumb-item">Home</li>
                             <li class="breadcrumb-item active" aria-current="page">Overview</li>
                         </ol>
                     </nav>
@@ -96,9 +96,9 @@
                                             <thead>
                                                 <tr>
                                                     <th scope="col">Unique Form No.</th>
+                                                    <th scope="col">Patient Name</th>
                                                     <th scope="col">Date of Submission</th>
                                                     <th scope="col">Status of Form</th>
-                                                    <th scope="col">Comments</th>
                                                     <th scope="col"></th>
                                                     <th scope="col"></th>
                                                 </tr>
@@ -106,57 +106,92 @@
                                             <tbody>
                                                 {% for item in items %}
                                                 <tr>
-                                                    <th scope="row">{{ item.transaction.form.form_id }}</th>
+                                                    <th>{{ item.transaction.form.form_id }}</th>
+                                                    <td>{{ item.transaction.form.patient_name }}</td>
                                                     <td>{{ item.transaction.created_date }}</td>
                                                     <td>{{ item.transaction.status }}</td>
-                                                    <td>{{ item.transaction.feedabck }}</td>
                                                     <td>
-                                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ViewFormModal">View Form</button>
-                                                        <div class="modal fade" id="ViewFormModal" tabindex="-1" aria-labelledby="ViewFormModalLabel" aria-hidden="true">
-                                                            <div class="modal-dialog">
+                                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ViewFormModal{{item.transaction.transaction_id}}">View Form</button>
+                                                        <div class="modal fade" id="ViewFormModal{{item.transaction.transaction_id}}" tabindex="-1" aria-labelledby="ViewFormModalLabel{{item.transaction.transaction_id}}" aria-hidden="true">
+                                                            <div class="modal-dialog modal-lg">
                                                                 <div class="modal-content">
                                                                   <div class="modal-header">
-                                                                    <h5 class="modal-title" id="ViewFormModalLabel">Form No. {{ item.transaction.form.form_id }}</h5>
-                                                                    <!-- <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button> -->
+                                                                    <h3 class="modal-title" id="ViewFormModalLabel{{item.transaction.transaction_id}}">Form No. {{ item.transaction.form.form_id }}</h3>
                                                                   </div>
                                                                   <div class="modal-body">
-                                                                    <p>Display Form </p>
-                                                                    <div class="form-group col-md-6">
+                                                                    <div class="col-md-12">
+                                                                        <h4>General Details</h4>
+                                                                    </div>
+                                                                    <div class="form-group col-md-4">
                                                                         <label for="form_id">Form Id</label>
                                                                         <input type="text" class="form-control" id="form_id" value={{item.transaction.form.form_id}} disabled>
                                                                     </div>
-                                                                    <div class="form-group col-md-6">
-                                                                        <label for="patient">Patient </label>
+                                                                    <div class="form-group col-md-4">
+                                                                        <label for="patient">Patient Id</label>
                                                                         <input type="text" class="form-control" id="patient" value={{item.transaction.form.patient}} disabled>
                                                                     </div>
-                                                                    <div class="form-group col-md-6">
+                                                                    <div class="form-group col-md-4">
                                                                         <label for="patient_name">Patient Name</label>
                                                                         <input type="text" class="form-control" id="patient_name" value={{item.transaction.form.patient_name}} disabled>
                                                                     </div>
-                                                                    <div class="form-group col-md-6">
+                                                                    <div class="form-group col-md-4">
                                                                         <label for="hc_medical_advisor">HC Medical Advisor</label>
                                                                         <input type="text" class="form-control" id="hc_medical_advisor" value={{item.transaction.form.hc_medical_advisor}} disabled>
                                                                     </div>
-                                                                    <div class="form-group col-md-6">
+                                                                    <div class="form-group col-md-4">
                                                                         <label for="consultation_date">Consultation Date</label>
-                                                                        <input type="text" class="form-control" id="consultation_date" value={{item.transaction.form.consultation_date}} disabled>
+                                                                        <input type="text" class="form-control" id="consultation_date" value={{item.transaction.form.consultation_date | date:"d-M-Y"}} disabled>
                                                                     </div>
-                                                                    <div class="form-group col-md-6">
+                                                                    <div class="form-group col-md-4">
                                                                         <label for="referral_advisor">Referral Advisor</label>
                                                                         <input type="text" class="form-control" id="referral_advisor" value={{item.transaction.form.referral_advisor}} disabled>
                                                                     </div>
-                                                                    <div class="form-group col-md-6">
+                                                                    <div class="form-group col-md-4">
                                                                         <label for="consultation_fees">Consultation Fees</label>
                                                                         <input type="text" class="form-control" id="consultation_fees" value={{item.transaction.form.consultation_fees}} disabled>
                                                                     </div>
-                                                                    <div class="form-group col-md-6">
+                                                                    <div class="form-group col-md-4">
                                                                         <label for="consultation_visits">Consultation Visits</label>
                                                                         <input type="text" class="form-control" id="consultation_visits" value={{item.transaction.form.consultation_visits}} disabled>
                                                                     </div>
-                                                                    <div class="form-group col-md-6">
+                                                                    <div class="form-group col-md-4">
                                                                         <label for="created_date">Created Date</label>
-                                                                        <input type="text" class="form-control" id="created_date" value={{item.transaction.form.created_date}} disabled>
+                                                                        <input type="text" class="form-control" id="created_date" value={{item.transaction.form.created_date | date:"d-M-Y"}} disabled>
                                                                     </div>
+                                                                    <div class="col-md-12">
+                                                                        <h4>Medicine Details</h4>
+                                                                    </div>
+                                                                    {% for medicine in item.medicines %}
+                                                                    <div class="form-group col-md-4">
+                                                                        <label for="medicine_name{{item.transaction.transaction_id}}">Medicine {{item.transaction.transaction_id}}</label>
+                                                                        <input type="text" class="form-control" id="medicine_name{{item.transaction.transaction_id}}" value={{medicine.medicine.medicine_name}} disabled>
+                                                                    </div>
+                                                                    <div class="form-group col-md-4">
+                                                                        <label for="medicine_quantiy{{item.transaction.transaction_id}}">Quantity</label>
+                                                                        <input type="text" class="form-control" id="medicine_quantiy{{item.transaction.transaction_id}}" value={{medicine.quantity}} disabled>
+                                                                    </div>
+                                                                    <div class="form-group col-md-4">
+                                                                        <label for="total_cost{{item.transaction.transaction_id}}">Total Cost</label>
+                                                                        <input type="text" class="form-control" id="total_cost{{item.transaction.transaction_id}}" value={{medicine.medicine.price}} disabled>
+                                                                    </div>
+                                                                    {% endfor %}
+                                                                    <div class="col-md-12">
+                                                                        <h4>Test Details</h4>
+                                                                    </div>
+                                                                    {% for test in item.tests %}
+                                                                    <div class="form-group col-md-4">
+                                                                        <label for="test_name{{item.transaction.transaction_id}}">Test {{item.transaction.transaction_id}}</label>
+                                                                        <input type="text" class="form-control" id="test_name{{item.transaction.transaction_id}}" value={{test.test.test_name}} disabled>
+                                                                    </div>
+                                                                    <div class="form-group col-md-4">
+                                                                        <label for="lab_name{{item.transaction.transaction_id}}">Lab Name</label>
+                                                                        <input type="text" class="form-control" id="lab_name{{item.transaction.transaction_id}}" value="Lab Name Field missing" disabled>
+                                                                    </div>
+                                                                    <div class="form-group col-md-4">
+                                                                        <label for="test_cost{{item.transaction.transaction_id}}">Total Cost</label>
+                                                                        <input type="text" class="form-control" id="test_cost{{item.transaction.transaction_id}}" value={{test.cost}} disabled>
+                                                                    </div>
+                                                                    {% endfor %}
                                                                   </div>
                                                                   <div class="modal-footer">
                                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -166,51 +201,55 @@
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ViewRequestModal">View Request</button>
-                                                        <div class="modal fade" id="ViewRequestModal" tabindex="-1" aria-labelledby="ViewRequestModalLabel" aria-hidden="true">
-                                                            <div class="modal-dialog">
+                                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ViewRequestModal{{item.transaction.transaction_id}}">View Request</button>
+                                                        <div class="modal fade" id="ViewRequestModal{{item.transaction.transaction_id}}" tabindex="-1" aria-labelledby="ViewRequestModalLabel{{item.transaction.transaction_id}}" aria-hidden="true">
+                                                            <div class="modal-dialog modal-lg">
                                                                 <div class="modal-content">
                                                                   <div class="modal-header">
-                                                                    <h5 class="modal-title" id="ViewRequestModalLabel">Request No. {{ item.transaction.transaction_id }}</h5>
-                                                                    <!-- <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button> -->
+                                                                    <h3 class="modal-title" id="ViewRequestModalLabel{{item.transaction.transaction_id}}">Request No. {{ item.transaction.transaction_id }}</h3>
                                                                   </div>
                                                                   <div class="modal-body">
-                                                                    <p>Display Transaction</p>
-                                                                    <div class="form-group col-md-6">
+                                                                    <div class="col-md-12">
+                                                                        <h4>General Information</h4>
+                                                                    </div>
+                                                                    <div class="form-group col-md-4">
                                                                         <label for="transaction_id">Transaction Id</label>
                                                                         <input type="text" class="form-control" id="transaction_id" value={{item.transaction.transaction_id}} disabled>
                                                                     </div>
-                                                                    <div class="form-group col-md-6">
+                                                                    <div class="form-group col-md-4">
                                                                         <label for="status">Status</label>
                                                                         <input type="text" class="form-control" id="status" value={{item.transaction.status}} disabled>
                                                                     </div>
-                                                                    <div class="form-group col-md-6">
+                                                                    <div class="form-group col-md-4">
                                                                         <label for="reimbursement_amount">Reimbursement Amount</label>
                                                                         <input type="text" class="form-control" id="reimbursement_amount" value={{item.transaction.reimbursement_amount}} disabled>
                                                                     </div>
-                                                                    <div class="form-group col-md-6">
+                                                                    <div class="form-group col-md-12">
                                                                         <label for="feedback">Feedback</label>
                                                                         <input type="text" class="form-control" id="feedback" value={{item.transaction.feedback}} disabled>
                                                                     </div>
-                                                                    <div class="form-group col-md-6">
+                                                                    <div class="col-md-12">
+                                                                        <h4>Update dates</h4>
+                                                                    </div>
+                                                                    <div class="form-group col-md-4">
                                                                         <label for="created_date">Created Date</label>
-                                                                        <input type="text" class="form-control" id="created_date" value={{item.transaction.created_date}} disabled>
+                                                                        <input type="text" class="form-control" id="created_date" value={{item.transaction.created_date | date:"d-M-Y"}} disabled>
                                                                     </div>
-                                                                    <div class="form-group col-md-6">
+                                                                    <div class="form-group col-md-4">
                                                                         <label for="admin_update_date">Admin Update Date</label>
-                                                                        <input type="text" class="form-control" id="admin_update_date" value={{item.transaction.admin_update_date}} disabled>
+                                                                        <input type="text" class="form-control" id="admin_update_date" value={{item.transaction.admin_update_date | date:"d-M-Y"}} disabled>
                                                                     </div>
-                                                                    <div class="form-group col-md-6">
+                                                                    <div class="form-group col-md-4">
                                                                         <label for="doctor_update_date">Doctor Update Date</label>
-                                                                        <input type="text" class="form-control" id="doctor_update_date" value={{item.transaction.doctor_update_date}} disabled>
+                                                                        <input type="text" class="form-control" id="doctor_update_date" value={{item.transaction.doctor_update_date | date:"d-M-Y"}} disabled>
                                                                     </div>
-                                                                    <div class="form-group col-md-6">
+                                                                    <div class="form-group col-md-4">
                                                                         <label for="account_sent_date">Account Sent Date </label>
-                                                                        <input type="text" class="form-control" id="account_sent_date" value={{item.transaction.account_sent_date}} disabled>
+                                                                        <input type="text" class="form-control" id="account_sent_date" value={{item.transaction.account_sent_date | date:"d-M-Y"}} disabled>
                                                                     </div>
-                                                                    <div class="form-group col-md-6">
+                                                                    <div class="form-group col-md-4">
                                                                         <label for="account_approve_date">Account Approve Date</label>
-                                                                        <input type="text" class="form-control" id="account_approve_date" value={{item.transaction.account_approve_date}} disabled>
+                                                                        <input type="text" class="form-control" id="account_approve_date" value={{item.transaction.account_approve_date | date:"d-M-Y"}} disabled>
                                                                     </div>
                                                                   </div>
                                                                   <div class="modal-footer">
@@ -233,10 +272,6 @@
             </div>
             <div class="push"></div>
         </div>
-            
-        
-		
-
 		<footer class = "navbar-fixed-bottom">
             <div class="container"> 
                 <center> 

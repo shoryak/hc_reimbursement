@@ -275,19 +275,13 @@ def accounts_dashboard_display(request):
     return render(request, "accounts_dashboard.html", data)
 
 
-def acceptForDoctorApproval(request, t_no):
+def acceptForDoctorApproval(request):
+    t_no = request.POST.get("t_no")
     if Transaction.objects.filter(transaction_id=t_no).exists():
         transaction = Transaction.objects.get(transaction_id=t_no)
-        transaction.status = "Waiting for Doctor Approval"
-        # transaction.save()
-        return HttpResponse(
-            "you are viewing transaction no "
-            + str(t_no)
-            + " : "
-            + str(transaction.status)
-            + " : "
-            + str(transaction.form.user.user.username)
-        )
+        transaction.status = "Waiting Doctor approval"
+        transaction.save()
+        return HttpResponseRedirect("/user/hcadmin_dashboard")
     else:
         return HttpResponse("Something is wrong")
 
@@ -314,7 +308,7 @@ def rejectFormByHC(request):
     t_no = request.POST.get("t_no")
     if Transaction.objects.filter(transaction_id=t_no).exists():
         transaction = Transaction.objects.get(transaction_id=t_no)
-        transaction.status = "Rejected"
+        transaction.status = "Rejected by HC Admin"
         # update corresponding feedback
         transaction.save()
         return HttpResponseRedirect("/user/hcadmin_dashboard")
@@ -339,7 +333,7 @@ def rejectByDoctor(request):
     t_no = request.POST.get("t_no")
     if Transaction.objects.filter(transaction_id=t_no).exists():
         transaction = Transaction.objects.get(transaction_id=t_no)
-        transaction.status = "Rejected"
+        transaction.status = "Rejected by Doctor"
         # update corresponding feedback
         transaction.save() 
         return HttpResponseRedirect("/user/doctor_dashboard")
@@ -364,7 +358,7 @@ def rejectByAccounts(request):
     t_no = request.POST.get("t_no")
     if Transaction.objects.filter(transaction_id=t_no).exists():
         transaction = Transaction.objects.get(transaction_id=t_no)
-        transaction.status = "Rejected"
+        transaction.status = "Rejected by Accounts"
         # update corresponding feedback
         transaction.save()
         return HttpResponseRedirect("/user/accounts_dashboard")

@@ -14,6 +14,7 @@ urlpatterns = [
     path("accounts_dashboard", views.accounts_dashboard_display, name="accounts_dashboard_display"),
     path("form", views.form, name="form"),
     path("form/formsubmit",views.submitForm,name="formsubmit"),
+    path("hcadmin_dashboard/acceptForDoctorApproval", views.acceptForDoctorApproval, name="acceptForDoctorApproval"),
     path("hcadmin_dashboard/acceptFormByHC", views.acceptFormByHC, name="acceptFormByHC"),
     path("hcadmin_dashboard/rejectFormByHC", views.rejectFormByHC, name="rejectFormByHC"),
     path("doctor_dashboard/acceptByDoctor", views.acceptByDoctor, name="acceptByDoctor"),
