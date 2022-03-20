@@ -157,7 +157,7 @@
                                             {%endfor%}
                                         </select>
                                     </div>
-                                    <div class="form-group col-md-2"><input type="number" class="form-control" placeholder="Quantity" id="quantity-1" onchange="setTotPrice();" min="1" autocomplete="off" disabled></div>
+                                    <div class="form-group col-md-2"><input type="number" class="form-control" placeholder="Quantity" id="quantity-1" name="quantity-1" onchange="setTotPrice();" min="1" autocomplete="off" disabled></div>
                                     <div class="form-group col-md-2"><input type="text" class="form-control" placeholder="Price (in Rs.)" name="price-1" id="price-1" autocomplete="off" disabled></div>
                                     <div class="col-md-1" disabled>
                                         <button class="btn btn-danger" id="DeleteRow" type="button" disabled>
@@ -270,7 +270,7 @@
         $("#rowAdder").click(function () {
             var row = document.querySelectorAll('[id^=price-]').length + 1;
             newRowAdd =
-                    '<div class="mb-3" id="deltarget"><div class="form-row" id="atle"><center><div class="form-group col-md-6"><select class="form-select form-control form-select-lg mb-3" aria-label=".form-select-lg" id="medicine-'+ row +'" name="medicine-'+ row +'" onchange="setPrice(this.options[this.selectedIndex].id, ' + row + '); setTotPrice();"><option id="" selected>Name of Medicine</option>{% for medicine in medicines %}<option id="{{medicine.price}}" value="{{medicine.medicine_id}}" name="hc_medical_advisor">{{medicine.medicine_name}}</option>{%endfor%}</select></div><div class="form-group col-md-2"><input type="number" class="form-control" placeholder="Quantity" id="quantity-'+ row +'" onchange="setTotPrice();" min="1" disabled></div><div class="form-group col-md-2"><input type="text" class="form-control" placeholder="Price (in Rs.)" name="price-'+row+'" id="price-'+row+'" disabled></div><div class="col-md-1" disabled><button class="btn btn-danger" id="DeleteRow" type="button"><i class="bi bi-trash"></i>Delete</button></div></center></div></div>'
+                    '<div class="mb-3" id="deltarget"><div class="form-row" id="atle"><center><div class="form-group col-md-6"><select class="form-select form-control form-select-lg mb-3" aria-label=".form-select-lg" id="medicine-'+ row +'" name="medicine-'+ row +'" onchange="setPrice(this.options[this.selectedIndex].id, ' + row + '); setTotPrice();"><option id="" selected>Name of Medicine</option>{% for medicine in medicines %}<option id="{{medicine.price}}" value="{{medicine.medicine_id}}" name="hc_medical_advisor">{{medicine.medicine_name}}</option>{%endfor%}</select></div><div class="form-group col-md-2"><input type="number" class="form-control" placeholder="Quantity" id="quantity-'+ row +'" name="quantity-'+ row +'"  onchange="setTotPrice();" min="1" disabled></div><div class="form-group col-md-2"><input type="text" class="form-control" placeholder="Price (in Rs.)" name="price-'+row+'" id="price-'+row+'" disabled></div><div class="col-md-1" disabled><button class="btn btn-danger" id="DeleteRow" type="button"><i class="bi bi-trash"></i>Delete</button></div></center></div></div>'
                 ;
 
             $('#newinput').append(newRowAdd);

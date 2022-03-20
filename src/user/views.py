@@ -191,10 +191,10 @@ def submitForm(request):
             form.save();
             no_med = int(request.POST.get("n_med"));
             no_test = int(request.POST.get("n_test"));
-            for i in range(1,no_med):
+            for i in range(1,no_med+1):
                 formmedicine = FormMedicine(form=form, medicine=Medicine.objects.get(medicine_id=request.POST.get("medicine-"+str(i))), quantity=request.POST.get("quantity-"+str(i)));
                 formmedicine.save()
-            for i in range(1,no_test):
+            for i in range(1,no_test+1):
                 formtest = FormTest(form=form, test=Test.objects.get(test_id=request.POST.get("test-"+str(i))), cost=request.POST.get("charge-"+str(i)));
                 formtest.save();
             transaction = Transaction(
@@ -202,7 +202,8 @@ def submitForm(request):
             );
             # user feedback
             transaction.save();
-            return HttpResponse("form submitted" + str(form))
+            return HttpResponseRedirect("patient_dashboard")
+            # return HttpResponse("form submitted" + str(form))
             # return redirect('form_detail', pk=form.pk)
         else:
             messages.warning(request, "Please login first to fill reimbursement form!")
@@ -407,6 +408,9 @@ def register_any_user(request):
             role = request.POST.get("role")
             if User.objects.filter(username=username).exists():
                 messages.error(request, "Username already in use!")
+                return HttpResponseRedirect("/user/hcadmin_dashboard/signup_admin")
+            elif User.objects.filter(roll=roll).exists():
+                messages.error(request, "Roll Number already in use!")
                 return HttpResponseRedirect("/user/hcadmin_dashboard/signup_admin")
             else:
                 user = User()
