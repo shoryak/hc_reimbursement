@@ -68,6 +68,12 @@ def registerPatient(request):
             if User.objects.filter(username=username).exists():
                 messages.error(request, "Username already in use!")
                 return HttpResponseRedirect("/user/signup")
+            elif User.objects.filter(roll=roll).exists():
+                messages.error(request, "User with this roll already exits!")
+                return HttpResponseRedirect("/user/signup")
+            elif User.objects.filter(email=email).exists():
+                messages.error(request, "User with this email already exits!")
+                return HttpResponseRedirect("/user/signup")
             else:
                 user = User(roles="patient")
                 user.name = name
@@ -175,14 +181,14 @@ def submitForm(request):
         user = IsLoggedIn(request)
         if user is not None:
             form = Form()
-            form.patient = Patient.objects.get(user=IsLoggedIn(request));
-            form.patient_name = request.POST.get("patient_name");
-            form.relationship = request.POST.get("relationship");
+            form.patient = Patient.objects.get(user=IsLoggedIn(request))
+            form.patient_name = request.POST.get("patient_name")
+            form.relationship = request.POST.get("relationship")
             form.hc_medical_advisor = Doctor.objects.get(doctor_id=request.POST.get("hc_medical_advisor"));
-            form.consultation_date = request.POST.get("con_date");
-            form.referral_advisor = request.POST.get("specialist");
-            form.consultation_fees = request.POST.get("con-charge");
-            form.consultation_visits = request.POST.get("visits");
+            form.consultation_date = request.POST.get("con_date")
+            form.referral_advisor = request.POST.get("specialist")
+            form.consultation_fees = request.POST.get("con-charge")
+            form.consultation_visits = request.POST.get("visits")
             form.created_date = timezone.now();
             # if form.is_valid():
             #     form_application=form.save(commit=False)
@@ -194,10 +200,10 @@ def submitForm(request):
                 formmedicine.save()
             for i in range(1,no_test+1):
                 formtest = FormTest(form=form, test=Test.objects.get(test_id=request.POST.get("test-"+str(i))), cost=request.POST.get("charge-"+str(i)));
-                formtest.save();
+                formtest.save()
             transaction = Transaction(
                 status="Form submitted", form=form, feedback="", created_date=timezone.now(), reimbursement_amount = request.POST.get("total")
-            );
+            )
             # user feedback
             transaction.save();
             return HttpResponseRedirect("patient_dashboard")
@@ -324,6 +330,7 @@ def acceptForDoctorApproval(request):
         transaction = Transaction.objects.get(transaction_id=t_no)
         transaction.status = "Waiting Doctor approval"
         transaction.feedback = feedback
+        transaction.admin_update_date = timezone.now()
         transaction.save()
         return HttpResponseRedirect("/user/hcadmin_dashboard")
     else:
@@ -405,6 +412,7 @@ def rejectByAccounts(request):
         transaction = Transaction.objects.get(transaction_id=t_no)
         transaction.status = "Rejected by Accounts"
         transaction.feedback = feedback
+        transaction.account_approve_date = timezone.now()
         transaction.save()
         return HttpResponseRedirect("/user/accounts_dashboard")
     else:
