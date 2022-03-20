@@ -80,7 +80,7 @@ class Transaction(models.Model):
     form = models.ForeignKey(Form, on_delete=models.CASCADE)
     status = models.CharField(max_length=50)
     reimbursement_amount = models.IntegerField()
-    # Form submitted, Waiting Doctor approval, Waiting HC Admin approval, Sent to Accounts,  Approved by Accounts, Rejected
+    # Form submitted, Waiting Doctor approval, Waiting HC Admin approval, Sent to Accounts,  Approved by Accounts, Rejected by Doctor, Rejected by HC Admin, Rejected by Accounts
     feedback = models.CharField(max_length=400)
     created_date = models.DateTimeField(default=timezone.now)
     admin_update_date = models.DateTimeField()

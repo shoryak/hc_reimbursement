@@ -42,7 +42,7 @@ def login(request):
             return HttpResponseRedirect("/user/accounts_dashboard")
         else:
             messages.error(request, "Invalid user")
-            return HttpResponseRedirect("/user")
+            return HttpResponseRedirect("/user/logout")
 
 
 def patientsignup(request):
@@ -137,9 +137,7 @@ def logout(request):
     if request.method == "GET":
         if IsLoggedIn(request) is not None:
             del request.session["username"]
-            return HttpResponseRedirect("/user")
-        else:
-            return HttpResponseRedirect("/user")
+        return HttpResponseRedirect("/user/")
 
 
 def patient(request):
@@ -175,7 +173,7 @@ def form(request):
 def submitForm(request):
     if request.method == "POST":
         user = IsLoggedIn(request)
-        if IsLoggedIn(request) is not None:
+        if user is not None:
             form = Form()
             form.user = user
             # form.userid=user.username
@@ -199,6 +197,14 @@ def submitForm(request):
 
 def doctor_dashboard_display(request):
     user = IsLoggedIn(request)
+    """
+    if user is None:
+        messages.warning(request, "Please login first!")
+        return HttpResponseRedirect("/user")
+    if user.roles is not "doctor":
+        messages.warning(request, "You do not have access to this page!")
+        return HttpResponseRedirect("/user")
+    """
     data = {"doctor": None, "items": []}
     for d in Doctor.objects.all():
         if d.user == user:
@@ -220,6 +226,14 @@ def doctor_dashboard_display(request):
 # displaying dashboards
 def patient_dashboard_display(request):
     user = IsLoggedIn(request)
+    """
+    if user is None:
+        messages.warning(request, "Please login first!")
+        return HttpResponseRedirect("/user")
+    if user.roles is not "patient":
+        messages.warning(request, "You do not have access to this page!")
+        return HttpResponseRedirect("/user")
+    """
     data = {"patient": None, "items": []}
     for p in Patient.objects.all():
         if p.user == user:
@@ -240,6 +254,14 @@ def patient_dashboard_display(request):
 
 def hcadmin_dashboard_display(request):
     user = IsLoggedIn(request)
+    """
+    if user is None:
+        messages.warning(request, "Please login first!")
+        return HttpResponseRedirect("/user")
+    if user.roles is not "hcadmin":
+        messages.warning(request, "You do not have access to this page!")
+        return HttpResponseRedirect("/user")
+    """
     data = {"hcadmin": None, "items": []}
     for hc in HCAdmin.objects.all():
         if hc.user == user:
@@ -259,6 +281,14 @@ def hcadmin_dashboard_display(request):
 
 def accounts_dashboard_display(request):
     user = IsLoggedIn(request)
+    """
+    if user is None:
+        messages.warning(request, "Please login first!")
+        return HttpResponseRedirect("/user")
+    if user.roles is not "accounts":
+        messages.warning(request, "You do not have access to this page!")
+        return HttpResponseRedirect("/user")
+    """
     data = {"accounts": None, "items": []}
     for acc in Accounts.objects.all():
         if acc.user == user:
@@ -277,26 +307,24 @@ def accounts_dashboard_display(request):
 
 def acceptForDoctorApproval(request):
     t_no = request.POST.get("t_no")
+    feedback = request.POST.get("feedback")
     if Transaction.objects.filter(transaction_id=t_no).exists():
         transaction = Transaction.objects.get(transaction_id=t_no)
         transaction.status = "Waiting Doctor approval"
+        transaction.feedback = feedback
         transaction.save()
         return HttpResponseRedirect("/user/hcadmin_dashboard")
     else:
         return HttpResponse("Something is wrong")
 
 
-# accept, reject and view form logic
-def viewRequest(request):
-    pass
-
-
 def acceptFormByHC(request):
     t_no = request.POST.get("t_no")
+    transaction.feedback = feedback
     if Transaction.objects.filter(transaction_id=t_no).exists():
         transaction = Transaction.objects.get(transaction_id=t_no)
         transaction.status = "Sent to Accounts"
-        # update corresponding feedback
+        transaction.feedback = feedback
         transaction.account_sent_date = timezone.now()
         transaction.save()
         return HttpResponseRedirect("/user/hcadmin_dashboard")
@@ -306,10 +334,11 @@ def acceptFormByHC(request):
 
 def rejectFormByHC(request):
     t_no = request.POST.get("t_no")
+    feedback = request.POST.get("feedback")
     if Transaction.objects.filter(transaction_id=t_no).exists():
         transaction = Transaction.objects.get(transaction_id=t_no)
         transaction.status = "Rejected by HC Admin"
-        # update corresponding feedback
+        transaction.feedback = feedback
         transaction.save()
         return HttpResponseRedirect("/user/hcadmin_dashboard")
     else:
@@ -318,10 +347,11 @@ def rejectFormByHC(request):
 
 def acceptByDoctor(request):
     t_no = request.POST.get("t_no")
+    feedback = request.POST.get("feedback")
     if Transaction.objects.filter(transaction_id=t_no).exists():
         transaction = Transaction.objects.get(transaction_id=t_no)
         transaction.status = "Waiting HC Admin approval"
-        # update corresponding feedback
+        transaction.feedback = feedback
         transaction.doctor_update_date = timezone.now()
         transaction.save()
         return HttpResponseRedirect("/user/doctor_dashboard")
@@ -331,10 +361,11 @@ def acceptByDoctor(request):
 
 def rejectByDoctor(request):
     t_no = request.POST.get("t_no")
+    feedback = request.POST.get("feedback")
     if Transaction.objects.filter(transaction_id=t_no).exists():
         transaction = Transaction.objects.get(transaction_id=t_no)
         transaction.status = "Rejected by Doctor"
-        # update corresponding feedback
+        transaction.feedback = feedback
         transaction.save() 
         return HttpResponseRedirect("/user/doctor_dashboard")
     else:
@@ -343,10 +374,11 @@ def rejectByDoctor(request):
 
 def acceptByAccounts(request):
     t_no = request.POST.get("t_no")
+    feedback = request.POST.get("feedback")
     if Transaction.objects.filter(transaction_id=t_no).exists():
         transaction = Transaction.objects.get(transaction_id=t_no)
         transaction.status = "Approved by Accounts"
-        # update corresponding feedback
+        transaction.feedback = feedback
         transaction.account_approve_date = timezone.now()
         transaction.save()
         return HttpResponseRedirect("/user/accounts_dashboard")
@@ -356,10 +388,11 @@ def acceptByAccounts(request):
 
 def rejectByAccounts(request):
     t_no = request.POST.get("t_no")
+    feedback = request.POST.get("feedback")
     if Transaction.objects.filter(transaction_id=t_no).exists():
         transaction = Transaction.objects.get(transaction_id=t_no)
         transaction.status = "Rejected by Accounts"
-        # update corresponding feedback
+        transaction.feedback = feedback
         transaction.save()
         return HttpResponseRedirect("/user/accounts_dashboard")
     else:
