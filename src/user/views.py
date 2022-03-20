@@ -527,6 +527,105 @@ def update_patient_profile(request):
             patient.save()
             return HttpResponseRedirect("/user/patient_dashboard/patient_profile")
 
+def doctor_profile(request):
+    user = IsLoggedIn(request)
+    if user is None:
+        return HttpResponseRedirect("/user")
+    else:
+        data = {"doctor": None}
+        for p in Doctor.objects.all():
+            if p.user == user:
+                data["doctor"] = p
+                break
+        return render(request, "doctor_profile.html", data)
+
+def update_doctor_profile(request):
+    user = IsLoggedIn(request)
+    if user is None:
+        return HttpResponseRedirect("/user")
+    else:
+        if(user.roles != "doctor"):
+            return HttpResponseRedirect("/user")
+        else:
+            username = user.username
+            contact = request.POST.get("contact")
+            address = request.POST.get("address")
+            specialization = request.POST.get("specialization")
+            
+            # return HttpResponse(str(username) + " " + str(contact))
+            userp = User.objects.get(username=username)
+            userp.contact = contact
+            userp.address = address
+            userp.save()
+
+            doctor = Doctor.objects.get(user=user) 
+            doctor.specialization=specialization
+            doctor.save()
+            return HttpResponseRedirect("/user/doctor_dashboard/doctor_profile")
+
+def hcadmin_profile(request):
+    user = IsLoggedIn(request)
+    if user is None:
+        return HttpResponseRedirect("/user")
+    else:
+        data = {"hcadmin": None}
+        for p in HCAdmin.objects.all():
+            if p.user == user:
+                data["hcadmin"] = p
+                break
+        return render(request, "hcadmin_profile.html", data)
+
+def update_hcadmin_profile(request):
+    user = IsLoggedIn(request)
+    if user is None:
+        return HttpResponseRedirect("/user")
+    else:
+        if(user.roles != "hcadmin"):
+            return HttpResponseRedirect("/user")
+        else:
+            username = user.username
+            contact = request.POST.get("contact")
+            address = request.POST.get("address")
+            
+            # return HttpResponse(str(username) + " " + str(contact))
+            userp = User.objects.get(username=username)
+            userp.contact = contact
+            userp.address = address
+            userp.save()
+
+            return HttpResponseRedirect("/user/hcadmin_dashboard/hcadmin_profile")
+
+def accounts_profile(request):
+    user = IsLoggedIn(request)
+    if user is None:
+        return HttpResponseRedirect("/user")
+    else:
+        data = {"accounts": None}
+        for p in Accounts.objects.all():
+            if p.user == user:
+                data["accounts"] = p
+                break
+        return render(request, "accounts_profile.html", data)
+
+def update_accounts_profile(request):
+    user = IsLoggedIn(request)
+    if user is None:
+        return HttpResponseRedirect("/user")
+    else:
+        if(user.roles != "accounts"):
+            return HttpResponseRedirect("/user")
+        else:
+            username = user.username
+            contact = request.POST.get("contact")
+            address = request.POST.get("address")
+            
+            # return HttpResponse(str(username) + " " + str(contact))
+            userp = User.objects.get(username=username)
+            userp.contact = contact
+            userp.address = address
+            userp.save()
+
+            return HttpResponseRedirect("/user/accounts_dashboard/accounts_profile")
 
 # displaying dashboards
 # def patient_dashboard_display(request):
