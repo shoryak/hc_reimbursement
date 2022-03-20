@@ -320,7 +320,7 @@ def acceptForDoctorApproval(request):
 
 def acceptFormByHC(request):
     t_no = request.POST.get("t_no")
-    transaction.feedback = feedback
+    feedback = request.POST.get("feedback")
     if Transaction.objects.filter(transaction_id=t_no).exists():
         transaction = Transaction.objects.get(transaction_id=t_no)
         transaction.status = "Sent to Accounts"
@@ -366,7 +366,7 @@ def rejectByDoctor(request):
         transaction = Transaction.objects.get(transaction_id=t_no)
         transaction.status = "Rejected by Doctor"
         transaction.feedback = feedback
-        transaction.save() 
+        transaction.save()
         return HttpResponseRedirect("/user/doctor_dashboard")
     else:
         return HttpResponseRedirect("/user/doctor_dashboard")
@@ -398,7 +398,8 @@ def rejectByAccounts(request):
     else:
         return HttpResponseRedirect("/user/accounts_dashboard")
 
-# allowing hcadmin to register any user 
+
+# allowing hcadmin to register any user
 def adminsignup(request):
     user = IsLoggedIn(request)
     if user is None:
@@ -413,6 +414,7 @@ def adminsignup(request):
             return render(request, "signup_admin.html", data)
         else:
             return HttpResponseRedirect("/user")
+
 
 def register_any_user(request):
     user = IsLoggedIn(request)
@@ -439,16 +441,16 @@ def register_any_user(request):
                 user.designation = designation
                 user.roles = role
                 user.save()
-                if(role == "patient"):
+                if role == "patient":
                     patient = Patient(user=user, department=department)
                     patient.save()
-                elif(role == "doctor"):
+                elif role == "doctor":
                     doctor = Doctor(user=user)
                     doctor.save()
-                elif(role == "hcadmin"):
+                elif role == "hcadmin":
                     hcadmin = HCAdmin(user=user)
                     hcadmin.save()
-                elif(role == "accounts"):  
+                elif role == "accounts":
                     accounts = Accounts(user=user)
                     accounts.save()
                 else:
@@ -459,6 +461,7 @@ def register_any_user(request):
                 return HttpResponseRedirect("/user/hcadmin_dashboard/signup_admin")
     else:
         return HttpResponseRedirect("/user")
+
 
 def patient_profile(request):
     user = IsLoggedIn(request)
@@ -472,12 +475,13 @@ def patient_profile(request):
                 break
         return render(request, "patient_profile.html", data)
 
+
 def update_patient_profile(request):
     user = IsLoggedIn(request)
     if user is None:
         return HttpResponseRedirect("/user")
     else:
-        if(user.roles != "patient"):
+        if user.roles != "patient":
             return HttpResponseRedirect("/user")
         else:
             username = user.username
@@ -486,17 +490,17 @@ def update_patient_profile(request):
             bank_name = request.POST.get("bank_name")
             bank_IFSC = request.POST.get("bank_IFSC")
             bank_AC = request.POST.get("bank_AC")
-            
+
             # return HttpResponse(str(username) + " " + str(contact))
             userp = User.objects.get(username=username)
             userp.contact = contact
             userp.address = address
             userp.save()
 
-            patient = Patient.objects.get(user=user) 
-            patient.bank_name=bank_name
-            patient.bank_IFSC=bank_IFSC
-            patient.bank_AC=bank_AC
+            patient = Patient.objects.get(user=user)
+            patient.bank_name = bank_name
+            patient.bank_IFSC = bank_IFSC
+            patient.bank_AC = bank_AC
             patient.save()
             return HttpResponseRedirect("/user/patient_dashboard/patient_profile")
 
@@ -561,7 +565,6 @@ def update_patient_profile(request):
 #                 return HttpResponseRedirect("/user")
 #     else:
 #         return HttpResponseRedirect("/user/patient_dashboard")
-
 
 
 def viewProfile(request):

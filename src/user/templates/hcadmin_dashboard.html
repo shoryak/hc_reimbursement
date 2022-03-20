@@ -268,7 +268,7 @@
                                                                   <div class="modal-header">
                                                                     <h5 class="modal-title" id="AcceptModal{{item.transaction.transaction_id}}">Do you want to accept the form?</h5>
                                                                   </div>
-                                                                  <form action="accounts_dashboard/acceptForDoctorApproval" method="post">
+                                                                  <form action="hcadmin_dashboard/acceptForDoctorApproval" method="post">
                                                                     {% csrf_token %}
                                                                       <div class="modal-body">
                                                                         <div class="form-group col-md-12">
@@ -293,7 +293,7 @@
                                                                   <div class="modal-header">
                                                                     <h3 class="modal-title" id="RejectDisplayModal{{item.transaction.transaction_id}}">Do you want to reject the form?</h3>
                                                                   </div>
-                                                                  <form action="accounts_dashboard/rejectFormByHC" method="post">
+                                                                  <form action="hcadmin_dashboard/rejectFormByHC" method="post">
                                                                     {% csrf_token %}
                                                                       <div class="modal-body">
                                                                         <div class="form-group col-md-12">
@@ -689,7 +689,7 @@
                                                                   <div class="modal-header">
                                                                     <h3 class="modal-title" id="AcceptDisplayModal{{item.transaction.transaction_id}}">Do you want to accept the form?</h3>
                                                                   </div>
-                                                                  <form action="accounts_dashboard/acceptFormByHC" method="post">
+                                                                  <form action="hcadmin_dashboard/acceptFormByHC" method="post">
                                                                     {% csrf_token %}
                                                                       <div class="modal-body">
                                                                         <div class="form-group col-md-12">
@@ -714,7 +714,7 @@
                                                                   <div class="modal-header">
                                                                     <h3 class="modal-title" id="RejectDisplayModal">Do you want to reject the form?</h3>
                                                                   </div>
-                                                                  <form action="accounts_dashboard/rejectFormByHC" method="post">
+                                                                  <form action="hcadmin_dashboard/rejectFormByHC" method="post">
                                                                     {% csrf_token %}
                                                                       <div class="modal-body">
                                                                         <div class="form-group col-md-12">
