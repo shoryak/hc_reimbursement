@@ -52,10 +52,8 @@
           <div class="container">
             <h4 style="line-height: 50px;"><strong>Details of Patient and Employee</strong></h4>
             
-            <!-- need to update this with proper names -->
-            <!-- <form action = "form/formsubmit" method = "post" margin-top: 20px;"> -->
-            <form margin-top: 20px;">
-                    {% csrf_token %}
+            <form style="margin-top: 20px;" id ="reimbursement-form" method="post" action="/user/formsubmit">
+                {% csrf_token %}
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="inputEmail4">Full Name</label>
@@ -99,11 +97,11 @@
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="inputEmail4">Name of Patient</label>
-                        <input type="text" class="form-control" id="inputEmail4" placeholder="Name" required>
+                        <input type="text" class="form-control" id="inputEmail4" placeholder="Name" name="patient_name" required>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="inputPassword4">Relation to Employee</label>
-                        <input type="text" class="form-control" id="inputPassword4" placeholder="Relationship" required>
+                        <input type="text" class="form-control" id="inputPassword4" placeholder="Relationship" name="relationship" required>
                     </div>
                 </div>
                 <div class="push"></div>
@@ -113,35 +111,35 @@
                 <div class="mb-3">
                     <div class="form-row">
                         <div class="form-group col-md-4">
-                            <label for="inputEmail5">Name of Medical Advisor</label>
-                            <select class="form-select form-control form-select-lg mb-3" aria-label=".form-select-lg" id="inputEmail5" name="hc_medical_advisor">
-                                <option selected>Name of Medical Advisor</option>
+                            <label for="hc_medical_advisor">Name of HC Medical Advisor</label>
+                            <select class="form-select form-control form-select-lg mb-3" aria-label=".form-select-lg" id="hc_medical_advisor" name="hc_medical_advisor" onchange="setSpecialization(this.options[this.selectedIndex].id)" autocomplete="off">
+                                <option id="" selected>Name of Medical Advisor</option>
                                 {% for doctor in doctors %}
-                                <option value="{{doctor.doctor_id}}" name="hc_medical_advisor">{{doctor.user.name}}</option>
+                                <option id="{{doctor.specialization}}" value="{{doctor.doctor_id}}" name="hc_medical_advisor">{{doctor.user.name}}</option>
                                 {%endfor%}
                             </select>
                         </div>
                         <div class="form-group col-md-3">
-                            <!-- <label for="inputEmail5">Specialization</label>
-                            <input type="text" class="form-control" id="inputEmail5" placeholder="Specialization"> -->
+                            <label for="specialisation">Specialization</label>
+                            <input type="text" class="form-control" id="specialisation" placeholder="Specialization" autocomplete="off" disabled>
                         </div>
                         <div class="form-group col-md-3">
                             <label for="inputPassword6">Date of consultation</label>
-                            <input type="date" class="form-control" ,placeholder="DD/MM/YYYY">
+                            <input type="date" class="form-control" placeholder="DD/MM/YYYY" autocomplete="off" id="con_date" name="con_date" disabled>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="inputEmail5">Referred to</label>
-                            <input type="text" class="form-control" id="inputEmail5" placeholder="Name of Specialist">
+                            <input type="text" class="form-control" id="specialist" placeholder="Name of Specialist" autocomplete="off" name="specialist">
                         </div>
                         <div class="form-group col-md-3">
                             <label for="inputPassword6">Consultation fees</label>
-                            <input type="text" class="form-control" placeholder="Fees (in Rs.)">
+                            <input type="text" class="form-control" placeholder="Fees (in Rs.)" autocomplete="off" id="con-charge" name="con-charge" onchange="setTotal();">
                         </div>
                         <div class="form-group col-md-3">
                             <label for="inputPassword6">Number of visits</label>
-                            <input type="text" class="form-control" placeholder="Visits">
+                            <input type="number" class="form-control" placeholder="Visits" autocomplete="off" id="visits" name="visits" min="1" value="1" onchange="setTotal();">
                         </div>
                     </div>
                 </div>
@@ -152,17 +150,16 @@
                             <div class="form-row" id="atle">
                                 <center>
                                     <div class="form-group col-md-6">
-                                        <!-- <input type="text" class="form-control" placeholder="Name of Medicine"> -->
-                                        <select class="form-select form-control form-select-lg mb-3" aria-label=".form-select-lg" id="inputEmail5" name="hc_medical_advisor">
-                                            <option selected>Name of Medicine</option>
+                                        <select class="form-select form-control form-select-lg mb-3" aria-label=".form-select-lg" id="medicine-1" name="medicine-1" onchange="setPrice(this.options[this.selectedIndex].id, 1); setTotPrice();" autocomplete="off">
+                                            <option id="" selected>Name of Medicine</option>
                                             {% for medicine in medicines %}
-                                            <option value="{{medicine.medicine_id}}" name="medicine_name">{{medicine.medicine_name}}</option>
+                                            <option id="{{medicine.price}}" value="{{medicine.medicine_id}}" name="medicine">{{medicine.medicine_name}}</option>
                                             {%endfor%}
                                         </select>
                                     </div>
-                                    <div class="form-group col-md-2"><input type="number" class="form-control" placeholder="Quantity"></div>
-                                    <div class="form-group col-md-2"><input type="text" class="form-control" placeholder="Price (in Rs.)"></div>
-                                    <div class="col-md-1">
+                                    <div class="form-group col-md-2"><input type="number" class="form-control" placeholder="Quantity" id="quantity-1" name="quantity-1" onchange="setTotPrice();" min="1" autocomplete="off" disabled></div>
+                                    <div class="form-group col-md-2"><input type="text" class="form-control" placeholder="Price (in Rs.)" name="price-1" id="price-1" autocomplete="off" disabled></div>
+                                    <div class="col-md-1" disabled>
                                         <button class="btn btn-danger" id="DeleteRow" type="button" disabled>
                                             <i class="bi bi-trash"></i>
                                             Delete
@@ -180,7 +177,7 @@
                                     </span> ADD
                                 </button>
                             </div> 
-                            <div class="form-group col-md-offset-2 col-md-2"><input type="text" class="form-control" placeholder="Total Price (in Rs.)"></div>
+                            <div class="form-group col-md-offset-2 col-md-2"><input type="text" class="form-control" placeholder="Total Price (in Rs.)" id="tot-price" value="0.00" autocomplete="off" onchange="setTotal();" disabled></div>
                         </div>
                     </div>
                 </div>
@@ -192,16 +189,15 @@
                             <div class="form-row" id="atle">
                                 <center>
                                     <div class="form-group col-md-4">
-                                        <!-- <input type="text" class="form-control" placeholder="Test Name"> -->
-                                        <select class="form-select form-control form-select-lg mb-3" aria-label=".form-select-lg" id="inputEmail5" name="hc_medical_advisor">
+                                        <select class="form-select form-control form-select-lg mb-3" aria-label=".form-select-lg" id="test-1" name="test-1" autocomplete="off">
                                             <option selected>Name of Test</option>
                                             {% for test in tests %}
-                                            <option value="{{test.test_id}}" name="medicine_name">{{test.test_name}}</option>
+                                            <option value="{{test.test_id}}" name="test">{{test.test_name}}</option>
                                             {%endfor%}
                                         </select>
                                     </div>
-                                    <div class="form-group col-md-4"><input type="text" class="form-control" placeholder="Laboratory"></div>
-                                    <div class="form-group col-md-2"><input type="text" class="form-control" placeholder="Charges (in Rs.)"></div>
+                                    <div class="form-group col-md-4"><input type="text" class="form-control" placeholder="Laboratory" name="lab-1" autocomplete="off"></div>
+                                    <div class="form-group col-md-2"><input type="text" class="form-control" placeholder="Charges (in Rs.)" id="charge-1" name="charge-1" onchange="setTotalCharge();" autocomplete="off"></div>
                                     <div class="col-md-1">
                                         <button class="btn btn-danger" id="DeleteRow2" type="button" disabled>
                                             <i class="bi bi-trash"></i>
@@ -220,7 +216,7 @@
                                     </span> ADD
                                 </button>
                             </div> 
-                            <div class="form-group col-md-offset-2 col-md-2"><input type="text" class="form-control" placeholder="Total Charges (in Rs.)"></div>
+                            <div class="form-group col-md-offset-2 col-md-2"><input type="text" class="form-control" placeholder="Total Charges (in Rs.)" id="tot-charge" value="0.00" autocomplete="off" disabled></div>
                         </div>
                     </div>
                 </div>
@@ -230,19 +226,7 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="inputAddress">Total Amount Claimed</label>
-                        <input type="number" class="form-control" id="inputAddress" placeholder="Claim Amount(in Rs.)" required>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="inputAddress">Advance Taken</label>
-                        <input type="number" class="form-control" id="inputAddress" placeholder="Advance Amount(in Rs.)" required>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="inputAddress">Net Amount Claimed</label>
-                        <input type="number" class="form-control" id="inputAddress" placeholder="Net Claim Amount(in Rs.)" required>
+                        <input type="text" class="form-control" id="total" name="total" placeholder="Claim Amount(in Rs.)" value="0.00" autocomplete="off">
                     </div>
                 </div>
             </div>
@@ -252,10 +236,12 @@
                 <div class="form-row">
                     <div class="col-md-offset-3 form-group">
                         <label for="exampleFormControlFile1">Attach receipts here(as one pdf file)</label> <br>
-                        <input type="file" class="form-control-file" id="exampleFormControlFile1" required>
+                        <input type="file" class="form-control-file" id="exampleFormControlFile1">
                     </div>
                 </div>
             </div>
+            <input type="text" value="0" name="n_med" id="n_med" value="0">
+            <input type="text" value="0" name="n_test" id="n_test" value="0">
             <div class="mb-3" style="margin-top:50px;">
                 <div class="form-row">
                     <div class="col-md-offset-4 col-md-4 form-group" align="center">
@@ -282,29 +268,93 @@
     </footer>
     <script type="text/javascript">
         $("#rowAdder").click(function () {
-        newRowAdd =
-                '<div class="mb-3" id="deltarget"><div class="form-row"><center><div class="form-group col-md-6"> <select class="form-select form-control form-select-lg mb-3" aria-label=".form-select-lg" id="inputEmail5" name="hc_medical_advisor"> <option selected>Name of Medicine</option> {% for medicine in medicines %} <option value="{{medicine.medicine_id}}" name="medicine_name">{{medicine.medicine_name}}</option> {%endfor%} </select> </div><div class="form-group col-md-2"><input type="number" class="form-control" placeholder="Quantity"></div><div class="form-group col-md-2"><input type="text" class="form-control" placeholder="Price (in Rs.)"></div> <div class="form-group col-md-1"><button class="btn btn-danger" id="DeleteRow" type="button"><i class="bi bi-trash"></i>Delete</button></div></center></div></div><div></div>'
-            ;
+            var row = document.querySelectorAll('[id^=price-]').length + 1;
+            newRowAdd =
+                    '<div class="mb-3" id="deltarget"><div class="form-row" id="atle"><center><div class="form-group col-md-6"><select class="form-select form-control form-select-lg mb-3" aria-label=".form-select-lg" id="medicine-'+ row +'" name="medicine-'+ row +'" onchange="setPrice(this.options[this.selectedIndex].id, ' + row + '); setTotPrice();"><option id="" selected>Name of Medicine</option>{% for medicine in medicines %}<option id="{{medicine.price}}" value="{{medicine.medicine_id}}" name="hc_medical_advisor">{{medicine.medicine_name}}</option>{%endfor%}</select></div><div class="form-group col-md-2"><input type="number" class="form-control" placeholder="Quantity" id="quantity-'+ row +'" name="quantity-'+ row +'"  onchange="setTotPrice();" min="1" disabled></div><div class="form-group col-md-2"><input type="text" class="form-control" placeholder="Price (in Rs.)" name="price-'+row+'" id="price-'+row+'" disabled></div><div class="col-md-1" disabled><button class="btn btn-danger" id="DeleteRow" type="button"><i class="bi bi-trash"></i>Delete</button></div></center></div></div>'
+                ;
 
-        $('#newinput').append(newRowAdd);
+            $('#newinput').append(newRowAdd);
+            document.getElementById("n_med").value = String(Number(document.getElementById("n_med").value) + 1);
         });
 
         $("body").on("click", "#DeleteRow", function () {
         $(this).parents("#deltarget").remove();
+        setTotPrice();
+        document.getElementById("n_med").value = String(Number(document.getElementById("n_med").value) - 1); 
         })
     </script>
     <script type="text/javascript">
         $("#rowAdder2").click(function () {
-        newRowAdd =
-                '<div class="mb-3" id="deltarget2"><div class="form-row"><center><div class="form-group col-md-4"> <select class="form-select form-control form-select-lg mb-3" aria-label=".form-select-lg" id="inputEmail5" name="hc_medical_advisor"> <option selected>Name of Test</option> {% for test in tests %} <option value="{{test.test_id}}" name="medicine_name">{{test.test_name}}</option> {%endfor%} </select> </div><div class="form-group col-md-4"><input type="text" class="form-control" placeholder="Laboratory"></div><div class="form-group col-md-2"><input type="text" class="form-control" placeholder="Charges (in Rs.)"></div> <div class="form-group col-md-1"><button class="btn btn-danger" id="DeleteRow2" type="button"><i class="bi bi-trash"></i>Delete</button></div></center></div></div><div></div>'
-            ;
+            var row = document.querySelectorAll('[id^=charge-]').length + 1;
+            newRowAdd =
+                    '<div class="mb-3" id="deltarget2"><div class="form-row" id="atle"><center><div class="form-group col-md-4"><select class="form-select form-control form-select-lg mb-3" aria-label=".form-select-lg" id="test-'+row+'" name="test-'+row+'" autocomplete="off"><option selected>Name of Test</option>{% for test in tests %}<option value="{{test.test_id}}" name="test">{{test.test_name}}</option>{%endfor%}</select></div><div class="form-group col-md-4"><input type="text" class="form-control" placeholder="Laboratory" name="lab-1" autocomplete="off"></div><div class="form-group col-md-2"><input type="text" class="form-control" placeholder="Charges (in Rs.)" id="charge-'+row+'" name="charge-'+row+'" onchange="setTotalCharge();" autocomplete="off"></div><div class="col-md-1"><button class="btn btn-danger" id="DeleteRow2" type="button"><i class="bi bi-trash"></i>Delete</button></div></center></div></div>'
+                ;
 
-        $('#newinput2').append(newRowAdd);
+            $('#newinput2').append(newRowAdd);
+            document.getElementById("n_test").value = String(Number(document.getElementById("n_test").value) + 1); 
         });
 
         $("body").on("click", "#DeleteRow2", function () {
-        $(this).parents("#deltarget2").remove();
+            $(this).parents("#deltarget2").remove();
+            setTotalCharge();
+            document.getElementById("n_test").value = String(Number(document.getElementById("n_test").value) - 1); 
         })
+    </script>
+    <script>
+        function setSpecialization(specialization) {
+            document.getElementById("specialisation").value = specialization;
+            document.getElementById("con_date").disabled = false;
+        };
+        function setPrice(price, id) {
+            prev_value = document.getElementById("price-" + id).value;
+            document.getElementById("price-" + id).value = price;
+            document.getElementById("quantity-" + id).disabled = false;
+            document.getElementById("quantity-" + id).value = 1;
+        }
+        function setTotPrice() {
+            var row = document.querySelectorAll('[id^=price-]'), i;
+            var totPrice = 0;
+            for(i = 1; i <= row.length; i++)
+            {
+                totPrice += Number(document.getElementById("quantity-" + i).value) * Number(document.getElementById("price-" + i).value);
+            }
+            document.getElementById("tot-price").value = parseFloat(String(totPrice)).toFixed(2);
+            setTotal();
+        }
+        function setTotalCharge() {
+            var row = document.querySelectorAll('[id^=charge-]'), i;
+            var totPrice = 0;
+            for(i = 1; i <= row.length; i++)
+            {
+                totPrice += Number(document.getElementById("charge-" + i).value);
+            }
+            document.getElementById("tot-charge").value = parseFloat(String(totPrice)).toFixed(2);
+            setTotal();
+        }
+        function setTotal() {
+            var con = Number(document.getElementById("con-charge").value) * Number(document.getElementById("visits").value);
+            var price = Number(document.getElementById("tot-price").value);
+            var charge = Number(document.getElementById("tot-charge").value);
+            var total = con + price + charge;
+            document.getElementById("total").value = parseFloat(String(total)).toFixed(2);
+        }
+    </script>
+    <script>
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1;
+        var yyyy = today.getFullYear();
+
+        if (dd < 10) {
+            dd = '0' + dd;
+        }
+
+        if (mm < 10) {
+            mm = '0' + mm;
+        } 
+            
+        today = yyyy + '-' + mm + '-' + dd;
+        document.getElementById("con_date").setAttribute("max", today);
     </script>
 </body>
 

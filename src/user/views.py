@@ -175,20 +175,33 @@ def submitForm(request):
         user = IsLoggedIn(request)
         if user is not None:
             form = Form()
-            form.user = user
-            # form.userid=user.username
-            form.name = request.POST.get("name")
-            form.department = request.POST.get("department")
-            form.designation = request.POST.get("designation")
+            form.patient = Patient.objects.get(user=IsLoggedIn(request));
+            form.patient_name = request.POST.get("patient_name");
+            form.relationship = request.POST.get("relationship");
+            form.hc_medical_advisor = Doctor.objects.get(doctor_id=request.POST.get("hc_medical_advisor"));
+            form.consultation_date = request.POST.get("con_date");
+            form.referral_advisor = request.POST.get("specialist");
+            form.consultation_fees = request.POST.get("con-charge");
+            form.consultation_visits = request.POST.get("visits");
+            form.created_date = timezone.now();
             # if form.is_valid():
             #     form_application=form.save(commit=False)
-            form.save()
+            form.save();
+            no_med = int(request.POST.get("n_med"));
+            no_test = int(request.POST.get("n_test"));
+            for i in range(1,no_med+1):
+                formmedicine = FormMedicine(form=form, medicine=Medicine.objects.get(medicine_id=request.POST.get("medicine-"+str(i))), quantity=request.POST.get("quantity-"+str(i)));
+                formmedicine.save()
+            for i in range(1,no_test+1):
+                formtest = FormTest(form=form, test=Test.objects.get(test_id=request.POST.get("test-"+str(i))), cost=request.POST.get("charge-"+str(i)));
+                formtest.save();
             transaction = Transaction(
-                status="Form submitted", form=form, user=user, feedback=""
-            )
+                status="Form submitted", form=form, feedback="", created_date=timezone.now(), reimbursement_amount = request.POST.get("total")
+            );
             # user feedback
-            transaction.save()
-            return HttpResponse("form submitted" + str(form))
+            transaction.save();
+            return HttpResponseRedirect("patient_dashboard")
+            # return HttpResponse("form submitted" + str(form))
             # return redirect('form_detail', pk=form.pk)
         else:
             messages.warning(request, "Please login first to fill reimbursement form!")
@@ -211,7 +224,7 @@ def doctor_dashboard_display(request):
             data["doctor"] = d
             break
     for t in Transaction.objects.all():
-        if t.form.hc_medical_advisor == user:
+        if t.form.hc_medical_advisor.user == user:
             data["items"].append(
                 {
                     "transaction": t,
@@ -219,7 +232,6 @@ def doctor_dashboard_display(request):
                     "tests": FormTest.objects.filter(form=t.form),
                 }
             )
-
     return render(request, "doctor_dashboard.html", data)
 
 
@@ -430,6 +442,9 @@ def register_any_user(request):
             role = request.POST.get("role")
             if User.objects.filter(username=username).exists():
                 messages.error(request, "Username already in use!")
+                return HttpResponseRedirect("/user/hcadmin_dashboard/signup_admin")
+            elif User.objects.filter(roll=roll).exists():
+                messages.error(request, "Roll Number already in use!")
                 return HttpResponseRedirect("/user/hcadmin_dashboard/signup_admin")
             else:
                 user = User()

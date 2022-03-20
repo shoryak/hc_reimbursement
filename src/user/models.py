@@ -60,8 +60,9 @@ class Form(models.Model):
     form_id = models.AutoField(primary_key=True)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     patient_name = models.CharField(max_length=120)
-    hc_medical_advisor = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    consultation_date = models.DateTimeField(null=True)
+    relationship = models.CharField(max_length=20)
+    hc_medical_advisor = models.ForeignKey(Doctor, on_delete=models.CASCADE, null=True)
+    consultation_date = models.CharField(max_length=20)
     referral_advisor = models.CharField(max_length=120)
     consultation_fees = models.IntegerField(default=0)
     consultation_visits = models.IntegerField(default=0)
@@ -79,14 +80,14 @@ class Transaction(models.Model):
     transaction_id = models.AutoField(primary_key=True)
     form = models.ForeignKey(Form, on_delete=models.CASCADE)
     status = models.CharField(max_length=50)
-    reimbursement_amount = models.IntegerField()
-    # Form submitted, Waiting Doctor approval, Waiting HC Admin approval, Sent to Accounts,  Approved by Accounts, Rejected by Doctor, Rejected by HC Admin, Rejected by Accounts
+    reimbursement_amount = models.DecimalField(max_digits=7, decimal_places=2)
+    # Form submitted, Waiting Doctor approval, Waiting HC Admin approval, Sent to Accounts,  Approved by Accounts, Rejected
     feedback = models.CharField(max_length=400)
     created_date = models.DateTimeField(default=timezone.now)
-    admin_update_date = models.DateTimeField()
-    doctor_update_date = models.DateTimeField()
-    account_sent_date = models.DateTimeField()
-    account_approve_date = models.DateTimeField()
+    admin_update_date = models.DateTimeField(null=True)
+    doctor_update_date = models.DateTimeField(null=True)
+    account_sent_date = models.DateTimeField(null=True)
+    account_approve_date = models.DateTimeField(null=True)
 
     def __str__(self):
         return str(self.transaction_id)
