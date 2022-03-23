@@ -132,11 +132,11 @@
                                                                     </div>
                                                                     <div class="form-group col-md-4">
                                                                         <label for="patient_name">Patient Name</label>
-                                                                        <input type="text" class="form-control" id="patient_name" value={{item.transaction.form.patient_name}} disabled>
+                                                                        <input type="text" class="form-control" id="patient_name" value="{{item.transaction.form.patient_name}}" disabled>
                                                                     </div>
                                                                     <div class="form-group col-md-4">
                                                                         <label for="hc_medical_advisor">HC Medical Advisor</label>
-                                                                        <input type="text" class="form-control" id="hc_medical_advisor" value={{item.transaction.form.hc_medical_advisor}} disabled>
+                                                                        <input type="text" class="form-control" id="hc_medical_advisor" value="{{item.transaction.form.hc_medical_advisor}}" disabled>
                                                                     </div>
                                                                     <div class="form-group col-md-4">
                                                                         <label for="consultation_date">Consultation Date</label>
@@ -144,7 +144,7 @@
                                                                     </div>
                                                                     <div class="form-group col-md-4">
                                                                         <label for="referral_advisor">Referral Advisor</label>
-                                                                        <input type="text" class="form-control" id="referral_advisor" value={{item.transaction.form.referral_advisor}} disabled>
+                                                                        <input type="text" class="form-control" id="referral_advisor" value="{{item.transaction.form.referral_advisor}}" disabled>
                                                                     </div>
                                                                     <div class="form-group col-md-4">
                                                                         <label for="consultation_fees">Consultation Fees</label>
@@ -164,7 +164,7 @@
                                                                     {% for medicine in item.medicines %}
                                                                     <div class="form-group col-md-4">
                                                                         <label for="medicine_name{{item.transaction.transaction_id}}">Medicine {{item.transaction.transaction_id}}</label>
-                                                                        <input type="text" class="form-control" id="medicine_name{{item.transaction.transaction_id}}" value={{medicine.medicine.medicine_name}} disabled>
+                                                                        <input type="text" class="form-control" id="medicine_name{{item.transaction.transaction_id}}" value="{{medicine.medicine.medicine_name}}" disabled>
                                                                     </div>
                                                                     <div class="form-group col-md-4">
                                                                         <label for="medicine_quantiy{{item.transaction.transaction_id}}">Quantity</label>
@@ -181,7 +181,7 @@
                                                                     {% for test in item.tests %}
                                                                     <div class="form-group col-md-4">
                                                                         <label for="test_name{{item.transaction.transaction_id}}">Test {{item.transaction.transaction_id}}</label>
-                                                                        <input type="text" class="form-control" id="test_name{{item.transaction.transaction_id}}" value={{test.test.test_name}} disabled>
+                                                                        <input type="text" class="form-control" id="test_name{{item.transaction.transaction_id}}" value="{{test.test.test_name}}" disabled>
                                                                     </div>
                                                                     <div class="form-group col-md-4">
                                                                         <label for="lab_name{{item.transaction.transaction_id}}">Lab Name</label>
@@ -218,7 +218,7 @@
                                                                     </div>
                                                                     <div class="form-group col-md-4">
                                                                         <label for="status">Status</label>
-                                                                        <input type="text" class="form-control" id="status" value={{item.transaction.status}} disabled>
+                                                                        <input type="text" class="form-control" id="status" value="{{item.transaction.status}}" disabled>
                                                                     </div>
                                                                     <div class="form-group col-md-4">
                                                                         <label for="reimbursement_amount">Reimbursement Amount</label>
@@ -226,7 +226,7 @@
                                                                     </div>
                                                                     <div class="form-group col-md-12">
                                                                         <label for="feedback">Feedback</label>
-                                                                        <input type="text" class="form-control" id="feedback" value={{item.transaction.feedback}} disabled>
+                                                                        <input type="text" class="form-control" id="feedback" value="{{item.transaction.feedback}}" disabled>
                                                                     </div>
                                                                     <div class="col-md-12">
                                                                         <h4>Update dates</h4>
