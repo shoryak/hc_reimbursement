@@ -68,6 +68,7 @@ class Form(models.Model):
     consultation_fees = models.DecimalField(max_digits=7, decimal_places=2, default=0, blank=False)
     consultation_visits = models.DecimalField(max_digits=7, decimal_places=2, default=0, blank=False)
     created_date = models.DateTimeField(default=timezone.now)
+    file = models.FileField()
 
     def publish(self):
         self.created_date = timezone.now()

@@ -22,6 +22,8 @@ from .utils import (
     CHECK_PASSWORD,
     IsLoggedIn,
 )
+from django.views.generic.edit import CreateView
+from django.urls import reverse_lazy
 
 # Create your views here.
 from django.http import HttpResponse
@@ -527,6 +529,7 @@ def update_patient_profile(request):
             patient.save()
             return HttpResponseRedirect("/user/patient_dashboard/patient_profile")
 
+
 def doctor_profile(request):
     user = IsLoggedIn(request)
     if user is None:
@@ -538,6 +541,7 @@ def doctor_profile(request):
                 data["doctor"] = p
                 break
         return render(request, "doctor_profile.html", data)
+
 
 def update_doctor_profile(request):
     user = IsLoggedIn(request)
@@ -563,6 +567,7 @@ def update_doctor_profile(request):
             doctor.save()
             return HttpResponseRedirect("/user/doctor_dashboard/doctor_profile")
 
+
 def hcadmin_profile(request):
     user = IsLoggedIn(request)
     if user is None:
@@ -574,6 +579,7 @@ def hcadmin_profile(request):
                 data["hcadmin"] = p
                 break
         return render(request, "hcadmin_profile.html", data)
+
 
 def update_hcadmin_profile(request):
     user = IsLoggedIn(request)
@@ -595,6 +601,7 @@ def update_hcadmin_profile(request):
 
             return HttpResponseRedirect("/user/hcadmin_dashboard/hcadmin_profile")
 
+
 def accounts_profile(request):
     user = IsLoggedIn(request)
     if user is None:
@@ -606,6 +613,7 @@ def accounts_profile(request):
                 data["accounts"] = p
                 break
         return render(request, "accounts_profile.html", data)
+
 
 def update_accounts_profile(request):
     user = IsLoggedIn(request)
@@ -689,5 +697,11 @@ def update_accounts_profile(request):
 #         return HttpResponseRedirect("/user/patient_dashboard")
 
 
-def viewProfile(request):
-    pass
+class UploadView(CreateView):
+    model = Form
+    fields = ['file', ]
+    success_url = reverse_lazy('fileupload')
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['documents'] = Form.objects.all()
+        return context
