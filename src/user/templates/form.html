@@ -171,7 +171,7 @@
                                 <div class="container col-md-12">
                                     <label> Enter the number of medicines : </label>
                                     <input type="number" class="form-control" placeholder="Number of Medicines"
-                                        autocomplete="off" id="n_med" name="n_med" min="1" max="{{medicines.count}}"
+                                        autocomplete="off" id="n_med" name="n_med" min="0" max="{{medicines.count}}"
                                         value="1" onchange="create_med_row(this.id);" required>
                                 </div>
                                 <div class="container" id="newinput">
@@ -227,13 +227,13 @@
                             </div>
 
                             <div class="mb-3">
+                                <div class="container col-md-12">
+                                    <label> Enter the number of tests : </label>
+                                    <input type="number" class="form-control" placeholder="Number of Tests"
+                                        autocomplete="off" id="n_test" name="n_test" min="0" max="{{tests.count}}"
+                                        value="1" onchange="create_test_row(this.id);" required>
+                                </div>
                                 <div class="container" id="newinput2">
-                                    <div class="container col-md-12">
-                                        <label> Enter the number of tests : </label>
-                                        <input type="number" class="form-control" placeholder="Number of Tests"
-                                            autocomplete="off" id="n_test" name="n_test" min="1" max="{{tests.count}}"
-                                            value="1" onchange="create_test_row(this.id);" required>
-                                    </div>
                                     <label for="atle">Pathological tests and their respective costs</label>
                                     <div class="mb-3" id="deltarget2">
                                         <div class="form-row" id="atle">
@@ -257,13 +257,6 @@
                                                         class="form-control" placeholder="Charges (in Rs.)"
                                                         id="charge-1" name="charge-1" onchange="setTotalCharge();"
                                                         autocomplete="off" required></div>
-                                                <!-- <div class="col-md-1">
-                                                    <button class="btn btn-danger" id="DeleteRow2" type="button"
-                                                        disabled>
-                                                        <i class="bi bi-trash"></i>
-                                                        Delete
-                                                    </button>
-                                                </div> -->
                                             </center>
                                         </div>
                                     </div>
@@ -277,8 +270,9 @@
                                             </button>
                                         </div> -->
                                         <div class="form-group col-md-offset-8 col-md-2"><input type='number'
-                                                step='0.01' class="form-control" placeholder="Total Charges (in Rs.)"
-                                                id="tot-charge" autocomplete="off" disabled required></div>
+                                                value="0.00" step='0.01' class="form-control"
+                                                placeholder="Total Charges (in Rs.)" id="tot-charge" autocomplete="off"
+                                                disabled required></div>
                                     </div>
                                 </div>
                             </div>
@@ -335,19 +329,21 @@
         function create_med_row(id) {
             var num = document.getElementById(id).value
             var str = "";
+            if (Number(num) >= 1) str += '<label for="atle">Medicines and their quantities and respective costs</label>';
             for (row = 1; row <= Number(num); row++) {
-                str += '<div class="form-row" id="atle"><center><div class="form-group col-md-6"><select required class="form-select form-control form-select-lg mb-3" aria-label=".form-select-lg" id="medicine-' + row.toString() + '" name="medicine-' + row.toString() + '" onchange="setPrice(this.options[this.selectedIndex].id, ' + row.toString() + '); setTotPrice();"><option id="" value = "">Name of Medicine</option>{% for medicine in medicines %}<option id="{{medicine.price}}" value="{{medicine.medicine_id}}" name="hc_medical_advisor">{{medicine.medicine_name}}</option>{%endfor%}</select></div><div class="form-group col-md-2"><input required type="number" class="form-control" placeholder="Quantity" id="quantity-' + row.toString() + '" name="quantity-' + row.toString() + '"  onchange="setTotPrice();" min="1" disabled></div><div class="form-group col-md-2"><input required type="text" class="form-control" placeholder="Price (in Rs.)" name="price-' + row.toString() + '" id="price-' + row.toString() + '" disabled></div></center></div>';
+                str += '<div class="mb-3" id="deltarget"><div class="form-row" id="atle"><center><div class="form-group col-md-6"><select required class="form-select form-control form-select-lg mb-3" aria-label=".form-select-lg" id="medicine-' + row.toString() + '" name="medicine-' + row.toString() + '" onchange="setPrice(this.options[this.selectedIndex].id, ' + row.toString() + '); setTotPrice();"><option id="" value = "">Name of Medicine</option>{% for medicine in medicines %}<option id="{{medicine.price}}" value="{{medicine.medicine_id}}" name="hc_medical_advisor">{{medicine.medicine_name}}</option>{%endfor%}</select></div><div class="form-group col-md-2"><input required type="number" class="form-control" placeholder="Quantity" id="quantity-' + row.toString() + '" name="quantity-' + row.toString() + '"  onchange="setTotPrice();" min="1" disabled></div><div class="form-group col-md-2"><input required type="text" class="form-control" placeholder="Price (in Rs.)" name="price-' + row.toString() + '" id="price-' + row.toString() + '" disabled></div></center></div></div>';
             }
-            document.getElementById("deltarget").innerHTML = str;
+            document.getElementById("newinput").innerHTML = str;
         };
 
         function create_test_row(id) {
             var num = document.getElementById(id).value
             var str = "";
+            if (Number(num) >= 1) str += '<label for="atle">Pathological tests and their respective costs</label>';
             for (row = 1; row <= Number(num); row++) {
                 str += '<div class="form-row" id="atle"><center><div class="form-group col-md-4"><select required class="form-select form-control form-select-lg mb-3" aria-label=".form-select-lg" id="test-' + row.toString() + '" name="test-' + row.toString() + '" autocomplete="off"><option id = "" value = "">Name of Test</option>{% for test in tests %}<option value="{{test.test_id}}" name="test">{{test.test_name}}</option>{%endfor%}</select></div><div class="form-group col-md-4"><input required  type="text" class="form-control" placeholder="Laboratory" name="lab-' + row.toString() + '" autocomplete="off"></div><div class="form-group col-md-2"><input type="number" step="0.01" class="form-control" placeholder="Charges (in Rs.)" id="charge-' + row.toString() + '" name="charge-' + row.toString() + '" onchange="setTotalCharge();" autocomplete="off"></div></center></div>';
             }
-            document.getElementById("deltarget2").innerHTML = str;
+            document.getElementById("newinput2").innerHTML = str;
         };
     </script>
     <!-- <script type="text/javascript">
