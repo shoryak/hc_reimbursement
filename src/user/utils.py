@@ -1,5 +1,7 @@
 from .models import User
+from django.shortcuts import render, redirect, HttpResponseRedirect
 from re import M
+from django.contrib import messages
 import bcrypt
 
 # make new hashed password
@@ -24,3 +26,27 @@ def IsLoggedIn(request):
             return None
     else:
         return None
+
+def get_role(request):
+    if request.session.has_key("username"):
+        try:
+            user = User.objects.get(username=request.session["username"])
+            return user.roles
+        except:
+            return None
+    else:
+        return None
+
+def role_based_redirection(request):
+    role = get_role(request)
+    if role == "patient":
+        return "/user/patient_dashboard"
+    elif role == "hcadmin":
+        return "/user/hcadmin_dashboard"
+    elif role == "doctor":
+        return "/user/doctor_dashboard"
+    elif role == "accounts":
+        return "/user/accounts_dashboard"
+    else:
+        messages.error(request, "Role not valid!")
+        return "/user/logout"
