@@ -42,8 +42,8 @@ def patientsignup(request):
     if user is None:
         return render(request, "signup.html")
     else:
-        if user.roles == "patient":
-            return HttpResponseRedirect("/user/patient_dashboard")
+        url = role_based_redirection(request)
+        return HttpResponseRedirect(url)
 
 
 def registerPatient(request):
