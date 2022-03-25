@@ -454,6 +454,9 @@ def register_any_user(request):
             elif User.objects.filter(roll=roll).exists():
                 messages.error(request, "Roll Number already in use!")
                 return HttpResponseRedirect("/user/hcadmin_dashboard/signup_admin")
+            elif User.objects.filter(email=email).exists():
+                messages.error(request, "User with this email already exits!")
+                return HttpResponseRedirect("/user/hcadmin_dashboard/signup_admin")
             else:
                 user = User()
                 user.name = name
