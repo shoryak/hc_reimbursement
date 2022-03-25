@@ -52,7 +52,7 @@
           <div class="container">
             <h4 style="line-height: 50px;"><strong>Details of Patient and Employee</strong></h4>
             
-            <form style="margin-top: 20px;" id ="reimbursement-form" method="post" action="/user/formsubmit">
+            <form style="margin-top: 20px;" id ="reimbursement-form" method="post" action="/user/formsubmit" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="form-row">
                     <div class="form-group col-md-6">
@@ -235,8 +235,8 @@
             <div class="mb-3" style="margin-top:50px;">
                 <div class="form-row">
                     <div class="col-md-offset-3 form-group">
-                        <label for="exampleFormControlFile1">Attach receipts here(as one pdf file)</label> <br>
-                        <input type="file" class="form-control-file" id="exampleFormControlFile1">
+                        <label for="file">Attach receipts here(as one pdf file)</label> <br>
+                        <input type="file" class="form-control-file" id="file" name="file">
                     </div>
                 </div>
             </div>

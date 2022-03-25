@@ -192,6 +192,7 @@ def submitForm(request):
             form.consultation_fees = request.POST.get("con-charge")
             form.consultation_visits = request.POST.get("visits")
             form.created_date = timezone.now();
+            form.file = request.FILES["file"]
             # if form.is_valid():
             #     form_application=form.save(commit=False)
             form.save();
