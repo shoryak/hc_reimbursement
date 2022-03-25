@@ -395,58 +395,111 @@ def rejectFormByHC(request):
 
 
 def acceptByDoctor(request):
-    t_no = request.POST.get("t_no")
-    feedback = request.POST.get("feedback")
-    if Transaction.objects.filter(transaction_id=t_no).exists():
-        transaction = Transaction.objects.get(transaction_id=t_no)
-        transaction.status = "Waiting HC Admin approval"
-        transaction.feedback = feedback
-        transaction.doctor_update_date = timezone.now()
-        transaction.save()
-        return HttpResponseRedirect("/user/doctor_dashboard")
+    user = IsLoggedIn(request)
+    if user is None: # not already logged in 
+        messages.error(request, "Kindly login to view the page!")
+        return HttpResponseRedirect("/user/logout")
+    elif user.roles != "doctor": # already logged in but not as doctor 
+        url = role_based_redirection(request)
+        return HttpResponseRedirect(url)
     else:
-        return HttpResponseRedirect("/user/doctor_dashboard")
+        if request.method == "POST":
+            t_no = request.POST.get("t_no")
+            feedback = request.POST.get("feedback")
+            if Transaction.objects.filter(transaction_id=t_no).exists():
+                transaction = Transaction.objects.get(transaction_id=t_no)
+                transaction.status = "Waiting HC Admin approval"
+                transaction.feedback = feedback
+                transaction.doctor_update_date = timezone.now()
+                transaction.save()
+                return HttpResponseRedirect("/user/doctor_dashboard")
+            else:
+                messages.error(request, "Transaction ID does not exists!")
+                return HttpResponseRedirect("/user")
+        else:
+            messages.error(request, "Kindly login to view the page!")
+            return HttpResponseRedirect("/user")
 
 
 def rejectByDoctor(request):
-    t_no = request.POST.get("t_no")
-    feedback = request.POST.get("feedback")
-    if Transaction.objects.filter(transaction_id=t_no).exists():
-        transaction = Transaction.objects.get(transaction_id=t_no)
-        transaction.status = "Rejected by Doctor"
-        transaction.feedback = feedback
-        transaction.save()
-        return HttpResponseRedirect("/user/doctor_dashboard")
+    user = IsLoggedIn(request)
+    if user is None: # not already logged in 
+        messages.error(request, "Kindly login to view the page!")
+        return HttpResponseRedirect("/user/logout")
+    elif user.roles != "doctor": # already logged in but not as doctor 
+        url = role_based_redirection(request)
+        return HttpResponseRedirect(url)
     else:
-        return HttpResponseRedirect("/user/doctor_dashboard")
+        if request.method == "POST":
+            t_no = request.POST.get("t_no")
+            feedback = request.POST.get("feedback")
+            if Transaction.objects.filter(transaction_id=t_no).exists():
+                transaction = Transaction.objects.get(transaction_id=t_no)
+                transaction.status = "Rejected by Doctor"
+                transaction.feedback = feedback
+                transaction.save()
+                return HttpResponseRedirect("/user/doctor_dashboard")
+            else:
+                messages.error(request, "Transaction ID does not exists!")
+                return HttpResponseRedirect("/user")
+        else:
+            messages.error(request, "Kindly login to view the page!")
+            return HttpResponseRedirect("/user")
 
 
 def acceptByAccounts(request):
-    t_no = request.POST.get("t_no")
-    feedback = request.POST.get("feedback")
-    if Transaction.objects.filter(transaction_id=t_no).exists():
-        transaction = Transaction.objects.get(transaction_id=t_no)
-        transaction.status = "Approved by Accounts"
-        transaction.feedback = feedback
-        transaction.account_approve_date = timezone.now()
-        transaction.save()
-        return HttpResponseRedirect("/user/accounts_dashboard")
+    user = IsLoggedIn(request)
+    if user is None: # not already logged in 
+        messages.error(request, "Kindly login to view the page!")
+        return HttpResponseRedirect("/user/logout")
+    elif user.roles != "accounts": # already logged in but not as doctor 
+        url = role_based_redirection(request)
+        return HttpResponseRedirect(url)
     else:
-        return HttpResponseRedirect("/user/accounts_dashboard")
+        if request.method == "POST":
+            t_no = request.POST.get("t_no")
+            feedback = request.POST.get("feedback")
+            if Transaction.objects.filter(transaction_id=t_no).exists():
+                transaction = Transaction.objects.get(transaction_id=t_no)
+                transaction.status = "Approved by Accounts"
+                transaction.feedback = feedback
+                transaction.account_approve_date = timezone.now()
+                transaction.save()
+                return HttpResponseRedirect("/user/accounts_dashboard")
+            else:
+                messages.error(request, "Transaction ID does not exists!")
+                return HttpResponseRedirect("/user")
+        else:
+            messages.error(request, "Kindly login to view the page!")
+            return HttpResponseRedirect("/user")
+
 
 
 def rejectByAccounts(request):
-    t_no = request.POST.get("t_no")
-    feedback = request.POST.get("feedback")
-    if Transaction.objects.filter(transaction_id=t_no).exists():
-        transaction = Transaction.objects.get(transaction_id=t_no)
-        transaction.status = "Rejected by Accounts"
-        transaction.feedback = feedback
-        transaction.account_approve_date = timezone.now()
-        transaction.save()
-        return HttpResponseRedirect("/user/accounts_dashboard")
+    user = IsLoggedIn(request)
+    if user is None: # not already logged in 
+        messages.error(request, "Kindly login to view the page!")
+        return HttpResponseRedirect("/user/logout")
+    elif user.roles != "accounts": # already logged in but not as doctor 
+        url = role_based_redirection(request)
+        return HttpResponseRedirect(url)
     else:
-        return HttpResponseRedirect("/user/accounts_dashboard")
+        if request.method == "POST":
+            t_no = request.POST.get("t_no")
+            feedback = request.POST.get("feedback")
+            if Transaction.objects.filter(transaction_id=t_no).exists():
+                transaction = Transaction.objects.get(transaction_id=t_no)
+                transaction.status = "Rejected by Accounts"
+                transaction.feedback = feedback
+                transaction.account_approve_date = timezone.now()
+                transaction.save()
+                return HttpResponseRedirect("/user/accounts_dashboard")
+            else:
+                messages.error(request, "Transaction ID does not exists!")
+                return HttpResponseRedirect("/user")
+        else:
+            messages.error(request, "Kindly login to view the page!")
+            return HttpResponseRedirect("/user")
 
 
 # allowing hcadmin to register any user
@@ -468,7 +521,13 @@ def adminsignup(request):
 
 def register_any_user(request):
     user = IsLoggedIn(request)
-    if user is not None:
+    if user is None: # not already logged in 
+        messages.error(request, "Kindly login to view the page!")
+        return HttpResponseRedirect("/user/logout")
+    elif user.roles != "hcadmin": # already logged in but not as hcadmin 
+        url = role_based_redirection(request)
+        return HttpResponseRedirect(url)
+    else:
         if request.method == "POST":
             name = request.POST.get("name")
             username = request.POST.get("username")
@@ -512,8 +571,9 @@ def register_any_user(request):
 
                 messages.success(request, "User account created successfully!")
                 return HttpResponseRedirect("/user/hcadmin_dashboard/signup_admin")
-    else:
-        return HttpResponseRedirect("/user")
+        else:
+            messages.error(request, "Kindly login to view the page!")
+            return HttpResponseRedirect("/user")
 
 
 def patient_profile(request):
@@ -521,22 +581,28 @@ def patient_profile(request):
     if user is None:
         return HttpResponseRedirect("/user")
     else:
-        data = {"patient": None}
-        for p in Patient.objects.all():
-            if p.user == user:
-                data["patient"] = p
-                break
-        return render(request, "patient_profile.html", data)
+        if user.roles == "patient":
+            data = {"patient": None}
+            for p in Patient.objects.all():
+                if p.user == user:
+                    data["patient"] = p
+                    break
+            return render(request, "patient_profile.html", data)
+        else:
+            messages.error(request, "Kindly login to view the page!")
+            return HttpResponseRedirect("/user")
 
 
 def update_patient_profile(request):
     user = IsLoggedIn(request)
-    if user is None:
-        return HttpResponseRedirect("/user")
+    if user is None: # not already logged in 
+        messages.error(request, "Kindly login to view the page!")
+        return HttpResponseRedirect("/user/logout")
+    elif user.roles != "patient": # already logged in but not as patient 
+        url = role_based_redirection(request)
+        return HttpResponseRedirect(url)
     else:
-        if user.roles != "patient":
-            return HttpResponseRedirect("/user")
-        else:
+        if request.method == "POST":
             username = user.username
             contact = request.POST.get("contact")
             address = request.POST.get("address")
@@ -556,12 +622,19 @@ def update_patient_profile(request):
             patient.bank_AC = bank_AC
             patient.save()
             return HttpResponseRedirect("/user/patient_dashboard/patient_profile")
+        else:
+            messages.error(request, "Kindly login to view the page!")
+            return HttpResponseRedirect("/user")
 
 
 def doctor_profile(request):
     user = IsLoggedIn(request)
-    if user is None:
-        return HttpResponseRedirect("/user")
+    if user is None: # not already logged in 
+        messages.error(request, "Kindly login to view the page!")
+        return HttpResponseRedirect("/user/logout")
+    elif user.roles != "doctor": # already logged in but not as doctor 
+        url = role_based_redirection(request)
+        return HttpResponseRedirect(url)
     else:
         data = {"doctor": None}
         for p in Doctor.objects.all():
@@ -573,12 +646,14 @@ def doctor_profile(request):
 
 def update_doctor_profile(request):
     user = IsLoggedIn(request)
-    if user is None:
-        return HttpResponseRedirect("/user")
+    if user is None: # not already logged in 
+        messages.error(request, "Kindly login to view the page!")
+        return HttpResponseRedirect("/user/logout")
+    elif user.roles != "doctor": # already logged in but not as doctor 
+        url = role_based_redirection(request)
+        return HttpResponseRedirect(url)
     else:
-        if user.roles != "doctor":
-            return HttpResponseRedirect("/user")
-        else:
+        if request.method == "POST":
             username = user.username
             contact = request.POST.get("contact")
             address = request.POST.get("address")
@@ -594,12 +669,19 @@ def update_doctor_profile(request):
             doctor.specialization = specialization
             doctor.save()
             return HttpResponseRedirect("/user/doctor_dashboard/doctor_profile")
+        else:
+            messages.error(request, "Kindly login to view the page!")
+            return HttpResponseRedirect("/user")
 
 
 def hcadmin_profile(request):
     user = IsLoggedIn(request)
-    if user is None:
-        return HttpResponseRedirect("/user")
+    if user is None: # not already logged in 
+        messages.error(request, "Kindly login to view the page!")
+        return HttpResponseRedirect("/user/logout")
+    elif user.roles != "hcadmin": # already logged in but not as hcadmin 
+        url = role_based_redirection(request)
+        return HttpResponseRedirect(url)
     else:
         data = {"hcadmin": None}
         for p in HCAdmin.objects.all():
@@ -611,12 +693,14 @@ def hcadmin_profile(request):
 
 def update_hcadmin_profile(request):
     user = IsLoggedIn(request)
-    if user is None:
-        return HttpResponseRedirect("/user")
+    if user is None: # not already logged in 
+        messages.error(request, "Kindly login to view the page!")
+        return HttpResponseRedirect("/user/logout")
+    elif user.roles != "hcadmin": # already logged in but not as hcadmin 
+        url = role_based_redirection(request)
+        return HttpResponseRedirect(url)
     else:
-        if user.roles != "hcadmin":
-            return HttpResponseRedirect("/user")
-        else:
+        if request.method == "POST":
             username = user.username
             contact = request.POST.get("contact")
             address = request.POST.get("address")
@@ -626,14 +710,20 @@ def update_hcadmin_profile(request):
             userp.contact = contact
             userp.address = address
             userp.save()
-
             return HttpResponseRedirect("/user/hcadmin_dashboard/hcadmin_profile")
+        else:
+            messages.error(request, "Kindly login to view the page!")
+            return HttpResponseRedirect("/user")
 
 
 def accounts_profile(request):
     user = IsLoggedIn(request)
-    if user is None:
-        return HttpResponseRedirect("/user")
+    if user is None: # not already logged in 
+        messages.error(request, "Kindly login to view the page!")
+        return HttpResponseRedirect("/user/logout")
+    elif user.roles != "accounts": # already logged in but not as accounts 
+        url = role_based_redirection(request)
+        return HttpResponseRedirect(url)
     else:
         data = {"accounts": None}
         for p in Accounts.objects.all():
@@ -645,12 +735,14 @@ def accounts_profile(request):
 
 def update_accounts_profile(request):
     user = IsLoggedIn(request)
-    if user is None:
-        return HttpResponseRedirect("/user")
+    if user is None: # not already logged in 
+        messages.error(request, "Kindly login to view the page!")
+        return HttpResponseRedirect("/user/logout")
+    elif user.roles != "accounts": # already logged in but not as accounts 
+        url = role_based_redirection(request)
+        return HttpResponseRedirect(url)
     else:
-        if user.roles != "accounts":
-            return HttpResponseRedirect("/user")
-        else:
+        if request.method == "POST":
             username = user.username
             contact = request.POST.get("contact")
             address = request.POST.get("address")
@@ -662,7 +754,6 @@ def update_accounts_profile(request):
             userp.save()
 
             return HttpResponseRedirect("/user/accounts_dashboard/accounts_profile")
-
-
-def viewProfile(request):
-    pass
+        else:
+            messages.error(request, "Kindly login to view the page!")
+            return HttpResponseRedirect("/user")
