@@ -1,0 +1,66 @@
+[
+    {
+        "model": "user.medicine",
+        "pk": 1,
+        "fields": {
+            "medicine_name": "med1",
+            "brand": "med1",
+            "price": "1.50"
+        }
+    },
+    {
+        "model": "user.medicine",
+        "pk": 2,
+        "fields": {
+            "medicine_name": "med2",
+            "brand": "med2",
+            "price": "3.00"
+        }
+    },
+    {
+        "model": "user.medicine",
+        "pk": 3,
+        "fields": {
+            "medicine_name": "med3",
+            "brand": "med3",
+            "price": "2.00"
+        }
+    },
+    {
+        "model": "user.medicine",
+        "pk": 4,
+        "fields": {
+            "medicine_name": "med4",
+            "brand": "med4",
+            "price": "12.00"
+        }
+    },
+    {
+        "model": "user.test",
+        "pk": 1,
+        "fields": {
+            "test_name": "test1"
+        }
+    },
+    {
+        "model": "user.test",
+        "pk": 2,
+        "fields": {
+            "test_name": "test2"
+        }
+    },
+    {
+        "model": "user.test",
+        "pk": 3,
+        "fields": {
+            "test_name": "test3"
+        }
+    },
+    {
+        "model": "user.test",
+        "pk": 4,
+        "fields": {
+            "test_name": "test4"
+        }
+    }
+]
