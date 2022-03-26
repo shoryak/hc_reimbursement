@@ -52,7 +52,8 @@
                     <div class="container">
                         <h4 style="line-height: 50px;"><strong>Details of Patient and Employee</strong></h4>
 
-                        <form style="margin-top: 20px;" id="reimbursement-form" method="post" action="/user/formsubmit">
+                        <form style="margin-top: 20px;" id="reimbursement-form" method="post" action="/user/formsubmit"
+                            enctype="multipart/form-data">
                             {% csrf_token %}
                             <div class="form-row">
                                 <div class="form-group col-md-6">
@@ -154,7 +155,7 @@
                                     </div>
                                     <div class="form-group col-md-3">
                                         <label for="inputPassword6">Consultation fees</label>
-                                        <input type='number' step='0.01' class="form-control"
+                                        <input type='number' step='0.01' min="0.00" class="form-control"
                                             placeholder="Fees (in Rs.)" autocomplete="off" id="con-charge"
                                             name="con-charge" onchange="setTotal();" required>
                                     </div>
@@ -199,25 +200,12 @@
                                                         value='0.00' class="form-control" placeholder="Price (in Rs.)"
                                                         name="price-1" id="price-1" autocomplete="off" disabled
                                                         required></div>
-                                                <!-- <div class="col-md-1" disabled>
-                                                    <button class="btn btn-danger" id="DeleteRow" type="button"
-                                                        disabled>
-                                                        <i class="bi bi-trash"></i>
-                                                        Delete
-                                                    </button> 
-                                                </div> -->
                                             </center>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="container">
                                     <div class="form-row text-center">
-                                        <!-- <div class="form-group col-md-offset-5 col-md-1 text-center">
-                                            <button id="rowAdder" type="button" class="btn btn-primary">
-                                                <span class="bi bi-plus-square-dotted">
-                                                </span> ADD
-                                            </button>
-                                        </div> -->
                                         <div class="form-group col-md-offset-8 col-md-2"><input type="text"
                                                 class="form-control" placeholder="Total Price (in Rs.)" id="tot-price"
                                                 value="0.00" autocomplete="off" onchange="setTotal();" disabled
@@ -253,7 +241,7 @@
                                                 <div class="form-group col-md-4"><input type="text" class="form-control"
                                                         placeholder="Laboratory" name="lab-1" autocomplete="off"
                                                         required></div>
-                                                <div class="form-group col-md-2"><input type='number' step='0.01'
+                                                <div class="form-group col-md-2"><input type='number' step='0.01' min = '0.00'
                                                         class="form-control" placeholder="Charges (in Rs.)"
                                                         id="charge-1" name="charge-1" onchange="setTotalCharge();"
                                                         autocomplete="off" required></div>
@@ -263,12 +251,6 @@
                                 </div>
                                 <div class="container">
                                     <div class="form-row text-center">
-                                        <!-- <div class="form-group col-md-offset-5 col-md-1 text-center">
-                                            <button id="rowAdder2" type="button" class="btn btn-primary">
-                                                <span class="bi bi-plus-square-dotted">
-                                                </span> ADD
-                                            </button>
-                                        </div> -->
                                         <div class="form-group col-md-offset-8 col-md-2"><input type='number'
                                                 value="0.00" step='0.01' class="form-control"
                                                 placeholder="Total Charges (in Rs.)" id="tot-charge" autocomplete="off"
@@ -290,27 +272,19 @@
                             </div>
 
 
-                            <!-- <div class="mb-3" style="margin-top:50px;">
+                            <div class="mb-3" style="margin-top:50px;">
                                 <div class="form-row">
                                     <div class="col-md-offset-3 form-group">
-                                        <label for="exampleFormControlFile1">Attach receipts here(as one pdf
-                                            file)</label> <br>
-                                        <input required type="file" class="form-control-file" id="exampleFormControlFile1">
+                                        <label for="file">Attach receipts here(as one pdf file)</label> <br>
+                                        <input type="file" class="form-control-file" id="file" name="file" required>
                                     </div>
                                 </div>
-                            </div> -->
-                            <!-- <input required type="text" value="0" name="n_med" id="n_med" value="0">
-                            <input required type="text" value="0" name="n_test" id="n_test" value="0"> -->
+                            </div>
                             <div class="mb-3" style="margin-top:50px;">
                                 <div class="form-row">
                                     <div class="col-md-offset-4 col-md-4 form-group" align="center">
                                         <button type="submit" class="btn btn-primary">Submit Form</button>
                                     </div>
-                                </div>
-                            </div>
-
-                        </form>
-                    </div>
                 </section>
             </main>
         </div>
@@ -341,45 +315,11 @@
             var str = "";
             if (Number(num) >= 1) str += '<label for="atle">Pathological tests and their respective costs</label>';
             for (row = 1; row <= Number(num); row++) {
-                str += '<div class="form-row" id="atle"><center><div class="form-group col-md-4"><select required class="form-select form-control form-select-lg mb-3" aria-label=".form-select-lg" id="test-' + row.toString() + '" name="test-' + row.toString() + '" autocomplete="off"><option id = "" value = "">Name of Test</option>{% for test in tests %}<option value="{{test.test_id}}" name="test">{{test.test_name}}</option>{%endfor%}</select></div><div class="form-group col-md-4"><input required  type="text" class="form-control" placeholder="Laboratory" name="lab-' + row.toString() + '" autocomplete="off"></div><div class="form-group col-md-2"><input type="number" step="0.01" class="form-control" placeholder="Charges (in Rs.)" id="charge-' + row.toString() + '" name="charge-' + row.toString() + '" onchange="setTotalCharge();" autocomplete="off"></div></center></div>';
+                str += '<div class="form-row" id="atle"><center><div class="form-group col-md-4"><select required class="form-select form-control form-select-lg mb-3" aria-label=".form-select-lg" id="test-' + row.toString() + '" name="test-' + row.toString() + '" autocomplete="off"><option id = "" value = "">Name of Test</option>{% for test in tests %}<option value="{{test.test_id}}" name="test">{{test.test_name}}</option>{%endfor%}</select></div><div class="form-group col-md-4"><input required  type="text" class="form-control" placeholder="Laboratory" name="lab-' + row.toString() + '" autocomplete="off"></div><div class="form-group col-md-2"><input type="number" min = "0.00" step="0.01" class="form-control" placeholder="Charges (in Rs.)" id="charge-' + row.toString() + '" name="charge-' + row.toString() + '" onchange="setTotalCharge();" autocomplete="off" required></div></center></div>';
             }
             document.getElementById("newinput2").innerHTML = str;
         };
     </script>
-    <!-- <script type="text/javascript">
-        $("#rowAdder").click(function () {
-            var row = document.querySelectorAll('[id^=price-]').length + 1;
-            newRowAdd =
-                    '<div class="mb-3" id="deltarget"><div class="form-row" id="atle"><center><div class="form-group col-md-6"><select class="form-select form-control form-select-lg mb-3" aria-label=".form-select-lg" id="medicine-'+ row +'" name="medicine-'+ row +'" onchange="setPrice(this.options[this.selectedIndex].id, ' + row + '); setTotPrice();"><option id="" selected>Name of Medicine</option>{% for medicine in medicines %}<option id="{{medicine.price}}" value="{{medicine.medicine_id}}" name="hc_medical_advisor">{{medicine.medicine_name}}</option>{%endfor%}</select></div><div class="form-group col-md-2"><input type="number" class="form-control" placeholder="Quantity" id="quantity-'+ row +'" name="quantity-'+ row +'"  onchange="setTotPrice();" min="1" disabled></div><div class="form-group col-md-2"><input type="text" class="form-control" placeholder="Price (in Rs.)" name="price-'+row+'" id="price-'+row+'" disabled></div><div class="col-md-1" disabled><button class="btn btn-danger" id="DeleteRow" type="button"><i class="bi bi-trash"></i>Delete</button></div></center></div></div>'
-                ;
-
-            $('#newinput').append(newRowAdd);
-            document.getElementById("n_med").value = String(Number(document.getElementById("n_med").value) + 1);
-        });
-
-        $("body").on("click", "#DeleteRow", function () {
-        $(this).parents("#deltarget").remove();
-        setTotPrice();
-        document.getElementById("n_med").value = String(Number(document.getElementById("n_med").value) - 1); 
-        })
-    </script>
-    <script type="text/javascript">
-        $("#rowAdder2").click(function () {
-            var row = document.querySelectorAll('[id^=charge-]').length + 1;
-            newRowAdd =
-                    '<div class="mb-3" id="deltarget2"><div class="form-row" id="atle"><center><div class="form-group col-md-4"><select class="form-select form-control form-select-lg mb-3" aria-label=".form-select-lg" id="test-'+row+'" name="test-'+row+'" autocomplete="off"><option selected>Name of Test</option>{% for test in tests %}<option value="{{test.test_id}}" name="test">{{test.test_name}}</option>{%endfor%}</select></div><div class="form-group col-md-4"><input type="text" class="form-control" placeholder="Laboratory" name="lab-1" autocomplete="off"></div><div class="form-group col-md-2"><input type="text" class="form-control" placeholder="Charges (in Rs.)" id="charge-'+row+'" name="charge-'+row+'" onchange="setTotalCharge();" autocomplete="off"></div><div class="col-md-1"><button class="btn btn-danger" id="DeleteRow2" type="button"><i class="bi bi-trash"></i>Delete</button></div></center></div></div>'
-                ;
-
-            $('#newinput2').append(newRowAdd);
-            document.getElementById("n_test").value = String(Number(document.getElementById("n_test").value) + 1); 
-        });
-
-        $("body").on("click", "#DeleteRow2", function () {
-            $(this).parents("#deltarget2").remove();
-            setTotalCharge();
-            document.getElementById("n_test").value = String(Number(document.getElementById("n_test").value) - 1); 
-        })
-    </script> -->
     <script>
         function setSpecialization(specialization) {
             document.getElementById("specialisation").value = specialization;
