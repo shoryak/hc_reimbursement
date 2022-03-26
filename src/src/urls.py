@@ -17,10 +17,15 @@ from django.contrib import admin
 from django.urls import include, path
 from django.views.generic.base import TemplateView  # new
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
+from user import views as user_views
+
 
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", views.index, name="index"),
     path("user/", include("user.urls")),
-]
+    path('', user_views.UploadView.as_view(), name='fileupload'),
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

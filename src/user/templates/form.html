@@ -16,289 +16,309 @@
 </head>
 
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top"> 
-        <div class="container"> 
-            <div class="navbar-header"> 
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar"> 
-                    <span class="icon-bar"></span> 
-                    <span class="icon-bar"></span> 
-                    <span class="icon-bar"></span> 
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="/user/patient_dashboard" style="margin-right: 25px;">Dashboard</a>
                 <a class="navbar-brand" href="/user/form" style="margin-right: 25px;">New Form</a>
             </div>
-            <div class="collapse navbar-collapse" id="myNavbar"> 
-                <ul class="nav navbar-nav navbar-right"> 
-                    <li><a href = "/#"><span class = "glyphicon glyphicon-user"></span> {{ user.username }}</a></li> 
-                    <li><a href = "/user/logout"><span class = "glyphicon glyphicon-log-in"></span> Logout</a></li> 
-                </ul> 
-            </div> 
-        </div> 
-    </div>  
-
-
-
-  <div class="container-fluid">
-    <div class="row">
-      <main class="col-md-9 ml-sm-auto col-lg-12 px-md-4 py-4">
-        <nav aria-label="breadcrumb">
-          <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item active" aria-current="page">New Form</li>
-          </ol>
-        </nav>
-        <h1 style="margin-top:50px;">Reimbursement Form</h1>
-        <section>
-          <div class="container">
-            <h4 style="line-height: 50px;"><strong>Details of Patient and Employee</strong></h4>
-            
-            <form style="margin-top: 20px;" id ="reimbursement-form" method="post" action="/user/formsubmit">
-                {% csrf_token %}
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="inputEmail4">Full Name</label>
-                        <input type="text" class="form-control" id="inputEmail4" value="{{user.name}}" disabled>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputPassword4">Roll Number</label>
-                        <input type="text" class="form-control" id="inputPassword4" value="{{user.roll}}" disabled>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="inputEmail4">Designation</label>
-                        <input type="text" class="form-control" id="inputEmail4" value="{{user.designation}}" disabled>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputPassword4">Department</label>
-                        <input type="text" class="form-control" id="inputPassword4" value="{{patient.department}}" disabled>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-12">
-                        <label for="inputAddress">Address</label>
-                        <input type="text" class="form-control" id="inputAddress" value="{{user.address}}" disabled>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-3">
-                        <label for="inputAddress">Bank Name</label>
-                        <input type="text" class="form-control" id="inputAddress" value="{{patient.bank_name}}" disabled>
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label for="inputAddress">IFSC Code</label>
-                        <input type="text" class="form-control" id="inputAddress" value="{{patient.bank_IFSC}}" disabled>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputAddress">Account Number</label>
-                        <input type="text" class="form-control" id="inputAddress" value="{{patient.bank_AC}}" disabled>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="inputEmail4">Name of Patient</label>
-                        <input type="text" class="form-control" id="inputEmail4" placeholder="Name" name="patient_name" required>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputPassword4">Relation to Employee</label>
-                        <input type="text" class="form-control" id="inputPassword4" placeholder="Relationship" name="relationship" required>
-                    </div>
-                </div>
-                <div class="push"></div>
-
-                <h4 style="line-height: 50px;">Details of Reimbursement Claim</h4>
-                
-                <div class="mb-3">
-                    <div class="form-row">
-                        <div class="form-group col-md-4">
-                            <label for="hc_medical_advisor">Name of HC Medical Advisor</label>
-                            <select class="form-select form-control form-select-lg mb-3" aria-label=".form-select-lg" id="hc_medical_advisor" name="hc_medical_advisor" onchange="setSpecialization(this.options[this.selectedIndex].id)" autocomplete="off">
-                                <option id="" selected>Name of Medical Advisor</option>
-                                {% for doctor in doctors %}
-                                <option id="{{doctor.specialization}}" value="{{doctor.doctor_id}}" name="hc_medical_advisor">{{doctor.user.name}}</option>
-                                {%endfor%}
-                            </select>
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label for="specialisation">Specialization</label>
-                            <input type="text" class="form-control" id="specialisation" placeholder="Specialization" autocomplete="off" disabled>
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label for="inputPassword6">Date of consultation</label>
-                            <input type="date" class="form-control" placeholder="DD/MM/YYYY" autocomplete="off" id="con_date" name="con_date" disabled>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="inputEmail5">Referred to</label>
-                            <input type="text" class="form-control" id="specialist" placeholder="Name of Specialist" autocomplete="off" name="specialist">
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label for="inputPassword6">Consultation fees</label>
-                            <input type="text" class="form-control" placeholder="Fees (in Rs.)" autocomplete="off" id="con-charge" name="con-charge" onchange="setTotal();">
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label for="inputPassword6">Number of visits</label>
-                            <input type="number" class="form-control" placeholder="Visits" autocomplete="off" id="visits" name="visits" min="1" value="1" onchange="setTotal();">
-                        </div>
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <div class="container" id="newinput">
-                        <div class="mb-3" id="deltarget">
-                            <label for="atle">Medicines and their quantities and respective costs</label>
-                            <div class="form-row" id="atle">
-                                <center>
-                                    <div class="form-group col-md-6">
-                                        <select class="form-select form-control form-select-lg mb-3" aria-label=".form-select-lg" id="medicine-1" name="medicine-1" onchange="setPrice(this.options[this.selectedIndex].id, 1); setTotPrice();" autocomplete="off">
-                                            <option id="" selected>Name of Medicine</option>
-                                            {% for medicine in medicines %}
-                                            <option id="{{medicine.price}}" value="{{medicine.medicine_id}}" name="medicine">{{medicine.medicine_name}}</option>
-                                            {%endfor%}
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-md-2"><input type="number" class="form-control" placeholder="Quantity" id="quantity-1" name="quantity-1" onchange="setTotPrice();" min="1" autocomplete="off" disabled></div>
-                                    <div class="form-group col-md-2"><input type="text" class="form-control" placeholder="Price (in Rs.)" name="price-1" id="price-1" autocomplete="off" disabled></div>
-                                    <div class="col-md-1" disabled>
-                                        <button class="btn btn-danger" id="DeleteRow" type="button" disabled>
-                                            <i class="bi bi-trash"></i>
-                                            Delete
-                                        </button>
-                                    </div>
-                                </center>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="container">
-                        <div class="form-row text-center">
-                            <div class="form-group col-md-offset-5 col-md-1 text-center">
-                                <button id="rowAdder" type="button" class="btn btn-primary">
-                                    <span class="bi bi-plus-square-dotted">
-                                    </span> ADD
-                                </button>
-                            </div> 
-                            <div class="form-group col-md-offset-2 col-md-2"><input type="text" class="form-control" placeholder="Total Price (in Rs.)" id="tot-price" value="0.00" autocomplete="off" onchange="setTotal();" disabled></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mb-3">
-                    <div class="container" id="newinput2">
-                        <div class="mb-3" id="deltarget2">
-                            <label for="atle">Pathological tests and their respective costs</label>
-                            <div class="form-row" id="atle">
-                                <center>
-                                    <div class="form-group col-md-4">
-                                        <select class="form-select form-control form-select-lg mb-3" aria-label=".form-select-lg" id="test-1" name="test-1" autocomplete="off">
-                                            <option selected>Name of Test</option>
-                                            {% for test in tests %}
-                                            <option value="{{test.test_id}}" name="test">{{test.test_name}}</option>
-                                            {%endfor%}
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-md-4"><input type="text" class="form-control" placeholder="Laboratory" name="lab-1" autocomplete="off"></div>
-                                    <div class="form-group col-md-2"><input type="text" class="form-control" placeholder="Charges (in Rs.)" id="charge-1" name="charge-1" onchange="setTotalCharge();" autocomplete="off"></div>
-                                    <div class="col-md-1">
-                                        <button class="btn btn-danger" id="DeleteRow2" type="button" disabled>
-                                            <i class="bi bi-trash"></i>
-                                            Delete
-                                        </button>
-                                    </div>
-                                </center>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="container">
-                        <div class="form-row text-center">
-                            <div class="form-group col-md-offset-5 col-md-1 text-center">
-                                <button id="rowAdder2" type="button" class="btn btn-primary">
-                                    <span class="bi bi-plus-square-dotted">
-                                    </span> ADD
-                                </button>
-                            </div> 
-                            <div class="form-group col-md-offset-2 col-md-2"><input type="text" class="form-control" placeholder="Total Charges (in Rs.)" id="tot-charge" value="0.00" autocomplete="off" disabled></div>
-                        </div>
-                    </div>
-                </div>
-
-
-            <div class="mb-3">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="inputAddress">Total Amount Claimed</label>
-                        <input type="text" class="form-control" id="total" name="total" placeholder="Claim Amount(in Rs.)" value="0.00" autocomplete="off">
-                    </div>
-                </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/#"><span class="glyphicon glyphicon-user"></span> {{ user.username }}</a></li>
+                    <li><a href="/user/logout"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+                </ul>
             </div>
-
-              
-            <div class="mb-3" style="margin-top:50px;">
-                <div class="form-row">
-                    <div class="col-md-offset-3 form-group">
-                        <label for="exampleFormControlFile1">Attach receipts here(as one pdf file)</label> <br>
-                        <input type="file" class="form-control-file" id="exampleFormControlFile1">
-                    </div>
-                </div>
-            </div>
-            <input type="text" value="0" name="n_med" id="n_med" value="0">
-            <input type="text" value="0" name="n_test" id="n_test" value="0">
-            <div class="mb-3" style="margin-top:50px;">
-                <div class="form-row">
-                    <div class="col-md-offset-4 col-md-4 form-group" align="center">
-                        <button type="submit" class="btn btn-primary">Submit Form</button>
-                    </div>
-                </div>
-            </div>
-            
-            </form>
-          </div>
-        </section>
-      </main>
+        </div>
     </div>
-  </div>
+
+
+
+    <div class="container-fluid">
+        <div class="row">
+            <main class="col-md-9 ml-sm-auto col-lg-12 px-md-4 py-4">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">New Form</li>
+                    </ol>
+                </nav>
+                <h1 style="margin-top:50px;">Reimbursement Form</h1>
+                <section>
+                    <div class="container">
+                        <h4 style="line-height: 50px;"><strong>Details of Patient and Employee</strong></h4>
+
+                        <form style="margin-top: 20px;" id="reimbursement-form" method="post" action="/user/formsubmit"
+                            enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="inputEmail4">Full Name</label>
+                                    <input type="text" class="form-control" id="inputEmail4" value="{{user.name}}"
+                                        disabled>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="inputPassword4">Roll Number</label>
+                                    <input type="text" class="form-control" id="inputPassword4" value="{{user.roll}}"
+                                        disabled>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="inputEmail4">Designation</label>
+                                    <input type="text" class="form-control" id="inputEmail4"
+                                        value="{{user.designation}}" disabled>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="inputPassword4">Department</label>
+                                    <input type="text" class="form-control" id="inputPassword4"
+                                        value="{{patient.department}}" disabled>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label for="inputAddress">Address</label>
+                                    <input type="text" class="form-control" id="inputAddress" value="{{user.address}}"
+                                        disabled>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-3">
+                                    <label for="inputAddress">Bank Name</label>
+                                    <input type="text" class="form-control" id="inputAddress"
+                                        value="{{patient.bank_name}}" disabled>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="inputAddress">IFSC Code</label>
+                                    <input type="text" class="form-control" id="inputAddress"
+                                        value="{{patient.bank_IFSC}}" disabled>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="inputAddress">Account Number</label>
+                                    <input type="text" class="form-control" id="inputAddress"
+                                        value="{{patient.bank_AC}}" disabled>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="inputEmail4">Name of Patient</label>
+                                    <input type="text" class="form-control" id="inputEmail4" placeholder="Name"
+                                        name="patient_name" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="inputPassword4">Relation to Employee</label>
+                                    <input type="text" class="form-control" id="inputPassword4"
+                                        placeholder="Relationship" name="relationship" required>
+                                </div>
+                            </div>
+                            <div class="push"></div>
+
+                            <h4 style="line-height: 50px;">Details of Reimbursement Claim</h4>
+
+                            <div class="mb-3">
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <label for="hc_medical_advisor">Name of HC Medical Advisor</label>
+                                        <select class="form-select form-control form-select-lg mb-3"
+                                            aria-label=".form-select-lg" id="hc_medical_advisor"
+                                            name="hc_medical_advisor"
+                                            onchange="setSpecialization(this.options[this.selectedIndex].id)"
+                                            autocomplete="off" required>
+                                            <option id="" value="">Name of Medical Advisor</option>
+                                            {% for doctor in doctors %}
+                                            <option id="{{doctor.specialization}}" value="{{doctor.doctor_id}}"
+                                                name="hc_medical_advisor">{{doctor.user.name}}</option>
+                                            {%endfor%}
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label for="specialisation">Specialization</label>
+                                        <input type="text" class="form-control" id="specialisation"
+                                            placeholder="Specialization" autocomplete="off" disabled required>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label for="inputPassword6">Date of consultation</label>
+                                        <input type="date" class="form-control" placeholder="DD/MM/YYYY"
+                                            autocomplete="off" id="con_date" name="con_date" disabled required>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="inputEmail5">Referred to</label>
+                                        <input type="text" class="form-control" id="specialist"
+                                            placeholder="Name of Specialist" autocomplete="off" name="specialist"
+                                            required>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label for="inputPassword6">Consultation fees</label>
+                                        <input type='number' step='0.01' min="0.00" class="form-control"
+                                            placeholder="Fees (in Rs.)" autocomplete="off" id="con-charge"
+                                            name="con-charge" onchange="setTotal();" required>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label for="inputPassword6">Number of visits</label>
+                                        <input type="number" class="form-control" placeholder="Visits"
+                                            autocomplete="off" id="visits" name="visits" min="1" value="1"
+                                            onchange="setTotal();" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="container col-md-12">
+                                    <label> Enter the number of medicines : </label>
+                                    <input type="number" class="form-control" placeholder="Number of Medicines"
+                                        autocomplete="off" id="n_med" name="n_med" min="0" max="{{medicines.count}}"
+                                        value="1" onchange="create_med_row(this.id);" required>
+                                </div>
+                                <div class="container" id="newinput">
+                                    <label for="atle">Medicines and their quantities and respective costs</label>
+                                    <div class="mb-3" id="deltarget">
+                                        <div class="form-row" id="atle">
+                                            <center>
+                                                <div class="form-group col-md-6">
+                                                    <select class="form-select form-control form-select-lg mb-3"
+                                                        aria-label=".form-select-lg" id="medicine-1" name="medicine-1"
+                                                        onchange="setPrice(this.options[this.selectedIndex].id, 1); setTotPrice()"
+                                                        autocomplete="off" required>
+                                                        <option id="" value="">Name of Medicine</option>
+                                                        {% for medicine in medicines %}
+                                                        <option id="{{medicine.price}}" value="{{medicine.medicine_id}}"
+                                                            name="medicine">{{medicine.medicine_name}}</option>
+                                                        {%endfor%}
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-md-2"><input type="number"
+                                                        class="form-control" placeholder="Quantity" id="quantity-1"
+                                                        name="quantity-1" onchange="setTotPrice();" min="1"
+                                                        autocomplete="off" disabled required></div>
+                                                <div class="form-group col-md-2"><input type='number' step='0.01'
+                                                        value='0.00' class="form-control" placeholder="Price (in Rs.)"
+                                                        name="price-1" id="price-1" autocomplete="off" disabled
+                                                        required></div>
+                                            </center>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="container">
+                                    <div class="form-row text-center">
+                                        <div class="form-group col-md-offset-8 col-md-2"><input type="text"
+                                                class="form-control" placeholder="Total Price (in Rs.)" id="tot-price"
+                                                value="0.00" autocomplete="off" onchange="setTotal();" disabled
+                                                required></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="container col-md-12">
+                                    <label> Enter the number of tests : </label>
+                                    <input type="number" class="form-control" placeholder="Number of Tests"
+                                        autocomplete="off" id="n_test" name="n_test" min="0" max="{{tests.count}}"
+                                        value="1" onchange="create_test_row(this.id);" required>
+                                </div>
+                                <div class="container" id="newinput2">
+                                    <label for="atle">Pathological tests and their respective costs</label>
+                                    <div class="mb-3" id="deltarget2">
+                                        <div class="form-row" id="atle">
+                                            <center>
+                                                <div class="form-group col-md-4">
+                                                    <select class="form-select form-control form-select-lg mb-3"
+                                                        aria-label=".form-select-lg" id="test-1" name="test-1"
+                                                        autocomplete="off" required>
+                                                        <option value="" id="">Name of Test</option>
+                                                        {% for test in tests %}
+                                                        <option value="{{test.test_id}}" name="test">
+                                                            {{test.test_name}}
+                                                        </option>
+                                                        {%endfor%}
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-md-4"><input type="text" class="form-control"
+                                                        placeholder="Laboratory" name="lab-1" autocomplete="off"
+                                                        required></div>
+                                                <div class="form-group col-md-2"><input type='number' step='0.01' min = '0.00'
+                                                        class="form-control" placeholder="Charges (in Rs.)"
+                                                        id="charge-1" name="charge-1" onchange="setTotalCharge();"
+                                                        autocomplete="off" required></div>
+                                            </center>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="container">
+                                    <div class="form-row text-center">
+                                        <div class="form-group col-md-offset-8 col-md-2"><input type='number'
+                                                value="0.00" step='0.01' class="form-control"
+                                                placeholder="Total Charges (in Rs.)" id="tot-charge" autocomplete="off"
+                                                disabled required></div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="mb-3">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="inputAddress">Total Amount Claimed</label>
+                                        <input type='number' step='0.01' value='0.00' class="form-control" id="total"
+                                            name="total" placeholder="Claim Amount(in Rs.)" value="0.00"
+                                            autocomplete="off" required>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="mb-3" style="margin-top:50px;">
+                                <div class="form-row">
+                                    <div class="col-md-offset-3 form-group">
+                                        <label for="file">Attach receipts here(as one pdf file)</label> <br>
+                                        <input type="file" class="form-control-file" id="file" name="file" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3" style="margin-top:50px;">
+                                <div class="form-row">
+                                    <div class="col-md-offset-4 col-md-4 form-group" align="center">
+                                        <button type="submit" class="btn btn-primary">Submit Form</button>
+                                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
     <div class="push"></div>
     <footer>
-        <div class="container"> 
-            <center> 
+        <div class="container">
+            <center>
                 <p>
                     Copyright &copy; HC Reimbursement Portal All Rights Reserved | Contact Team-6.
-                </p> 
-            </center> 
-        </div> 
+                </p>
+            </center>
+        </div>
     </footer>
     <script type="text/javascript">
-        $("#rowAdder").click(function () {
-            var row = document.querySelectorAll('[id^=price-]').length + 1;
-            newRowAdd =
-                    '<div class="mb-3" id="deltarget"><div class="form-row" id="atle"><center><div class="form-group col-md-6"><select class="form-select form-control form-select-lg mb-3" aria-label=".form-select-lg" id="medicine-'+ row +'" name="medicine-'+ row +'" onchange="setPrice(this.options[this.selectedIndex].id, ' + row + '); setTotPrice();"><option id="" selected>Name of Medicine</option>{% for medicine in medicines %}<option id="{{medicine.price}}" value="{{medicine.medicine_id}}" name="hc_medical_advisor">{{medicine.medicine_name}}</option>{%endfor%}</select></div><div class="form-group col-md-2"><input type="number" class="form-control" placeholder="Quantity" id="quantity-'+ row +'" name="quantity-'+ row +'"  onchange="setTotPrice();" min="1" disabled></div><div class="form-group col-md-2"><input type="text" class="form-control" placeholder="Price (in Rs.)" name="price-'+row+'" id="price-'+row+'" disabled></div><div class="col-md-1" disabled><button class="btn btn-danger" id="DeleteRow" type="button"><i class="bi bi-trash"></i>Delete</button></div></center></div></div>'
-                ;
+        function create_med_row(id) {
+            var num = document.getElementById(id).value
+            var str = "";
+            if (Number(num) >= 1) str += '<label for="atle">Medicines and their quantities and respective costs</label>';
+            for (row = 1; row <= Number(num); row++) {
+                str += '<div class="mb-3" id="deltarget"><div class="form-row" id="atle"><center><div class="form-group col-md-6"><select required class="form-select form-control form-select-lg mb-3" aria-label=".form-select-lg" id="medicine-' + row.toString() + '" name="medicine-' + row.toString() + '" onchange="setPrice(this.options[this.selectedIndex].id, ' + row.toString() + '); setTotPrice();"><option id="" value = "">Name of Medicine</option>{% for medicine in medicines %}<option id="{{medicine.price}}" value="{{medicine.medicine_id}}" name="hc_medical_advisor">{{medicine.medicine_name}}</option>{%endfor%}</select></div><div class="form-group col-md-2"><input required type="number" class="form-control" placeholder="Quantity" id="quantity-' + row.toString() + '" name="quantity-' + row.toString() + '"  onchange="setTotPrice();" min="1" disabled></div><div class="form-group col-md-2"><input required type="text" class="form-control" placeholder="Price (in Rs.)" name="price-' + row.toString() + '" id="price-' + row.toString() + '" disabled></div></center></div></div>';
+            }
+            document.getElementById("newinput").innerHTML = str;
+        };
 
-            $('#newinput').append(newRowAdd);
-            document.getElementById("n_med").value = String(Number(document.getElementById("n_med").value) + 1);
-        });
-
-        $("body").on("click", "#DeleteRow", function () {
-        $(this).parents("#deltarget").remove();
-        setTotPrice();
-        document.getElementById("n_med").value = String(Number(document.getElementById("n_med").value) - 1); 
-        })
-    </script>
-    <script type="text/javascript">
-        $("#rowAdder2").click(function () {
-            var row = document.querySelectorAll('[id^=charge-]').length + 1;
-            newRowAdd =
-                    '<div class="mb-3" id="deltarget2"><div class="form-row" id="atle"><center><div class="form-group col-md-4"><select class="form-select form-control form-select-lg mb-3" aria-label=".form-select-lg" id="test-'+row+'" name="test-'+row+'" autocomplete="off"><option selected>Name of Test</option>{% for test in tests %}<option value="{{test.test_id}}" name="test">{{test.test_name}}</option>{%endfor%}</select></div><div class="form-group col-md-4"><input type="text" class="form-control" placeholder="Laboratory" name="lab-1" autocomplete="off"></div><div class="form-group col-md-2"><input type="text" class="form-control" placeholder="Charges (in Rs.)" id="charge-'+row+'" name="charge-'+row+'" onchange="setTotalCharge();" autocomplete="off"></div><div class="col-md-1"><button class="btn btn-danger" id="DeleteRow2" type="button"><i class="bi bi-trash"></i>Delete</button></div></center></div></div>'
-                ;
-
-            $('#newinput2').append(newRowAdd);
-            document.getElementById("n_test").value = String(Number(document.getElementById("n_test").value) + 1); 
-        });
-
-        $("body").on("click", "#DeleteRow2", function () {
-            $(this).parents("#deltarget2").remove();
-            setTotalCharge();
-            document.getElementById("n_test").value = String(Number(document.getElementById("n_test").value) - 1); 
-        })
+        function create_test_row(id) {
+            var num = document.getElementById(id).value
+            var str = "";
+            if (Number(num) >= 1) str += '<label for="atle">Pathological tests and their respective costs</label>';
+            for (row = 1; row <= Number(num); row++) {
+                str += '<div class="form-row" id="atle"><center><div class="form-group col-md-4"><select required class="form-select form-control form-select-lg mb-3" aria-label=".form-select-lg" id="test-' + row.toString() + '" name="test-' + row.toString() + '" autocomplete="off"><option id = "" value = "">Name of Test</option>{% for test in tests %}<option value="{{test.test_id}}" name="test">{{test.test_name}}</option>{%endfor%}</select></div><div class="form-group col-md-4"><input required  type="text" class="form-control" placeholder="Laboratory" name="lab-' + row.toString() + '" autocomplete="off"></div><div class="form-group col-md-2"><input type="number" min = "0.00" step="0.01" class="form-control" placeholder="Charges (in Rs.)" id="charge-' + row.toString() + '" name="charge-' + row.toString() + '" onchange="setTotalCharge();" autocomplete="off" required></div></center></div>';
+            }
+            document.getElementById("newinput2").innerHTML = str;
+        };
     </script>
     <script>
         function setSpecialization(specialization) {
@@ -314,8 +334,7 @@
         function setTotPrice() {
             var row = document.querySelectorAll('[id^=price-]'), i;
             var totPrice = 0;
-            for(i = 1; i <= row.length; i++)
-            {
+            for (i = 1; i <= row.length; i++) {
                 totPrice += Number(document.getElementById("quantity-" + i).value) * Number(document.getElementById("price-" + i).value);
             }
             document.getElementById("tot-price").value = parseFloat(String(totPrice)).toFixed(2);
@@ -324,8 +343,7 @@
         function setTotalCharge() {
             var row = document.querySelectorAll('[id^=charge-]'), i;
             var totPrice = 0;
-            for(i = 1; i <= row.length; i++)
-            {
+            for (i = 1; i <= row.length; i++) {
                 totPrice += Number(document.getElementById("charge-" + i).value);
             }
             document.getElementById("tot-charge").value = parseFloat(String(totPrice)).toFixed(2);
@@ -351,8 +369,8 @@
 
         if (mm < 10) {
             mm = '0' + mm;
-        } 
-            
+        }
+
         today = yyyy + '-' + mm + '-' + dd;
         document.getElementById("con_date").setAttribute("max", today);
     </script>

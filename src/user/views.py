@@ -23,6 +23,8 @@ from .utils import (
     IsLoggedIn,
     role_based_redirection,
 )
+from django.views.generic.edit import CreateView
+from django.urls import reverse_lazy
 
 # Create your views here.
 from django.http import HttpResponse
@@ -167,44 +169,29 @@ def submitForm(request):
                 form.patient = Patient.objects.get(user=IsLoggedIn(request))
                 form.patient_name = request.POST.get("patient_name")
                 form.relationship = request.POST.get("relationship")
-                form.hc_medical_advisor = Doctor.objects.get(
-                    doctor_id=request.POST.get("hc_medical_advisor")
-                )
+                form.hc_medical_advisor = Doctor.objects.get(doctor_id=request.POST.get("hc_medical_advisor"));
                 form.consultation_date = request.POST.get("con_date")
                 form.referral_advisor = request.POST.get("specialist")
                 form.consultation_fees = request.POST.get("con-charge")
                 form.consultation_visits = request.POST.get("visits")
-                form.created_date = timezone.now()
+                form.created_date = timezone.now();
+                form.file = request.FILES["file"]
                 # if form.is_valid():
                 #     form_application=form.save(commit=False)
-                form.save()
-                no_med = int(request.POST.get("n_med"))
-                no_test = int(request.POST.get("n_test"))
-                for i in range(1, no_med + 1):
-                    formmedicine = FormMedicine(
-                        form=form,
-                        medicine=Medicine.objects.get(
-                            medicine_id=request.POST.get("medicine-" + str(i))
-                        ),
-                        quantity=request.POST.get("quantity-" + str(i)),
-                    )
+                form.save();
+                no_med = int(request.POST.get("n_med"));
+                no_test = int(request.POST.get("n_test"));
+                for i in range(1,no_med+1):
+                    formmedicine = FormMedicine(form=form, medicine=Medicine.objects.get(medicine_id=request.POST.get("medicine-"+str(i))), quantity=request.POST.get("quantity-"+str(i)));
                     formmedicine.save()
-                for i in range(1, no_test + 1):
-                    formtest = FormTest(
-                        form=form,
-                        test=Test.objects.get(test_id=request.POST.get("test-" + str(i))),
-                        cost=request.POST.get("charge-" + str(i)),
-                    )
+                for i in range(1,no_test+1):
+                    formtest = FormTest(form=form, test=Test.objects.get(test_id=request.POST.get("test-"+str(i))), cost=request.POST.get("charge-"+str(i)),lab=request.POST.get("lab-"+str(i)));
                     formtest.save()
                 transaction = Transaction(
-                    status="Form submitted",
-                    form=form,
-                    feedback="",
-                    created_date=timezone.now(),
-                    reimbursement_amount=request.POST.get("total"),
+                    status="Form submitted", form=form, feedback="", created_date=timezone.now(), reimbursement_amount = request.POST.get("total")
                 )
                 # user feedback
-                transaction.save()
+                transaction.save(); 
                 return HttpResponseRedirect("patient_dashboard")
                 # return HttpResponse("form submitted" + str(form))
                 # return redirect('form_detail', pk=form.pk)
@@ -543,6 +530,9 @@ def register_any_user(request):
             elif User.objects.filter(roll=roll).exists():
                 messages.error(request, "Roll Number already in use!")
                 return HttpResponseRedirect("/user/hcadmin_dashboard/signup_admin")
+            elif User.objects.filter(email=email).exists():
+                messages.error(request, "User with this email already exits!")
+                return HttpResponseRedirect("/user/hcadmin_dashboard/signup_admin")
             else:
                 user = User()
                 user.name = name
@@ -627,6 +617,7 @@ def update_patient_profile(request):
             return HttpResponseRedirect("/user")
 
 
+
 def doctor_profile(request):
     user = IsLoggedIn(request)
     if user is None: # not already logged in 
@@ -674,6 +665,7 @@ def update_doctor_profile(request):
             return HttpResponseRedirect("/user")
 
 
+
 def hcadmin_profile(request):
     user = IsLoggedIn(request)
     if user is None: # not already logged in 
@@ -714,6 +706,7 @@ def update_hcadmin_profile(request):
         else:
             messages.error(request, "Kindly login to view the page!")
             return HttpResponseRedirect("/user")
+
 
 
 def accounts_profile(request):
@@ -757,3 +750,13 @@ def update_accounts_profile(request):
         else:
             messages.error(request, "Kindly login to view the page!")
             return HttpResponseRedirect("/user")
+
+
+class UploadView(CreateView):
+    model = Form
+    fields = ['file', ]
+    success_url = reverse_lazy('fileupload')
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['documents'] = Form.objects.all()
+        return context

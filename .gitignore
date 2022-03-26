@@ -5,3 +5,5 @@ src/user/migrations/__pycache__
 src/db.sqlite3
 Pipfile
 Pipfile.lock
+media
+htmlconv
