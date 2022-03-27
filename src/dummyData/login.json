@@ -1,0 +1,322 @@
+[
+    {
+        "model": "user.user",
+        "pk": 1,
+        "fields": {
+            "name": "sanchits",
+            "username": "sanchits",
+            "roll": "190753",
+            "email": "sanchits@iitk.ac.in",
+            "password": "$2b$12$.Gb9U4uxzYQXv9ZyPb1.B.0YI3amwUbdAbqdY0f2.gktBnZGHdeVO",
+            "contact": "N/A",
+            "address": "N/A",
+            "designation": "sanchits",
+            "roles": "patient"
+        }
+    },
+    {
+        "model": "user.user",
+        "pk": 2,
+        "fields": {
+            "name": "hcadmin_name",
+            "username": "hcadmin_name",
+            "roll": "121211",
+            "email": "hcadmin_name@iitk.ac.in",
+            "password": "$2b$12$/Mg1YSfrCLzVtGMSxnkblOiqyAhV.kkaqrEMrfwn.8ij3wOxzj/OW",
+            "contact": "N/A",
+            "address": "N/A",
+            "designation": "hcadmin_name",
+            "roles": "hcadmin"
+        }
+    },
+    {
+        "model": "user.user",
+        "pk": 3,
+        "fields": {
+            "name": "doctor_name",
+            "username": "doctor_name",
+            "roll": "190751",
+            "email": "doctor_name@iitk.ac.in",
+            "password": "$2b$12$bK.T6Fa5OSwhJPhE92IOJO3/eJV9ZKtzC22UsIPs9E3mVTisgdr8S",
+            "contact": "N/A",
+            "address": "N/A",
+            "designation": "doctor_name",
+            "roles": "doctor"
+        }
+    },
+    {
+        "model": "user.user",
+        "pk": 4,
+        "fields": {
+            "name": "doctor_name2",
+            "username": "doctor_name2",
+            "roll": "190818",
+            "email": "doctor_name2@iitk.ac.in",
+            "password": "$2b$12$WxsebHHVWR7qmN0hTz6sluIi38DwIN56.lvibT8C83aMfOG.5Y2qa",
+            "contact": "N/A",
+            "address": "N/A",
+            "designation": "doctor_name2",
+            "roles": "doctor"
+        }
+    },
+    {
+        "model": "user.user",
+        "pk": 5,
+        "fields": {
+            "name": "accounts_name",
+            "username": "accounts_name",
+            "roll": "123456",
+            "email": "accounts_name@iitk.ac.in",
+            "password": "$2b$12$zJpetpGsb52g0HpA7M8X6.oYXOKUut.XyuCXG85V0IgOZhcHAc1we",
+            "contact": "N/A",
+            "address": "N/A",
+            "designation": "accounts_name",
+            "roles": "accounts"
+        }
+    },
+    {
+        "model": "user.user",
+        "pk": 6,
+        "fields": {
+            "name": "none",
+            "username": "none",
+            "roll": "111111",
+            "email": "none@iitk.ac.in",
+            "password": "$2b$12$/Mg1YSfrCLzVtGMSxnkblOiqyAhV.kkaqrEMrfwn.8ij3wOxzj/OW",
+            "contact": "N/A",
+            "address": "N/A",
+            "designation": "none",
+            "roles": "none"
+        }
+    },
+    {
+        "model": "user.user",
+        "pk": 7,
+        "fields": {
+            "name": "hcadmin_name2",
+            "username": "hcadmin_name2",
+            "roll": "123454",
+            "email": "hcadmin_name2@iitk.ac.in",
+            "password": "$2b$12$R1ZBSSQuDE9iImrxpDP07uKVnOZD.4Qz5pdqX56GrcPTzwen5Oq1a",
+            "contact": "N/A",
+            "address": "N/A",
+            "designation": "hcadmin_name2",
+            "roles": "hcadmin"
+        }
+    },
+    {
+        "model": "user.user",
+        "pk": 8,
+        "fields": {
+            "name": "hcadmin_name3",
+            "username": "hcadmin_name3",
+            "roll": "190756",
+            "email": "hcadmin_name3@iitk.ac.in",
+            "password": "$2b$12$EQ1OVgS17wBmEuPFK30XY.2jBQWDWqYfMle6zAG6DBYfOg/f6/9XK",
+            "contact": "N/A",
+            "address": "N/A",
+            "designation": "hcadmin_name3",
+            "roles": "hcadmin"
+        }
+    },
+    {
+        "model": "user.user",
+        "pk": 9,
+        "fields": {
+            "name": "doctor_name3",
+            "username": "doctor_name3",
+            "roll": "123450",
+            "email": "doctor_name3@iitk.ac.in",
+            "password": "$2b$12$TYdpp9ADBcGzANwuYyA2DOFrAWpXWKVteg6gUrkAMpGPEg1nY1d0u",
+            "contact": "N/A",
+            "address": "N/A",
+            "designation": "des_doctor_name3",
+            "roles": "doctor"
+        }
+    },
+    {
+        "model": "user.user",
+        "pk": 10,
+        "fields": {
+            "name": "shoryak",
+            "username": "Shorya",
+            "roll": "190819",
+            "email": "shoryak@iitk.ac.in",
+            "password": "$2b$12$0pZMl73ZxRAuaMm.lHQ3A.UZykTtsx8IybCzMqku5z2MhZMpuIbMq",
+            "contact": "N/A",
+            "address": "N/A",
+            "designation": "shoryak-student",
+            "roles": "patient"
+        }
+    },
+    {
+        "model": "user.user",
+        "pk": 11,
+        "fields": {
+            "name": "patient3",
+            "username": "patient3",
+            "roll": "190800",
+            "email": "patient3@iitk.ac.in",
+            "password": "$2b$12$XpWv.39lpTeS7qOdo7YbH.fS7EWpFMd.PlFXuLFP2CV8iD9tM9DP2",
+            "contact": "N/A",
+            "address": "N/A",
+            "designation": "user3-desgn",
+            "roles": "patient"
+        }
+    },
+    {
+        "model": "user.user",
+        "pk": 12,
+        "fields": {
+            "name": "accounts_name_2",
+            "username": "accounts_name_2",
+            "roll": "123488",
+            "email": "accounts_name_2@iitk.ac.in",
+            "password": "$2b$12$JeG.XTW0u4PXstYVQsm1oe18VAXGSTbQIWB2Zbgw2egMZMr30.cny",
+            "contact": "N/A",
+            "address": "N/A",
+            "designation": "accounts_name_2-desg",
+            "roles": "accounts"
+        }
+    },
+    {
+        "model": "user.user",
+        "pk": 13,
+        "fields": {
+            "name": "accounts_name_3",
+            "username": "accounts_name_3",
+            "roll": "123888",
+            "email": "accounts_name_3@iitk.ac.in",
+            "password": "$2b$12$kij3GT7.7mt2vmS6LEkofOh6VA2N2DjpkB3sGuQ5hFITI9NAN3snW",
+            "contact": "N/A",
+            "address": "N/A",
+            "designation": "accounts_name_3-des",
+            "roles": "accounts"
+        }
+    },
+    {
+        "model": "user.user",
+        "pk": 14,
+        "fields": {
+            "name": "patient4",
+            "username": "patient4",
+            "roll": "190788",
+            "email": "patient4@iitk.ac.in",
+            "password": "$2b$12$oabQBYhM6b7iJheKO47h.upnkWT2WP5arjNgFZgH9BInYqKjOvZUm",
+            "contact": "N/A",
+            "address": "N/A",
+            "designation": "patient4",
+            "roles": "patient"
+        }
+    },
+    {
+        "model": "user.patient",
+        "pk": 1,
+        "fields": {
+            "user": 1,
+            "bank_name": "N/A",
+            "department": "sanchits",
+            "bank_IFSC": "N/A",
+            "bank_AC": "N/A"
+        }
+    },
+    {
+        "model": "user.patient",
+        "pk": 2,
+        "fields": {
+            "user": 10,
+            "bank_name": "N/A",
+            "department": "shoryak-EE",
+            "bank_IFSC": "N/A",
+            "bank_AC": "N/A"
+        }
+    },
+    {
+        "model": "user.patient",
+        "pk": 3,
+        "fields": {
+            "user": 11,
+            "bank_name": "N/A",
+            "department": "user3-dep",
+            "bank_IFSC": "N/A",
+            "bank_AC": "N/A"
+        }
+    },
+    {
+        "model": "user.patient",
+        "pk": 4,
+        "fields": {
+            "user": 14,
+            "bank_name": "N/A",
+            "department": "patient4",
+            "bank_IFSC": "N/A",
+            "bank_AC": "N/A"
+        }
+    },
+    {
+        "model": "user.doctor",
+        "pk": 1,
+        "fields": {
+            "user": 3,
+            "specialization": "1"
+        }
+    },
+    {
+        "model": "user.doctor",
+        "pk": 2,
+        "fields": {
+            "user": 4,
+            "specialization": "2"
+        }
+    },
+    {
+        "model": "user.doctor",
+        "pk": 3,
+        "fields": {
+            "user": 9,
+            "specialization": "N/A"
+        }
+    },
+    {
+        "model": "user.hcadmin",
+        "pk": 1,
+        "fields": {
+            "user": 2
+        }
+    },
+    {
+        "model": "user.hcadmin",
+        "pk": 2,
+        "fields": {
+            "user": 7
+        }
+    },
+    {
+        "model": "user.hcadmin",
+        "pk": 3,
+        "fields": {
+            "user": 8
+        }
+    },
+    {
+        "model": "user.accounts",
+        "pk": 1,
+        "fields": {
+            "user": 5
+        }
+    },
+    {
+        "model": "user.accounts",
+        "pk": 2,
+        "fields": {
+            "user": 12
+        }
+    },
+    {
+        "model": "user.accounts",
+        "pk": 3,
+        "fields": {
+            "user": 13
+        }
+    }
+]
