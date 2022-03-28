@@ -31,4 +31,7 @@ urlpatterns = [
     path("accounts_dashboard/accounts_profile/update_accounts_profile", views.update_accounts_profile, name="update_accounts_profile"),
     path("hcadmin_dashboard/hcadmin_profile", views.hcadmin_profile, name="hcadmin_profile"),
     path("hcadmin_dashboard/hcadmin_profile/update_hcadmin_profile", views.update_hcadmin_profile, name="update_hcadmin_profile"),
+    path("hcadmin_dashboard/med_and_test", views.med_and_test, name="med_and_test"),
+    path("hcadmin_dashboard/add_medicine", views.add_medicine, name="add_medicine"),
+    path("hcadmin_dashboard/add_test", views.add_test, name="add_test"),
 ]

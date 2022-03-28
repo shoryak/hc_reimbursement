@@ -40,13 +40,19 @@
 				<div class="col-xs-offset-2 col-xs-8 col-md-offset-3 col-md-6">
                     <form method="post" action="/user/register">
                         {% if messages %}
+                        {% for message in messages %}
+                        {% if message.tags %}
+                        {% if message.tags == "error" %}
                         <div class="panel panel-danger">
+                        {% endif %} 
+                        {% if message.tags == "success" %}
+                        <div class="panel panel-success">
+                        {% endif %} 
                             <div class="panel-heading">
-                                {% for message in messages %}
-                                <strong><h5{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h5></strong>
-                                {% endfor %}
-                            </div>
-                        </div>
+                                <strong><h5 class="{{ message.tags }}">{{ message }}</h5></strong>
+                            </div>   
+                        {% endif %} 
+                        {% endfor %}
                         {% else %}
 					    <center><h2><strong>SIGN UP</strong></h2></center>
                         {% endif %}
@@ -64,7 +70,10 @@
                         <input type="text" name="email" placeholder="IITK Email ID" class="form-control" required="True" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$">
 					</div>
 					<div class="form-group">
-                        <input type="password" name="password" placeholder="Password" class="form-control" required="True" pattern=".{6,}">
+                        <input type="password" name="password" placeholder="Password(Min length: 6)" class="form-control" required="True" pattern=".{6,}">
+					</div>
+                    <div class="form-group">
+                        <input type="password" name="conf_password" placeholder="Confirm Password(Min length: 6)" class="form-control" required="True" pattern=".{6,}">
 					</div>
                     <div class="form-group">                     
                         <input type="text" name="designation" placeholder="Designation" class="form-control" required="True">
