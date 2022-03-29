@@ -58,32 +58,38 @@ def registerPatient(request):
             email = request.POST.get("email")
             designation = request.POST.get("designation")
             department = request.POST.get("department")
-            password = MAKE_PASSWORD(request.POST.get("password"))
-            if User.objects.filter(username=username).exists():
-                messages.error(request, "Username already in use!")
-                return HttpResponseRedirect("/user/signup")
-            elif User.objects.filter(roll=roll).exists():
-                messages.error(request, "User with this roll already exits!")
-                return HttpResponseRedirect("/user/signup")
-            elif User.objects.filter(email=email).exists():
-                messages.error(request, "User with this email already exits!")
-                return HttpResponseRedirect("/user/signup")
+            password1 = request.POST.get("password")
+            password2 = request.POST.get("conf_password")
+            if(password1 != password2):
+                messages.error(request, "Password does not match!")
+                return HttpResponseRedirect("/user/signup")   
             else:
-                user = User(roles="patient")
-                user.name = name
-                user.username = username
-                user.roll = roll
-                user.email = email
-                user.password = password
-                user.designation = designation
-                user.save()
-                patient = Patient(user=user, department=department)
-                patient.save()
+                password = MAKE_PASSWORD(password1)
+                if User.objects.filter(username=username).exists():
+                    messages.error(request, "Username already in use!")
+                    return HttpResponseRedirect("/user/signup")
+                elif User.objects.filter(roll=roll).exists():
+                    messages.error(request, "User with this roll already exits!")
+                    return HttpResponseRedirect("/user/signup")
+                elif User.objects.filter(email=email).exists():
+                    messages.error(request, "User with this email already exits!")
+                    return HttpResponseRedirect("/user/signup")
+                else:
+                    user = User(roles="patient")
+                    user.name = name
+                    user.username = username
+                    user.roll = roll
+                    user.email = email
+                    user.password = password
+                    user.designation = designation
+                    user.save()
+                    patient = Patient(user=user, department=department)
+                    patient.save()
 
-                messages.success(request, "User account created successfully!")
-                return HttpResponseRedirect("/user")
+                    messages.success(request, "User account created successfully!")
+                    return HttpResponseRedirect("/user")
         else:
-            messages.success(request, "Please fill in the credentials to sign up!")
+            messages.error(request, "Please fill in the credentials to sign up!")
             return HttpResponseRedirect("/user/signup")
     else: # user is already logged in 
         url = role_based_redirection(request)
@@ -522,45 +528,51 @@ def register_any_user(request):
             email = request.POST.get("email")
             designation = request.POST.get("designation")
             department = request.POST.get("department")
-            password = MAKE_PASSWORD(request.POST.get("password"))
-            role = request.POST.get("role")
-            if User.objects.filter(username=username).exists():
-                messages.error(request, "Username already in use!")
-                return HttpResponseRedirect("/user/hcadmin_dashboard/signup_admin")
-            elif User.objects.filter(roll=roll).exists():
-                messages.error(request, "Roll Number already in use!")
-                return HttpResponseRedirect("/user/hcadmin_dashboard/signup_admin")
-            elif User.objects.filter(email=email).exists():
-                messages.error(request, "User with this email already exits!")
-                return HttpResponseRedirect("/user/hcadmin_dashboard/signup_admin")
+            password1 = request.POST.get("password")
+            password2 = request.POST.get("conf_password")
+            if(password1 != password2):
+                messages.error(request, "Password does not match!")
+                return HttpResponseRedirect("/user/hcadmin_dashboard/signup_admin")   
             else:
-                user = User()
-                user.name = name
-                user.username = username
-                user.roll = roll
-                user.email = email
-                user.password = password
-                user.designation = designation
-                user.roles = role
-                user.save()
-                if role == "patient":
-                    patient = Patient(user=user, department=department)
-                    patient.save()
-                elif role == "doctor":
-                    doctor = Doctor(user=user)
-                    doctor.save()
-                elif role == "hcadmin":
-                    hcadmin = HCAdmin(user=user)
-                    hcadmin.save()
-                elif role == "accounts":
-                    accounts = Accounts(user=user)
-                    accounts.save()
-                else:
-                    messages.error(request, "Invalid User!")
+                password = MAKE_PASSWORD(request.POST.get("password"))
+                role = request.POST.get("role")
+                if User.objects.filter(username=username).exists():
+                    messages.error(request, "Username already in use!")
                     return HttpResponseRedirect("/user/hcadmin_dashboard/signup_admin")
+                elif User.objects.filter(roll=roll).exists():
+                    messages.error(request, "Roll Number already in use!")
+                    return HttpResponseRedirect("/user/hcadmin_dashboard/signup_admin")
+                elif User.objects.filter(email=email).exists():
+                    messages.error(request, "User with this email already exits!")
+                    return HttpResponseRedirect("/user/hcadmin_dashboard/signup_admin")
+                else:
+                    user = User()
+                    user.name = name
+                    user.username = username
+                    user.roll = roll
+                    user.email = email
+                    user.password = password
+                    user.designation = designation
+                    user.roles = role
+                    user.save()
+                    if role == "patient":
+                        patient = Patient(user=user, department=department)
+                        patient.save()
+                    elif role == "doctor":
+                        doctor = Doctor(user=user)
+                        doctor.save()
+                    elif role == "hcadmin":
+                        hcadmin = HCAdmin(user=user)
+                        hcadmin.save()
+                    elif role == "accounts":
+                        accounts = Accounts(user=user)
+                        accounts.save()
+                    else:
+                        messages.error(request, "Invalid User!")
+                        return HttpResponseRedirect("/user/hcadmin_dashboard/signup_admin")
 
-                messages.success(request, "User account created successfully!")
-                return HttpResponseRedirect("/user/hcadmin_dashboard/signup_admin")
+                    messages.success(request, "User account created successfully!")
+                    return HttpResponseRedirect("/user/hcadmin_dashboard/signup_admin")
         else:
             messages.error(request, "Kindly login to view the page!")
             return HttpResponseRedirect("/user")
@@ -611,6 +623,7 @@ def update_patient_profile(request):
             patient.bank_IFSC = bank_IFSC
             patient.bank_AC = bank_AC
             patient.save()
+            messages.success(request, "Profile Succesfully Updated!")
             return HttpResponseRedirect("/user/patient_dashboard/patient_profile")
         else:
             messages.error(request, "Kindly login to view the page!")
@@ -659,6 +672,7 @@ def update_doctor_profile(request):
             doctor = Doctor.objects.get(user=user)
             doctor.specialization = specialization
             doctor.save()
+            messages.success(request, "Profile Succesfully Updated!")
             return HttpResponseRedirect("/user/doctor_dashboard/doctor_profile")
         else:
             messages.error(request, "Kindly login to view the page!")
@@ -682,6 +696,77 @@ def hcadmin_profile(request):
                 break
         return render(request, "hcadmin_profile.html", data)
 
+def med_and_test(request):
+    user = IsLoggedIn(request)
+    if user is None: # not already logged in 
+        messages.error(request, "Kindly login to view the page!")
+        return HttpResponseRedirect("/user/logout")
+    elif user.roles != "hcadmin": # already logged in but not as hcadmin 
+        url = role_based_redirection(request)
+        return HttpResponseRedirect(url)
+    else:
+        data = {"hcadmin": None, "med_items": [], "test_items":[]}
+        for p in HCAdmin.objects.all():
+            if p.user == user:
+                data["hcadmin"] = p
+                break
+        for med in Medicine.objects.all():
+            data["med_items"].append(
+                {
+                    "medicine_name": med.medicine_name,
+                    "brand": med.brand,
+                    "price": med.price,
+                }
+            )
+        for test in Test.objects.all():
+            data["test_items"].append(
+                {
+                    "test_name": test.test_name,
+                }
+            )
+        return render(request, "med_and_test.html", data)
+
+def add_medicine(request):
+    user = IsLoggedIn(request)
+    if user is None: # not already logged in 
+        messages.error(request, "Kindly login to view the page!")
+        return HttpResponseRedirect("/user/logout")
+    elif user.roles != "hcadmin": # already logged in but not as hcadmin 
+        url = role_based_redirection(request)
+        return HttpResponseRedirect(url)
+    else:
+        if request.method == "POST":
+            med = Medicine()
+            med.medicine_name = request.POST.get("med_name")
+            med.brand = request.POST.get("med_brand")
+            med.price = request.POST.get("med_price")
+            med.save()
+
+            messages.success(request, "Medicine added successfully")
+            return HttpResponseRedirect("/user/hcadmin_dashboard/med_and_test")
+        else:
+            messages.error(request, "Kindly login to view the page!")
+            return HttpResponseRedirect("/user")
+
+def add_test(request):
+    user = IsLoggedIn(request)
+    if user is None: # not already logged in 
+        messages.error(request, "Kindly login to view the page!")
+        return HttpResponseRedirect("/user/logout")
+    elif user.roles != "hcadmin": # already logged in but not as hcadmin 
+        url = role_based_redirection(request)
+        return HttpResponseRedirect(url)
+    else:
+        if request.method == "POST":
+            test = Test()
+            test.test_name = request.POST.get("test_name")
+            test.save()
+
+            messages.success(request, "Test added successfully")
+            return HttpResponseRedirect("/user/hcadmin_dashboard/med_and_test")
+        else:
+            messages.error(request, "Kindly login to view the page!")
+            return HttpResponseRedirect("/user")
 
 def update_hcadmin_profile(request):
     user = IsLoggedIn(request)
@@ -702,6 +787,7 @@ def update_hcadmin_profile(request):
             userp.contact = contact
             userp.address = address
             userp.save()
+            messages.success(request, "Profile Succesfully Updated!")
             return HttpResponseRedirect("/user/hcadmin_dashboard/hcadmin_profile")
         else:
             messages.error(request, "Kindly login to view the page!")
@@ -746,6 +832,7 @@ def update_accounts_profile(request):
             userp.address = address
             userp.save()
 
+            messages.success(request, "Profile Succesfully Updated!")
             return HttpResponseRedirect("/user/accounts_dashboard/accounts_profile")
         else:
             messages.error(request, "Kindly login to view the page!")

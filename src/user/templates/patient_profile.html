@@ -87,7 +87,26 @@
                         <li class="breadcrumb-item active" aria-current="page">Profile</li>
                     </ol>
                 </nav>
-                <h1 class="h2">View Profile</h1>
+                {% if messages %}
+                {% for message in messages %}
+                {% if message.tags %}
+                {% if message.tags == "error" %}
+                <div class="panel panel-danger">
+                {% endif %} 
+                {% if message.tags == "success" %}
+                <div class="panel panel-success">
+                {% endif %} 
+                    <div class="panel-heading">
+                        <strong><h5 class="{{ message.tags }}">{{ message }}</h5></strong>
+                    </div>   
+                {% endif %} 
+                {% endfor %}
+                {% else %}
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h4><strong>View Profile</strong></h4>
+                    </div>
+                {% endif %}
 
                 <div class="container container-fluid">
                     <div class="form-group col-md-6">
@@ -141,35 +160,14 @@
                 <div class="container container-fluid">
                     <form action = "patient_profile/update_patient_profile" method = "POST">
                         {% csrf_token %}
-                        <!-- <div class="form-group col-md-6">
-                            <label for="name">Name</label>
-                            <input type="text" class="form-control" id="name" name = "name" value="{{patient.user.name}}" disabled>
-                        </div> -->
-                        <!-- <div class="form-group col-md-6">
-                            <label for="roll">Roll No</label>
-                            <input type="text" class="form-control" id="roll" name = "roll" value={{patient.user.roll}} disabled>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="email">Email</label>
-                            <input type="text" class="form-control" name = "email" value={{patient.user.email}} disabled>
-                        </div> -->
                         <div class="form-group col-md-6">
                             <label for="contact">Contact</label>
-                            <input type="text" class="form-control" id="contact" name = "contact" value="{{patient.user.contact}}" >
+                            <input type="text" class="form-control" id="contact" name = "contact" value="{{patient.user.contact}}" pattern="[1-9]{1}[0-9]{9}" >
                         </div>
                         <div class="form-group col-md-6">
                             <label for="address">Address</label>
                             <input type="text" class="form-control" id="address" name = "address" value="{{patient.user.address}}" >
                         </div>
-                        <!-- <div class="form-group col-md-6">
-                            <label for="designation">Designation</label>
-                            <input type="text" class="form-control" id="designation" value={{patient.user.designation}}
-                                disabled>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="department">Department</label>
-                            <input type="text" class="form-control" id="department" value={{patient.department}} disabled>
-                        </div> -->
                         <div class="form-group col-md-6">
                             <label for="bank_name">Bank Name</label>
                             <input type="text" class="form-control" id="bank_name" name = "bank_name" value="{{patient.bank_name}}" >
