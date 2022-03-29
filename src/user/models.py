@@ -86,11 +86,10 @@ class Transaction(models.Model):
     # Form submitted, Waiting Doctor approval, Waiting HC Admin approval, Sent to Accounts,  Approved by Accounts, Rejected by Doctor, Rejected by HC Admin, Rejected by HC Admin after Doctor Verification, Rejected by Accounts
     feedback = models.CharField(max_length=400, default="N/A", blank=False)
     created_date = models.DateTimeField(default=timezone.now)
-    admin_update_date = models.DateTimeField(default=datetime.datetime(2000, 1, 1, 0, 0))
-    doctor_update_date = models.DateTimeField(default=datetime.datetime(2000, 1, 1, 0, 0))
-    account_sent_date = models.DateTimeField(default=datetime.datetime(2000, 1, 1, 0, 0))
-    account_approve_date = models.DateTimeField(default=datetime.datetime(2000, 1, 1, 0, 0))
-
+    admin_update_date = models.DateTimeField(null=True)
+    doctor_update_date = models.DateTimeField(null=True)
+    account_sent_date = models.DateTimeField(null=True)
+    account_approve_date = models.DateTimeField(null=True)
     def __str__(self):
         return str(self.transaction_id)
 

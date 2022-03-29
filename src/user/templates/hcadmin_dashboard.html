@@ -543,7 +543,7 @@
                                             </thead>
                                             <tbody>
                                                 {% for item in items %}
-                                                {% if item.transaction.status == "Waiting HC Admin approval" %}
+                                                {% if item.transaction.status == "Waiting HC Admin approval" or item.transaction.status == "Rejected by Doctor" %}
                                                 <tr>
                                                     <th scope="row">{{ item.transaction.form.form_id }}</th>
                                                     <td>{{ item.transaction.form.patient_name }}</td>
@@ -704,57 +704,63 @@
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#AcceptDisplayModal{{item.transaction.transaction_id}}">Accept</button>
-                                                        <div class="modal fade" id="AcceptDisplayModal{{item.transaction.transaction_id}}" tabindex="-1" aria-labelledby="AcceptDisplayModal{{item.transaction.transaction_id}}" aria-hidden="true">
-                                                            <div class="modal-dialog">
-                                                                <div class="modal-content">
-                                                                  <div class="modal-header">
-                                                                    <h3 class="modal-title" id="AcceptDisplayModal{{item.transaction.transaction_id}}">Do you want to accept the form?</h3>
-                                                                  </div>
-                                                                  <form action="hcadmin_dashboard/acceptFormByHC" method="post">
-                                                                    {% csrf_token %}
-                                                                      <div class="modal-body">
-                                                                        <div class="form-group col-md-12">
-                                                                            <label for="feedback{{item.transaction.transaction_id}}">Feedback</label>
-                                                                            <input type="text" class="form-control" id="feedback{{item.transaction.transaction_id}}" name="feedback" value="{{item.transaction.feedback}}">
+                                                    {% if item.transaction.status == "Waiting HC Admin approval" %}
+                                                        <td>
+                                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#AcceptDisplayModal{{item.transaction.transaction_id}}">Accept</button>
+                                                            <div class="modal fade" id="AcceptDisplayModal{{item.transaction.transaction_id}}" tabindex="-1" aria-labelledby="AcceptDisplayModal{{item.transaction.transaction_id}}" aria-hidden="true">
+                                                                <div class="modal-dialog">
+                                                                    <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h3 class="modal-title" id="AcceptDisplayModal{{item.transaction.transaction_id}}">Do you want to accept the form?</h3>
+                                                                    </div>
+                                                                    <form action="hcadmin_dashboard/acceptFormByHC" method="post">
+                                                                        {% csrf_token %}
+                                                                        <div class="modal-body">
+                                                                            <div class="form-group col-md-12">
+                                                                                <label for="feedback{{item.transaction.transaction_id}}">Feedback</label>
+                                                                                <input type="text" class="form-control" id="feedback{{item.transaction.transaction_id}}" name="feedback" value="{{item.transaction.feedback}}">
+                                                                            </div>
                                                                         </div>
-                                                                      </div>
-                                                                      <div class="modal-footer">                                        
-                                                                        <input type="hidden" id="t_no" name="t_no" value={{ item.transaction.transaction_id }}>
-                                                                        <input type="submit" class="btn btn-warning btn-primary" value="Yes, I Am Sure">                                                   
-                                                                        <button type="button" class="btn btn-danger" data-dismiss="modal">No, Let Me Check Again</button>
-                                                                      </div>
-                                                                  </form>
+                                                                        <div class="modal-footer">                                        
+                                                                            <input type="hidden" id="t_no" name="t_no" value={{ item.transaction.transaction_id }}>
+                                                                            <input type="submit" class="btn btn-warning btn-primary" value="Yes, I Am Sure">                                                   
+                                                                            <button type="button" class="btn btn-danger" data-dismiss="modal">No, Let Me Check Again</button>
+                                                                        </div>
+                                                                    </form>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                               
-                                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#RejectDisplayModal">Reject</button>
-                                                        <div class="modal fade" id="RejectDisplayModal" tabindex="-1" aria-labelledby="RejectDisplayModal" aria-hidden="true">
-                                                            <div class="modal-dialog">
-                                                                <div class="modal-content">
-                                                                  <div class="modal-header">
-                                                                    <h3 class="modal-title" id="RejectDisplayModal">Do you want to reject the form?</h3>
-                                                                  </div>
-                                                                  <form action="hcadmin_dashboard/rejectFormByHC" method="post">
-                                                                    {% csrf_token %}
-                                                                      <div class="modal-body">
-                                                                        <div class="form-group col-md-12">
-                                                                            <label for="feedback{{item.transaction.transaction_id}}">Feedback</label>
-                                                                            <input type="text" class="form-control" id="feedback{{item.transaction.transaction_id}}" name="feedback" value="{{item.transaction.feedback}}">
+                                                
+                                                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#RejectDisplayModal">Reject</button>
+                                                            <div class="modal fade" id="RejectDisplayModal" tabindex="-1" aria-labelledby="RejectDisplayModal" aria-hidden="true">
+                                                                <div class="modal-dialog">
+                                                                    <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h3 class="modal-title" id="RejectDisplayModal">Do you want to reject the form?</h3>
+                                                                    </div>
+                                                                    <form action="hcadmin_dashboard/rejectFormByHC" method="post">
+                                                                        {% csrf_token %}
+                                                                        <div class="modal-body">
+                                                                            <div class="form-group col-md-12">
+                                                                                <label for="feedback{{item.transaction.transaction_id}}">Feedback</label>
+                                                                                <input type="text" class="form-control" id="feedback{{item.transaction.transaction_id}}" name="feedback" value="{{item.transaction.feedback}}">
+                                                                            </div>
                                                                         </div>
-                                                                      </div>
-                                                                      <div class="modal-footer">                                        
-                                                                        <input type="hidden" id="t_no" name="t_no" value={{ item.transaction.transaction_id }}>
-                                                                        <input type="submit" class="btn btn-warning btn-primary" value="Yes, I Am Sure">                                                   
-                                                                        <button type="button" class="btn btn-danger" data-dismiss="modal">No, Let Me Check Again</button>
-                                                                      </div>
-                                                                  </form>
+                                                                        <div class="modal-footer">                                        
+                                                                            <input type="hidden" id="t_no" name="t_no" value={{ item.transaction.transaction_id }}>
+                                                                            <input type="submit" class="btn btn-warning btn-primary" value="Yes, I Am Sure">                                                   
+                                                                            <button type="button" class="btn btn-danger" data-dismiss="modal">No, Let Me Check Again</button>
+                                                                        </div>
+                                                                    </form>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                    </td>
+                                                        </td>
+                                                    {% else %}
+                                                        <td>
+                                                            Rejected By Doctor
+                                                        </td>
+                                                    {% endif %}
                                                 </tr>
                                                 {% endif %}
                                                 {% endfor %}
@@ -791,7 +797,7 @@
                                                     <th scope="row">{{ item.transaction.form.form_id }}</th>
                                                     <td>{{ item.transaction.form.patient_name }}</td>
                                                     <td>{{ item.transaction.created_date }}</td>
-                                                    <td>{{ item.transaction.accounts_sent_date }}</td>
+                                                    <td>{{ item.transaction.account_sent_date }}</td>
                                                     <td>
                                                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ViewFormModal{{item.transaction.transaction_id}}">View Form</button>
                                                         <div class="modal fade" id="ViewFormModal{{item.transaction.transaction_id}}" tabindex="-1" aria-labelledby="ViewFormModalLabel{{item.transaction.transaction_id}}" aria-hidden="true">
@@ -978,7 +984,7 @@
                                             </thead>
                                             <tbody>
                                                 {% for item in items %}
-                                                {% if item.transaction.status == "Rejected by HC Admin" or item.transaction.status == "Rejected by Doctor" or item.transaction.status == "Rejected by HC Admin after Doctor Verification"%}
+                                                {% if item.transaction.status == "Rejected by HC Admin" or item.transaction.status == "Rejected by HC Admin after Doctor Verification"%}
                                                 <tr>
                                                     <th scope="row">{{ item.transaction.form.form_id }}</th>
                                                     <td>{{ item.transaction.form.patient_name }}</td>
