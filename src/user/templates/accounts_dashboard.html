@@ -112,7 +112,7 @@
                                                 {% if item.transaction.status == "Sent to Accounts" %}
                                                 <tr>
                                                     <th scope="row">{{ item.transaction.form.form_id }}</th>
-                                                    <td>"{{ item.transaction.form.patient_name }}"</td>
+                                                    <td>{{ item.transaction.form.patient_name }}</td>
                                                     <td>{{ item.transaction.created_date }}</td>
                                                     <td>{{ item.transaction.account_sent_date }}</td>
                                                     <td>
