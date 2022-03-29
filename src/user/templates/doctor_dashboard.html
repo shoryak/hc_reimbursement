@@ -352,7 +352,7 @@
                                             </thead>
                                             <tbody>
                                                 {% for item in items %}
-                                                {% if item.transaction.status == "Waiting HC Admin approval" or item.transaction.status ==  "Sent to Accounts" or item.transaction.status ==  "Approved by Accounts" or item.transaction.status == "Rejected by Accounts" or item.transaction.status == "Rejected by HC Admin" %}
+                                                {% if item.transaction.status == "Waiting HC Admin approval" or item.transaction.status ==  "Sent to Accounts" or item.transaction.status ==  "Approved by Accounts" or item.transaction.status == "Rejected by Accounts" or item.transaction.status == "Rejected by HC Admin after Doctor Verification" %}
                                                 <tr>
                                                     <th scope="row">{{ item.transaction.form.form_id }}</th>
                                                     <td>{{ item.transaction.form.patient_name }}</td>

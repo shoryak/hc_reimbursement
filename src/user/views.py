@@ -375,8 +375,12 @@ def rejectFormByHC(request):
             feedback = request.POST.get("feedback")
             if Transaction.objects.filter(transaction_id=t_no).exists():
                 transaction = Transaction.objects.get(transaction_id=t_no)
-                transaction.status = "Rejected by HC Admin"
+                if(transaction.status == "Waiting HC Admin approval"):
+                    transaction.status = "Rejected by HC Admin after Doctor Verification"
+                else:
+                    transaction.status = "Rejected by HC Admin"
                 transaction.feedback = feedback
+                transaction.admin_update_date = timezone.now()
                 transaction.save()
                 return HttpResponseRedirect("/user/hcadmin_dashboard")
             else:
@@ -430,6 +434,7 @@ def rejectByDoctor(request):
                 transaction = Transaction.objects.get(transaction_id=t_no)
                 transaction.status = "Rejected by Doctor"
                 transaction.feedback = feedback
+                transaction.doctor_update_date = timezone.now();
                 transaction.save()
                 return HttpResponseRedirect("/user/doctor_dashboard")
             else:
