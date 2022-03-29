@@ -978,7 +978,7 @@
                                             </thead>
                                             <tbody>
                                                 {% for item in items %}
-                                                {% if item.transaction.status == "Rejected by HC Admin" or item.transaction.status == "Rejected by Doctor" %}
+                                                {% if item.transaction.status == "Rejected by HC Admin" or item.transaction.status == "Rejected by Doctor" or item.transaction.status == "Rejected by HC Admin after Doctor Verification"%}
                                                 <tr>
                                                     <th scope="row">{{ item.transaction.form.form_id }}</th>
                                                     <td>{{ item.transaction.form.patient_name }}</td>
