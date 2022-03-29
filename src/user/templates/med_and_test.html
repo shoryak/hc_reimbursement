@@ -56,26 +56,29 @@
 
 <body>
 
-    <div class="navbar navbar-inverse navbar-fixed-top"> 
-        <div class="container"> 
-            <div class="navbar-header"> 
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar"> 
-                    <span class="icon-bar"></span> 
-                    <span class="icon-bar"></span> 
-                    <span class="icon-bar"></span> 
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="/user/hcadmin_dashboard" style="margin-right: 25px;">Dashboard</a>
-                <a class="navbar-brand" href="/user/hcadmin_dashboard/hcadmin_profile" style="margin-right: 25px;">Profile</a>
-                <a class="navbar-brand" href="/user/hcadmin_dashboard/med_and_test" style="margin-right: 25px;">Medicine & Tests</a>
-                <a class="navbar-brand" href="/user/hcadmin_dashboard/signup_admin" style="margin-right: 25px;">Register User</a>
+                <a class="navbar-brand" href="/user/hcadmin_dashboard/hcadmin_profile"
+                    style="margin-right: 25px;">Profile</a>
+                <a class="navbar-brand" href="/user/hcadmin_dashboard/med_and_test" style="margin-right: 25px;">Medicine
+                    & Tests</a>
+                <a class="navbar-brand" href="/user/hcadmin_dashboard/signup_admin" style="margin-right: 25px;">Register
+                    User</a>
             </div>
-            <div class="collapse navbar-collapse" id="myNavbar"> 
-                <ul class="nav navbar-nav navbar-right"> 
-                    <li><a href = "/#"><span class = "glyphicon glyphicon-user"></span> {{ hcadmin.user.username }}</a></li> 
-                    <li><a href = "/user/logout"><span class = "glyphicon glyphicon-log-in"></span> Logout</a></li> 
-                </ul> 
-            </div> 
-        </div> 
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/#"><span class="glyphicon glyphicon-user"></span> {{ hcadmin.user.username }}</a></li>
+                    <li><a href="/user/logout"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+                </ul>
+            </div>
+        </div>
     </div>
 
     <div class="container container-fluid">
@@ -92,111 +95,119 @@
                 {% if message.tags %}
                 {% if message.tags == "error" %}
                 <div class="panel panel-danger">
-                {% endif %} 
-                {% if message.tags == "success" %}
-                <div class="panel panel-success">
-                {% endif %} 
-                    <div class="panel-heading">
-                        <strong><h5 class="{{ message.tags }}">{{ message }}</h5></strong>
-                    </div>   
-                {% endif %} 
-                {% endfor %}
-                {% else %}
-                <center><h2><strong>Medicines & Tests</strong></h2></center>
-                {% endif %}
-                <div class="row">
-                    <div class="col-12 col-xl-8 mb-4 mb-lg-0">
-                        <div class="card">
-                            <h3 class="card-header">List of Medicines</h3>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">Medicine Name</th>
-                                                <th scope="col">Brand</th>
-                                                <th scope="col">Price</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for item in med_items %}
-                                            <tr>
-                                                <th scope="row">{{ item.medicine_name }}</th>
-                                                <td>{{ item.brand }}</td>
-                                                <td>{{ item.price }}</td>
-                                            </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
+                    {% endif %}
+                    {% if message.tags == "success" %}
+                    <div class="panel panel-success">
+                        {% endif %}
+                        <div class="panel-heading">
+                            <strong>
+                                <h5 class="{{ message.tags }}">{{ message }}</h5>
+                            </strong>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                        {% else %}
+                        <center>
+                            <h2><strong>Medicines & Tests</strong></h2>
+                        </center>
+                        {% endif %}
+
+
+                        <h3 class="h3">Add Medicines</h3>
+                        <div class="container container-fluid">
+                            <form action="add_medicine" method="POST">
+                                {% csrf_token %}
+                                <div class="form-group col-md-6">
+                                    <label for="med_name">Name of Medicine</label>
+                                    <input type="text" class="form-control" id="med_name" name="med_name" required>
                                 </div>
+                                <div class="form-group col-md-6">
+                                    <label for="med_brand">Brand</label>
+                                    <input type="text" class="form-control" id="med_brand" name="med_brand" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="med_price">Price</label>
+                                    <input type='number' step='0.01' min="0.00" class="form-control" id="med_price"
+                                        name="med_price" required>
+                                </div>
+
+                                <div class="form-group col-md-12">
+                                    <button type="submit" class="btn btn-success btn-block">Add Medicines</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <h3 class="h3">Add Tests</h3>
+                        <div class="container container-fluid">
+                            <form action="add_test" method="POST">
+                                {% csrf_token %}
+                                <div class="form-group col-md-12">
+                                    <label for="test_name">Name of Test</label>
+                                    <input type="text" class="form-control" id="test_name" name="test_name" required>
+                                </div>
+
+                                <div class="form-group col-md-12">
+                                    <button type="submit" class="btn btn-success btn-block">Add Tests</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
-                </div>
 
-
-            <h3 class="h3">Add Medicines</h3>
-            <div class="container container-fluid">
-                <form action = "add_medicine" method = "POST">
-                    {% csrf_token %}
-                    <div class="form-group col-md-6">
-                        <label for="med_name">Name of Medicine</label>
-                        <input type="text" class="form-control" id="med_name" name = "med_name" required>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="med_brand">Brand</label>
-                        <input type="text" class="form-control" id="med_brand" name = "med_brand" required>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="med_price">Price</label>
-                        <input type='number' step='0.01' min="0.00" class="form-control" id="med_price" name = "med_price" required>
-                    </div>
-
-                    <div class="form-group col-md-12">
-                        <button type="submit" class="btn btn-success btn-block">Add Medicines</button>
-                    </div>
-            </form>
-        </div>
-
-        <div class="row">
-            <div class="col-12 col-xl-8 mb-4 mb-lg-0">
-                <div class="card">
-                    <h3 class="card-header">List of Tests</h3>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Test Name</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for item in test_items %}
-                                    <tr>
-                                        <th scope="row">{{ item.test_name }}</th>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
+                    <div class="row">
+                        <div class="col-12 col-xl-8 mb-4 mb-lg-0">
+                            <div class="card">
+                                <h3 class="card-header">List of Medicines</h3>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Medicine Name</th>
+                                                    <th scope="col">Brand</th>
+                                                    <th scope="col">Price</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for item in med_items %}
+                                                <tr>
+                                                    <th scope="row">{{ item.medicine_name }}</th>
+                                                    <td>{{ item.brand }}</td>
+                                                    <td>{{ item.price }}</td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                </div>
-            </div>
-        </div>
 
-        <h3 class="h3">Add Tests</h3>
-        <div class="container container-fluid">
-            <form action = "add_test" method = "POST">
-                {% csrf_token %}
-                <div class="form-group col-md-12">
-                    <label for="test_name">Name of Test</label>
-                    <input type="text" class="form-control" id="test_name" name = "test_name" required>
-                </div>
-              
-                <div class="form-group col-md-12">
-                    <button type="submit" class="btn btn-success btn-block">Add Tests</button>
-                </div>
-        </form>
-    </div>
-                
+
+                        <div class="row">
+                            <div class="col-12 col-xl-8 mb-4 mb-lg-0">
+                                <div class="card">
+                                    <h3 class="card-header">List of Tests</h3>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Test Name</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for item in test_items %}
+                                                    <tr>
+                                                        <th scope="row">{{ item.test_name }}</th>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
 </body>
 
 </html>
