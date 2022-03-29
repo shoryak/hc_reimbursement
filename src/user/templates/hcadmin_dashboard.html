@@ -82,38 +82,38 @@
        <div class="container container-fluid">
             <div class="row">
                 <main class="col-md-9 ml-sm-auto col-lg-12 px-md-4 py-4">
-                    <nav aria-label="breadcrumb">
+                    <!-- <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">Home</li>
                             <li class="breadcrumb-item active" aria-current="page">Overview</li>
                         </ol>
-                    </nav>
-                    <h1 class="h2">Dashboard</h1>
+                    </nav> -->
+                    <h1 class="h1">Dashboard</h1>
                     <div class="row">
                         <div class="col-12 col-xl-8 mb-4 mb-lg-0">
                             <div class="card">
                                 <h5 class="card-header">Newly Added Forms</h5>
                                 <div class="card-body">
                                     <div class="table-responsive">
-                                        <table class="table">
+                                        <table class="table table-hover table-bordered">
                                             <thead>
                                                 <tr>
-                                                    <th scope="col">Form No.</th>
-                                                    <th scope="col">Patient Name</th>
-                                                    <th scope="col">Date of Submission</th>
-                                                    <th scope="col"></th>
-                                                    <th scope="col"></th>
-                                                    <th class="action" scope="col" colspan=2>Action</th>
+                                                    <th class = "active" scope="col">Form No.</th>
+                                                    <th class = "active" scope="col">Patient Name</th>
+                                                    <th class = "active" scope="col">Date of Submission</th>
+                                                    <th class = "active" scope="col"></th>
+                                                    <th class = "active" scope="col"></th>
+                                                    <th class="active action" scope="col" colspan=2>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 {% for item in items %}
                                                 {% if item.transaction.status == "Form submitted" %}
                                                 <tr>
-                                                    <th scope="row">{{ item.transaction.form.form_id }}</th>
-                                                    <td>{{ item.transaction.form.patient_name }}</td>
-                                                    <td>{{ item.transaction.created_date }}</td>
-                                                    <td>
+                                                    <th class="info" scope="row">{{ item.transaction.form.form_id }}</th>
+                                                    <td class="info">{{ item.transaction.form.patient_name }}</td>
+                                                    <td class="info">{{ item.transaction.created_date }}</td>
+                                                    <td class="info">
                                                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ViewFormModal{{item.transaction.transaction_id}}">View Form</button>
                                                         <div class="modal fade" id="ViewFormModal{{item.transaction.transaction_id}}" tabindex="-1" aria-labelledby="ViewFormModalLabel{{item.transaction.transaction_id}}" aria-hidden="true">
                                                             <div class="modal-dialog modal-lg">
@@ -206,7 +206,7 @@
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td>
+                                                    <td class="info">
                                                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ViewRequestModal{{item.transaction.transaction_id}}">View Request</button>
                                                         <div class="modal fade" id="ViewRequestModal{{item.transaction.transaction_id}}" tabindex="-1" aria-labelledby="ViewRequestModalLabel{{item.transaction.transaction_id}}" aria-hidden="true">
                                                             <div class="modal-dialog modal-lg">
@@ -268,7 +268,7 @@
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td colspan="2">
+                                                    <td class="info" colspan="2">
                                                         <button type="button" class="btn btn-success" data-toggle="modal" data-target="#AcceptModal{{item.transaction.transaction_id}}">Forward To Doctor</button>
                                                         <div class="modal fade" id="AcceptModal{{item.transaction.transaction_id}}" tabindex="-1" aria-labelledby="AcceptModal{{item.transaction.transaction_id}}" aria-hidden="true">
                                                             <div class="modal-dialog">
@@ -337,26 +337,26 @@
                                     <h5 class="card-header">Waiting For Doctor Approval</h5>
                                     <div class="card-body">
                                         <div class="table-responsive">
-                                            <table class="table">
+                                            <table class="table table-hover table-bordered">
                                                 <thead>
                                                     <tr>
-                                                        <th scope="col">Form No.</th>
-                                                        <th scope="col">Patient Name</th>
-                                                        <th scope="col">Date of Submission</th>
-                                                        <th scope="col">Date Sent for Doctor Approval</th>
-                                                        <th scope="col"></th>
-                                                        <th scope="col"></th>
+                                                        <th class = "active" scope="col">Form No.</th>
+                                                        <th class = "active" scope="col">Patient Name</th>
+                                                        <th class = "active" scope="col">Date of Submission</th>
+                                                        <th class = "active" scope="col">Date Sent for Doctor Approval</th>
+                                                        <th class = "active" scope="col"></th>
+                                                        <th class = "active" scope="col"></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     {% for item in items %}
                                                     {% if item.transaction.status == "Waiting Doctor approval" %}
                                                     <tr>
-                                                        <th scope="row">{{ item.transaction.form.form_id }}</th>
-                                                        <td>{{ item.transaction.form.patient_name }}</td>
-                                                        <td>{{ item.transaction.created_date }}</td>
-                                                        <td>{{ item.transaction.admin_update_date }}</td>
-                                                        <td>
+                                                        <th class="warning" scope="row">{{ item.transaction.form.form_id }}</th>
+                                                        <td class="warning">{{ item.transaction.form.patient_name }}</td>
+                                                        <td class="warning">{{ item.transaction.created_date }}</td>
+                                                        <td class="warning">{{ item.transaction.admin_update_date }}</td>
+                                                        <td class="warning">
                                                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ViewFormModal{{item.transaction.transaction_id}}">View Form</button>
                                                             <div class="modal fade" id="ViewFormModal{{item.transaction.transaction_id}}" tabindex="-1" aria-labelledby="ViewFormModalLabel{{item.transaction.transaction_id}}" aria-hidden="true">
                                                                 <div class="modal-dialog modal-lg">
@@ -449,7 +449,7 @@
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        <td>
+                                                        <td class="warning">
                                                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ViewRequestModal{{item.transaction.transaction_id}}">View Request</button>
                                                             <div class="modal fade" id="ViewRequestModal{{item.transaction.transaction_id}}" tabindex="-1" aria-labelledby="ViewRequestModalLabel{{item.transaction.transaction_id}}" aria-hidden="true">
                                                                 <div class="modal-dialog modal-lg">
@@ -529,27 +529,27 @@
                                 <h5 class="card-header">Arrived after Doctor Verification</h5>
                                 <div class="card-body">
                                     <div class="table-responsive">
-                                        <table class="table">
+                                        <table class="table table-hover table-bordered">
                                             <thead>
                                                 <tr>
-                                                    <th scope="col">Form No.</th>
-                                                    <th scope="col">Patient Name</th>
-                                                    <th scope="col">Date of Submission</th>
-                                                    <th scope="col">Date of Arrival</th>
-                                                    <th scope="col"></th>
-                                                    <th scope="col"></th>
-                                                    <th class="action" scope="col">Action</th>
+                                                    <th class = "active" scope="col">Form No.</th>
+                                                    <th class = "active" scope="col">Patient Name</th>
+                                                    <th class = "active" scope="col">Date of Submission</th>
+                                                    <th class = "active" scope="col">Date of Arrival</th>
+                                                    <th class = "active" scope="col"></th>
+                                                    <th class = "active" scope="col"></th>
+                                                    <th class="action active" scope="col">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 {% for item in items %}
                                                 {% if item.transaction.status == "Waiting HC Admin approval" or item.transaction.status == "Rejected by Doctor" %}
-                                                <tr>
-                                                    <th scope="row">{{ item.transaction.form.form_id }}</th>
-                                                    <td>{{ item.transaction.form.patient_name }}</td>
-                                                    <td>{{ item.transaction.created_date }}</td>
-                                                    <td>{{ item.transaction.doctor_update_date }}</td>
-                                                    <td>
+                                                <tr class="warning">
+                                                    <th class="warning" scope="row">{{ item.transaction.form.form_id }}</th>
+                                                    <td class="warning">{{ item.transaction.form.patient_name }}</td>
+                                                    <td class="warning">{{ item.transaction.created_date }}</td>
+                                                    <td class="warning">{{ item.transaction.doctor_update_date }}</td>
+                                                    <td class="warning">
                                                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ViewFormModal{{item.transaction.transaction_id}}">View Form</button>
                                                         <div class="modal fade" id="ViewFormModal{{item.transaction.transaction_id}}" tabindex="-1" aria-labelledby="ViewFormModalLabel{{item.transaction.transaction_id}}" aria-hidden="true">
                                                             <div class="modal-dialog modal-lg">
@@ -642,7 +642,7 @@
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td>
+                                                    <td class="warning">
                                                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ViewRequestModal{{item.transaction.transaction_id}}">View Request</button>
                                                         <div class="modal fade" id="ViewRequestModal{{item.transaction.transaction_id}}" tabindex="-1" aria-labelledby="ViewRequestModalLabel{{item.transaction.transaction_id}}" aria-hidden="true">
                                                             <div class="modal-dialog modal-lg">
@@ -705,7 +705,7 @@
                                                         </div>
                                                     </td>
                                                     {% if item.transaction.status == "Waiting HC Admin approval" %}
-                                                        <td>
+                                                        <td class="warning">
                                                             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#AcceptDisplayModal{{item.transaction.transaction_id}}">Accept</button>
                                                             <div class="modal fade" id="AcceptDisplayModal{{item.transaction.transaction_id}}" tabindex="-1" aria-labelledby="AcceptDisplayModal{{item.transaction.transaction_id}}" aria-hidden="true">
                                                                 <div class="modal-dialog">
@@ -757,7 +757,7 @@
                                                             </div>
                                                         </td>
                                                     {% else %}
-                                                        <td>
+                                                        <td class="warning">
                                                             Rejected By Doctor
                                                         </td>
                                                     {% endif %}
@@ -779,26 +779,26 @@
                                 <h5 class="card-header">Accepted Forms</h5>
                                 <div class="card-body">
                                     <div class="table-responsive">
-                                        <table class="table">
+                                        <table class="table table-hover table-bordered">
                                             <thead>
                                                 <tr>
-                                                    <th scope="col">Form No.</th>
-                                                    <th scope="col">Patient Name</th>
-                                                    <th scope="col">Date of Submission</th>
-                                                    <th scope="col">Date of Approval</th>
-                                                    <th scope="col"></th>
-                                                    <th scope="col"></th>
+                                                    <th class = "active" scope="col">Form No.</th>
+                                                    <th class = "active" scope="col">Patient Name</th>
+                                                    <th class = "active" scope="col">Date of Submission</th>
+                                                    <th class = "active" scope="col">Date of Approval</th>
+                                                    <th class = "active" scope="col"></th>
+                                                    <th class = "active" scope="col"></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 {% for item in items %}
                                                 {% if item.transaction.status == "Sent to Accounts" or item.transaction.status == "Approved by Accounts" or item.transaction.status == "Rejected by Accounts" %}
                                                 <tr>
-                                                    <th scope="row">{{ item.transaction.form.form_id }}</th>
-                                                    <td>{{ item.transaction.form.patient_name }}</td>
-                                                    <td>{{ item.transaction.created_date }}</td>
-                                                    <td>{{ item.transaction.account_sent_date }}</td>
-                                                    <td>
+                                                    <th class="success" scope="row">{{ item.transaction.form.form_id }}</th>
+                                                    <td class="success">{{ item.transaction.form.patient_name }}</td>
+                                                    <td class="success">{{ item.transaction.created_date }}</td>
+                                                    <td class="success">{{ item.transaction.account_sent_date }}</td>
+                                                    <td class="success">
                                                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ViewFormModal{{item.transaction.transaction_id}}">View Form</button>
                                                         <div class="modal fade" id="ViewFormModal{{item.transaction.transaction_id}}" tabindex="-1" aria-labelledby="ViewFormModalLabel{{item.transaction.transaction_id}}" aria-hidden="true">
                                                             <div class="modal-dialog modal-lg">
@@ -891,7 +891,7 @@
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td>
+                                                    <td class="success">
                                                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ViewRequestModal{{item.transaction.transaction_id}}">View Request</button>
                                                         <div class="modal fade" id="ViewRequestModal{{item.transaction.transaction_id}}" tabindex="-1" aria-labelledby="ViewRequestModalLabel{{item.transaction.transaction_id}}" aria-hidden="true">
                                                             <div class="modal-dialog modal-lg">
@@ -971,26 +971,26 @@
                                 <h5 class="card-header">Rejected Forms</h5>
                                 <div class="card-body">
                                     <div class="table-responsive">
-                                        <table class="table">
+                                        <table class="table table-hover table-bordered">
                                             <thead>
                                                 <tr>
-                                                    <th scope="col">Form No.</th>
-                                                    <th scope="col">Patient Name</th>
-                                                    <th scope="col">Date of Submission</th>
-                                                    <th scope="col">Date Rejected</th>
-                                                    <th scope="col"></th>
-                                                    <th scope="col"></th>
+                                                    <th class = "active" scope="col">Form No.</th>
+                                                    <th class = "active" scope="col">Patient Name</th>
+                                                    <th class = "active" scope="col">Date of Submission</th>
+                                                    <th class = "active" scope="col">Date Rejected</th>
+                                                    <th class = "active" scope="col"></th>
+                                                    <th class = "active" scope="col"></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 {% for item in items %}
                                                 {% if item.transaction.status == "Rejected by HC Admin" or item.transaction.status == "Rejected by HC Admin after Doctor Verification"%}
                                                 <tr>
-                                                    <th scope="row">{{ item.transaction.form.form_id }}</th>
-                                                    <td>{{ item.transaction.form.patient_name }}</td>
-                                                    <td>{{ item.transaction.created_date }}</td>
-                                                    <td>{{ item.transaction.admin_update_date }}</td>
-                                                    <td>
+                                                    <th class="danger" scope="row">{{ item.transaction.form.form_id }}</th>
+                                                    <td class="danger">{{ item.transaction.form.patient_name }}</td>
+                                                    <td class="danger">{{ item.transaction.created_date }}</td>
+                                                    <td class="danger">{{ item.transaction.admin_update_date }}</td>
+                                                    <td class="danger">
                                                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ViewFormModal{{item.transaction.transaction_id}}">View Form</button>
                                                         <div class="modal fade" id="ViewFormModal{{item.transaction.transaction_id}}" tabindex="-1" aria-labelledby="ViewFormModalLabel{{item.transaction.transaction_id}}" aria-hidden="true">
                                                             <div class="modal-dialog modal-lg">
@@ -1083,7 +1083,7 @@
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td>
+                                                    <td class="danger">
                                                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ViewRequestModal{{item.transaction.transaction_id}}">View Request</button>
                                                         <div class="modal fade" id="ViewRequestModal{{item.transaction.transaction_id}}" tabindex="-1" aria-labelledby="ViewRequestModalLabel{{item.transaction.transaction_id}}" aria-hidden="true">
                                                             <div class="modal-dialog modal-lg">

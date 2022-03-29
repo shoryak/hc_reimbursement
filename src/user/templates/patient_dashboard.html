@@ -79,38 +79,39 @@
        <div class="container container-fluid">
             <div class="row">
                 <main class="col-md-9 ml-sm-auto col-lg-12 px-md-4 py-4">
-                    <nav aria-label="breadcrumb">
+                    <!-- <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">Home</li>
                             <li class="breadcrumb-item active" aria-current="page">Overview</li>
                         </ol>
-                    </nav>
-                    <h1 class="h2">Dashboard</h1>
+                    </nav> -->
+                    <h1 class="h1">Dashboard</h1>
                     <div class="row">
                         <div class="col-12 col-xl-8 mb-4 mb-lg-0">
                             <div class="card">
                                 <h5 class="card-header">Latest Submitted Forms</h5>
                                 <div class="card-body">
                                     <div class="table-responsive">
-                                        <table class="table">
+                                        <table class="table table-hover table-bordered">
                                             <thead>
                                                 <tr>
-                                                    <th scope="col">Unique Form No.</th>
-                                                    <th scope="col">Patient Name</th>
-                                                    <th scope="col">Date of Submission</th>
-                                                    <th scope="col">Status of Form</th>
-                                                    <th scope="col"></th>
-                                                    <th scope="col"></th>
+                                                    <th class = "active" scope="col">Unique Form No.</th>
+                                                    <th class = "active" scope="col">Patient Name</th>
+                                                    <th class = "active" scope="col">Date of Submission</th>
+                                                    <th class = "active" scope="col">Status of Form</th>
+                                                    <th class = "active" scope="col"></th>
+                                                    <th class = "active" scope="col"></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 {% for item in items %}
                                                 <tr>
-                                                    <th>{{ item.transaction.form.form_id }}</th>
-                                                    <td>{{ item.transaction.form.patient_name }}</td>
-                                                    <td>{{ item.transaction.created_date }}</td>
-                                                    <td>{{ item.transaction.status }}</td>
-                                                    <td>
+                                                    <!-- {% if item.transaction.status == "Form submitted" %} class="info" {% elif item.transaction.status == "Rejected by HC Admin" or item.transaction.status == "Rejected by Doctor" or item.transaction.status ==  "Rejected by HC Admin after Doctor Verification" or item.transaction.status ==  "Rejected by Accounts" %} class="danger" {% elif item.transaction.status == "Approved by Accounts" %} class="success" {%  else %} class="warning" {% endif %}  -->
+                                                    <th {% if item.transaction.status == "Form submitted" %} class="info" {% elif item.transaction.status == "Rejected by HC Admin" or item.transaction.status == "Rejected by Doctor" or item.transaction.status ==  "Rejected by HC Admin after Doctor Verification" or item.transaction.status ==  "Rejected by Accounts" %} class="danger" {% elif item.transaction.status == "Approved by Accounts" %} class="success" {%  else %} class="warning" {% endif %} >{{ item.transaction.form.form_id }}</th>
+                                                    <td {% if item.transaction.status == "Form submitted" %} class="info" {% elif item.transaction.status == "Rejected by HC Admin" or item.transaction.status == "Rejected by Doctor" or item.transaction.status ==  "Rejected by HC Admin after Doctor Verification" or item.transaction.status ==  "Rejected by Accounts" %} class="danger" {% elif item.transaction.status == "Approved by Accounts" %} class="success" {%  else %} class="warning" {% endif %} >{{ item.transaction.form.patient_name }}</td>
+                                                    <td {% if item.transaction.status == "Form submitted" %} class="info" {% elif item.transaction.status == "Rejected by HC Admin" or item.transaction.status == "Rejected by Doctor" or item.transaction.status ==  "Rejected by HC Admin after Doctor Verification" or item.transaction.status ==  "Rejected by Accounts" %} class="danger" {% elif item.transaction.status == "Approved by Accounts" %} class="success" {%  else %} class="warning" {% endif %} >{{ item.transaction.created_date }}</td>
+                                                    <td {% if item.transaction.status == "Form submitted" %} class="info" {% elif item.transaction.status == "Rejected by HC Admin" or item.transaction.status == "Rejected by Doctor" or item.transaction.status ==  "Rejected by HC Admin after Doctor Verification" or item.transaction.status ==  "Rejected by Accounts" %} class="danger" {% elif item.transaction.status == "Approved by Accounts" %} class="success" {%  else %} class="warning" {% endif %} >{{ item.transaction.status }}</td>
+                                                    <td {% if item.transaction.status == "Form submitted" %} class="info" {% elif item.transaction.status == "Rejected by HC Admin" or item.transaction.status == "Rejected by Doctor" or item.transaction.status ==  "Rejected by HC Admin after Doctor Verification" or item.transaction.status ==  "Rejected by Accounts" %} class="danger" {% elif item.transaction.status == "Approved by Accounts" %} class="success" {%  else %} class="warning" {% endif %} >
                                                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ViewFormModal{{item.transaction.transaction_id}}">View Form</button>
                                                         <div class="modal fade" id="ViewFormModal{{item.transaction.transaction_id}}" tabindex="-1" aria-labelledby="ViewFormModalLabel{{item.transaction.transaction_id}}" aria-hidden="true">
                                                             <div class="modal-dialog modal-lg">
@@ -203,7 +204,7 @@
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td>
+                                                    <td {% if item.transaction.status == "Form submitted" %} class="info" {% elif item.transaction.status == "Rejected by HC Admin" or item.transaction.status == "Rejected by Doctor" or item.transaction.status ==  "Rejected by HC Admin after Doctor Verification" or item.transaction.status ==  "Rejected by Accounts" %} class="danger" {% elif item.transaction.status == "Approved by Accounts" %} class="success" {%  else %} class="warning" {% endif %}>
                                                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ViewRequestModal{{item.transaction.transaction_id}}">View Request</button>
                                                         <div class="modal fade" id="ViewRequestModal{{item.transaction.transaction_id}}" tabindex="-1" aria-labelledby="ViewRequestModalLabel{{item.transaction.transaction_id}}" aria-hidden="true">
                                                             <div class="modal-dialog modal-lg">

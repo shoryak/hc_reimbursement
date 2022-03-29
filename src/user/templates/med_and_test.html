@@ -84,12 +84,12 @@
     <div class="container container-fluid">
         <div class="row">
             <main class="col-md-9 ml-sm-auto col-lg-12 px-md-4 py-4">
-                <nav aria-label="breadcrumb">
+                <!-- <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="/#">Home</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Overview</li>
                     </ol>
-                </nav>
+                </nav> -->
                 {% if messages %}
                 {% for message in messages %}
                 {% if message.tags %}
@@ -159,9 +159,9 @@
                                 <h3 class="card-header">List of Medicines</h3>
                                 <div class="card-body">
                                     <div class="table-responsive">
-                                        <table class="table">
+                                         <table class="table table-hover table-bordered">
                                             <thead>
-                                                <tr>
+                                                <tr class = "active">
                                                     <th scope="col">Medicine Name</th>
                                                     <th scope="col">Brand</th>
                                                     <th scope="col">Price</th>
@@ -169,7 +169,7 @@
                                             </thead>
                                             <tbody>
                                                 {% for item in med_items %}
-                                                <tr>
+                                                <tr class = "info">
                                                     <th scope="row">{{ item.medicine_name }}</th>
                                                     <td>{{ item.brand }}</td>
                                                     <td>{{ item.price }}</td>
@@ -181,32 +181,34 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
 
 
-                        <div class="row">
-                            <div class="col-12 col-xl-8 mb-4 mb-lg-0">
-                                <div class="card">
-                                    <h3 class="card-header">List of Tests</h3>
-                                    <div class="card-body">
-                                        <div class="table-responsive">
-                                            <table class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="col">Test Name</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {% for item in test_items %}
-                                                    <tr>
-                                                        <th scope="row">{{ item.test_name }}</th>
-                                                    </tr>
-                                                    {% endfor %}
-                                                </tbody>
-                                            </table>
-                                        </div>
+                    <div class="row">
+                        <div class="col-12 col-xl-8 mb-4 mb-lg-0">
+                            <div class="card">
+                                <h3 class="card-header">List of Tests</h3>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                            <table class="table table-hover table-bordered">
+                                            <thead>
+                                                <tr class = "active">
+                                                    <th scope="col">Test Name</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for item in test_items %}
+                                                <tr class = "info">
+                                                    <th scope="row">{{ item.test_name }}</th>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
 
 </body>
 

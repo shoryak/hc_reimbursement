@@ -82,22 +82,22 @@
        <div class="container container-fluid">
             <div class="row">
                 <main class="col-md-9 ml-sm-auto col-lg-12 px-md-4 py-4">
-                    <nav aria-label="breadcrumb">
+                    <!-- <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">Home</li>
                             <li class="breadcrumb-item active" aria-current="page">Overview</li>
                         </ol>
-                    </nav>
-                    <h1 class="h2">Dashboard</h1>
+                    </nav> -->
+                    <h1 class="h1">Dashboard</h1>
                     <div class="row">
                         <div class="col-12 col-xl-8 mb-4 mb-lg-0">
                             <div class="card">
                                 <h5 class="card-header">Pending Forms</h5>
                                 <div class="card-body">
                                     <div class="table-responsive">
-                                        <table class="table">
+                                        <table class="table table-hover table-bordered">
                                             <thead>
-                                                <tr>
+                                                <tr class = "active">
                                                     <th scope="col">Form No.</th>
                                                     <th scope="col">Patient Name</th>
                                                     <th scope="col">Date of Submission</th>
@@ -110,7 +110,7 @@
                                             <tbody>
                                                 {% for item in items %}
                                                 {% if item.transaction.status == "Sent to Accounts" %}
-                                                <tr>
+                                                <tr class = "info">
                                                     <th scope="row">{{ item.transaction.form.form_id }}</th>
                                                     <td>{{ item.transaction.form.patient_name }}</td>
                                                     <td>{{ item.transaction.created_date }}</td>
@@ -339,9 +339,9 @@
                                 <h5 class="card-header">Accepted Forms</h5>
                                 <div class="card-body">
                                     <div class="table-responsive">
-                                        <table class="table">
+                                        <table class="table table-hover table-bordered">
                                             <thead>
-                                                <tr>
+                                                <tr class = "active">
                                                     <th scope="col">Form No.</th>
                                                     <th scope="col">Patient Name</th>
                                                     <th scope="col">Date of Submission</th>
@@ -354,7 +354,7 @@
                                             <tbody>
                                                 {% for item in items %}
                                                 {% if item.transaction.status == "Approved by Accounts" %}
-                                                <tr>
+                                                <tr class = "success">
                                                     <th scope="row">{{ item.transaction.form.form_id }}</th>
                                                     <td>{{ item.transaction.form.patient_name }}</td>
                                                     <td>{{ item.transaction.created_date }}</td>
@@ -533,9 +533,9 @@
                                 <h5 class="card-header">Rejected Forms</h5>
                                 <div class="card-body">
                                     <div class="table-responsive">
-                                        <table class="table">
+                                        <table class="table table-hover table-bordered">
                                             <thead>
-                                                <tr>
+                                                <tr class = "active">
                                                     <th scope="col">Form No.</th>
                                                     <th scope="col">Patient Name</th>
                                                     <th scope="col">Date of Submission</th>
@@ -548,7 +548,7 @@
                                             <tbody>
                                                 {% for item in items %}
                                                 {% if item.transaction.status == "Rejected by Accounts" %}
-                                                <tr>
+                                                <tr class = "danger">
                                                     <th scope="row">{{ item.transaction.form.form_id }}</th>
                                                     <td>{{ item.transaction.form.patient_name }}</td>
                                                     <td>{{ item.transaction.created_date }}</td>
