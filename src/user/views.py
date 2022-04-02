@@ -741,13 +741,34 @@ def add_medicine(request):
         return HttpResponseRedirect(url)
     else:
         if request.method == "POST":
-            med = Medicine()
-            med.medicine_name = request.POST.get("med_name")
-            med.brand = request.POST.get("med_brand")
-            med.price = request.POST.get("med_price")
-            med.save()
+            if Medicine.objects.filter(medicine_name=request.POST.get("med_name"), brand=request.POST.get("med_brand"), price = request.POST.get("med_price")).exists():
+                messages.error(request, "Medicine already exists!")
+                return HttpResponseRedirect("/user/hcadmin_dashboard/med_and_test")
+            else:
+                med = Medicine()
+                med.medicine_name = request.POST.get("med_name")
+                med.brand = request.POST.get("med_brand")
+                med.price = request.POST.get("med_price")
+                med.save()
 
-            messages.success(request, "Medicine added successfully")
+                messages.success(request, "Medicine added successfully")
+                return HttpResponseRedirect("/user/hcadmin_dashboard/med_and_test")
+        else:
+            messages.error(request, "Kindly login to view the page!")
+            return HttpResponseRedirect("/user")
+
+def delete_medicine(request):
+    user = IsLoggedIn(request)
+    if user is None: # not already logged in 
+        messages.error(request, "Kindly login to view the page!")
+        return HttpResponseRedirect("/user/logout")
+    elif user.roles != "hcadmin": # already logged in but not as hcadmin 
+        url = role_based_redirection(request)
+        return HttpResponseRedirect(url)
+    else:
+        if request.method == "POST":
+            Medicine.objects.filter(medicine_name=request.POST.get("med_name"), brand=request.POST.get("med_brand"), price = request.POST.get("med_price")).delete()
+            messages.success(request, "Medicine deleted successfully")
             return HttpResponseRedirect("/user/hcadmin_dashboard/med_and_test")
         else:
             messages.error(request, "Kindly login to view the page!")
@@ -763,11 +784,33 @@ def add_test(request):
         return HttpResponseRedirect(url)
     else:
         if request.method == "POST":
-            test = Test()
-            test.test_name = request.POST.get("test_name")
-            test.save()
+            if Test.objects.filter(test_name=request.POST.get("test_name")).exists():
+                messages.error(request, "Test already exists!")
+                return HttpResponseRedirect("/user/hcadmin_dashboard/med_and_test")
+            else:
+                test = Test()
+                test.test_name = request.POST.get("test_name")
+                test.save()
 
-            messages.success(request, "Test added successfully")
+                messages.success(request, "Test added successfully")
+                return HttpResponseRedirect("/user/hcadmin_dashboard/med_and_test")
+        else:
+            messages.error(request, "Kindly login to view the page!")
+            return HttpResponseRedirect("/user")
+
+
+def delete_test(request):
+    user = IsLoggedIn(request)
+    if user is None: # not already logged in 
+        messages.error(request, "Kindly login to view the page!")
+        return HttpResponseRedirect("/user/logout")
+    elif user.roles != "hcadmin": # already logged in but not as hcadmin 
+        url = role_based_redirection(request)
+        return HttpResponseRedirect(url)
+    else:
+        if request.method == "POST":
+            Test.objects.filter(test_name=request.POST.get("test_name")).delete()
+            messages.success(request, "Test deleted successfully")
             return HttpResponseRedirect("/user/hcadmin_dashboard/med_and_test")
         else:
             messages.error(request, "Kindly login to view the page!")
