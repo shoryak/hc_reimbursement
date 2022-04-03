@@ -165,6 +165,7 @@
                                                     <th scope="col">Medicine Name</th>
                                                     <th scope="col">Brand</th>
                                                     <th scope="col">Price</th>
+                                                    <th scope="col">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -173,6 +174,16 @@
                                                     <th scope="row">{{ item.medicine_name }}</th>
                                                     <td>{{ item.brand }}</td>
                                                     <td>{{ item.price }}</td>
+                                                    <td>
+                                                        <form action="delete_medicine" method="post">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" class="form-control" id="med_name" name="med_name" value="{{ item.medicine_name }}">
+                                                            <input type="hidden" class="form-control" id="med_brand" name="med_brand" value="{{ item.brand }}">
+                                                            <input type='hidden' step='0.01' min="0.00" class="form-control" id="med_price"
+                                                                name="med_price" value="{{ item.price }}">
+                                                            <input type="submit" class="btn btn-danger btn-primary" value="Delete">                                                   
+                                                        </form>
+                                                    </td>
                                                 </tr>
                                                 {% endfor %}
                                             </tbody>
@@ -194,12 +205,20 @@
                                             <thead>
                                                 <tr class = "active">
                                                     <th scope="col">Test Name</th>
+                                                    <th scope="col">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 {% for item in test_items %}
                                                 <tr class = "info">
                                                     <th scope="row">{{ item.test_name }}</th>
+                                                    <td>
+                                                        <form action="delete_test" method="post">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" class="form-control" id="test_name" name="test_name" value="{{ item.test_name }}">
+                                                            <input type="submit" class="btn btn-danger btn-primary" value="Delete">                                                   
+                                                        </form>
+                                                    </td>
                                                 </tr>
                                                 {% endfor %}
                                             </tbody>
