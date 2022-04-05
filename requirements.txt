@@ -2,6 +2,7 @@ asgiref==3.4.1
 bcrypt==3.2.0
 cffi==1.15.0
 Django==3.2.12
+grpcio==1.44.0
 pycparser==2.21
 pytz==2021.3
 six==1.16.0
