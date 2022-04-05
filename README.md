@@ -91,7 +91,8 @@ Built a web app that will allow users to apply for reimbursement claims online b
 
 ./static-  Static css and bootstrap files
 
-## How to run ?(Key points)
+## How to run ?
+### Running locally 
 * A virtual environment is create using the following command: ```python -m venv myvenv``` which needs to be activated using
   ```myvenv\Scripts\activate```
 * The software requirements for the given application are installed using- ```pip install -r requirements.txt ``` which installs dependencies like django
@@ -99,7 +100,19 @@ Built a web app that will allow users to apply for reimbursement claims online b
 * To login as admin, a superuser account is created which has control overall control of the site by running: 
         ```python manage.py createsuperuser```
 * The web server is started by running: ```python manage.py runserver```
+* Register a hcadmin user using the admin page provided by django and explore the application further  
 
+### Running using deployed site 
+* Open ``https://hc-reimbursement-portal.herokuapp.com``
+* You have been provided with the followng user details   
+
+| Name     | username      | password     | roll no | role | 
+| ------------- | ------------- | -------- | --------| --------|
+| Sanchit Sinha          | sanchits         | sanchits  | 190753 | patient| 
+| Test hcadmin          | test_hcadmin         | test_hcadmin  | 111111 | hcadmin| 
+| Test doctor          | test_doctor         | test_doctor  | 134567 | doctor| 
+| Test Accounts          | test_accounts         | test_accounts  | 112234 | accounts| 
+Explore the application
 
 ## To load some dummy data into the database
 Run ```python3 manage.py loaddata dummyData/db.json``` from the ``src`` folder 
