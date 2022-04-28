@@ -111,7 +111,8 @@ Built a web app that will allow users to apply for reimbursement claims online b
 | Sanchit Sinha          | sanchits         | sanchits  | 190753 | patient| 
 | Test hcadmin          | test_hcadmin         | test_hcadmin  | 111111 | hcadmin| 
 | Test doctor          | test_doctor         | test_doctor  | 134567 | doctor| 
-| Test Accounts          | test_accounts         | test_accounts  | 112234 | accounts| 
+| Test Accounts          | test_accounts         | test_accounts  | 112234 | accounts|   
+
 Explore the application
 
 ## To load some dummy data into the database

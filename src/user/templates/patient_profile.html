@@ -162,7 +162,7 @@
                         {% csrf_token %}
                         <div class="form-group col-md-6">
                             <label for="contact">Contact</label>
-                            <input type="text" class="form-control" id="contact" name = "contact" value="{{patient.user.contact}}" pattern="[1-9]{1}[0-9]{9}" >
+                            <input type="text" class="form-control" id="contact" name = "contact" value="{{patient.user.contact}}" pattern="N/A|[1-9]{1}[0-9]{9}" >
                         </div>
                         <div class="form-group col-md-6">
                             <label for="address">Address</label>
@@ -174,11 +174,11 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label for="bank_IFSC">Bank IFSC</label>
-                            <input type="text" class="form-control" id="bank_IFSC" name = "bank_IFSC" value="{{patient.bank_IFSC}}" >
+                            <input type="text" class="form-control" id="bank_IFSC" name = "bank_IFSC" value="{{patient.bank_IFSC}}" pattern="N/A|^[A-Za-z]{4}[a-zA-Z0-9]{7}$">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="bank_AC">Bank AC</label>
-                            <input type="text" class="form-control" id="bank_AC" name = "bank_AC" value="{{patient.bank_AC}}" >
+                            <input type="text" class="form-control" id="bank_AC" name = "bank_AC" value="{{patient.bank_AC}}" pattern="N/A|[0-9]{9,18}">
                         </div>
 
                     </div>
